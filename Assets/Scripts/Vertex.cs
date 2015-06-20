@@ -6,10 +6,10 @@ public class Vertex {
 	public int y;
 	public int z;
 
-	public Vertex(int x, int y, int z){
-		this.x = x;
-		this.y = y;
-		this.z = z;
+	public Vertex(int xx, int yy, int zz){
+		x = xx;
+		y = yy;
+		z = zz;
 	}
 
 	public Vector3 toVector(){

@@ -23,6 +23,12 @@ public class MeshData{
 		uvs = u;
 	}
 
+	public void addPos(Vector3 pos){
+		for(int i = 0; i < verticies.Length; i++){
+			verticies[i] += pos;
+		}
+	}
+
 	//Add another meshdata to this one
 	public void add(MeshData d){
 		//If this meshdata is null, just set it
