@@ -11,4 +11,8 @@ public class Vertex {
 		this.y = y;
 		this.z = z;
 	}
+
+	public Vector3 toVector(){
+		return new Vector3 (x, y, z);
+	}
 }

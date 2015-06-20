@@ -6,13 +6,8 @@ public class Face {
 	public int[] triangles;
 	public Vector2[] uvs;
 
-	public Face(Vertex[] v, int[] t, Vector2[] u){
-		verticies = new Vector3[v.Length];
-		int count = 0;
-		foreach (Vertex i in v) {
-			verticies[count] = new Vector3(i.x, i.y, i.z);
-			count++;
-		}
+	public Face(Vector3[] v, int[] t, Vector2[] u){
+		verticies = v;
 		triangles = t;
 		uvs = u;
 	}
