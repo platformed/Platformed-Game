@@ -4,7 +4,7 @@ using System.Collections;
 public class CameraOrbit : MonoBehaviour {
 	
 	public Transform target;
-	public float distance = 5.0f;
+	public float distance = 10f;
 	public float xSpeed = 40f;
 	public float ySpeed = 350f;
 	
@@ -12,7 +12,7 @@ public class CameraOrbit : MonoBehaviour {
 	public float yMaxLimit = 90f;
 	
 	public float distanceMin = 2f;
-	public float distanceMax = 25f;
+	public float distanceMax = 30f;
 	
 	private Rigidbody rigidbody;
 	
@@ -35,9 +35,9 @@ public class CameraOrbit : MonoBehaviour {
 	void LateUpdate () {
 		if (target) 
 		{
-			if((Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) && (Input.GetMouseButton(0) || Input.GetMouseButton(2))){
+			if((Input.GetMouseButton(2)) || (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) && (Input.GetMouseButton(0) || Input.GetMouseButton(2))){
 				x += Input.GetAxis("Mouse X") * xSpeed * distance * 0.1f / distance;
-				y -= Input.GetAxis("Mouse Y") * ySpeed * 0.1f / distance;
+				y -= Input.GetAxis("Mouse Y") * ySpeed * 0.1f;
 			}
 			
 			y = ClampAngle(y, yMinLimit, yMaxLimit);

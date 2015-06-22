@@ -19,7 +19,7 @@ public class World : MonoBehaviour {
 
 	void createChunk(int x, int z){
 		Transform t = Instantiate (chunk.transform, new Vector3 (x * Chunk.chunkSize, 0, z * Chunk.chunkSize), Quaternion.identity) as Transform;
-		t.transform.name = "CX" + t.transform.position.x / Chunk.chunkSize + "Z" + t.transform.position.z / Chunk.chunkSize;
+		t.transform.name = "Chunk X" + t.transform.position.x / Chunk.chunkSize + " Z" + t.transform.position.z / Chunk.chunkSize;
 		t.transform.parent = this.transform;
 		chunks.Add (t.GetComponent<Chunk> ());
 	}

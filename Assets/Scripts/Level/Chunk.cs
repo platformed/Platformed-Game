@@ -12,7 +12,7 @@ public class Chunk : MonoBehaviour {
 	float parts = 20f;
 	float div = 0.1f;
 	float parts2 = 2.25f;
-	float div2 = 0.85f;
+	float div2 = 0.8f;
 
 	void Start () {
 		drawChunk ();
