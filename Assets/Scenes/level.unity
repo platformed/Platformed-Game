@@ -331,5 +331,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf46a58a17db62b4eb69f715c84f18ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldSize: 5
+  worldSize: 10
   chunks: []

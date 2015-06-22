@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class World : MonoBehaviour {
-	public int worldSize = 5;
+	public int worldSize = 10;
 	public List<Chunk> chunks = new List<Chunk>();
 	GameObject chunk;
 

@@ -12,6 +12,7 @@ public class Vertex {
 		z = zz;
 	}
 
+	//Convert to a Vector3
 	public Vector3 toVector(){
 		return new Vector3 (x, y, z);
 	}

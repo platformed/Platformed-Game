@@ -7,7 +7,7 @@ using System.Collections;
 public class Chunk : MonoBehaviour {
 	Block[ , , ] blocks;
 	public static int chunkSize = 10;
-	public static int chunkHeight = 15;
+	public static int chunkHeight = 20;
 
 	float parts = 20f;
 	float div = 0.1f;
@@ -22,7 +22,6 @@ public class Chunk : MonoBehaviour {
 		Mesh mesh = new Mesh ();
 		
 		blocks = new Block[chunkSize, chunkHeight, chunkSize];
-		MeshData d = new MeshData ();
 		for (int x = 0; x < chunkSize; x++) {
 			for (int z = 0; z < chunkSize; z++) {
 				int height = getY(x, z);
@@ -38,6 +37,7 @@ public class Chunk : MonoBehaviour {
 			}
 		}
 
+		MeshData d = new MeshData ();
 		for (int x = 0; x < chunkSize; x++) {
 			for (int z = 0; z < chunkSize; z++) {
 				for (int y = 0; y < chunkHeight; y++) {
@@ -49,9 +49,9 @@ public class Chunk : MonoBehaviour {
 		}
 
 		
-		mesh.vertices = d.verticies;
-		mesh.triangles = d.triangles;
-		mesh.uv = d.uvs;
+		mesh.vertices = d.verticies.ToArray();
+		mesh.triangles = d.triangles.ToArray();
+		mesh.uv = d.uvs.ToArray();
 		mesh.Optimize ();
 		mesh.RecalculateBounds ();
 		mesh.RecalculateNormals ();

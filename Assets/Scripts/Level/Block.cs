@@ -21,7 +21,7 @@ public class Block {
 
 	public MeshData draw(Chunk chunk, int x, int y, int z){
 		if(this.id == 0){
-			return new MeshData(new Vector3[]{}, new int[]{}, new Vector2[]{});
+			return new MeshData();
 		}
 
 		Vector3[] v = new Vector3[]{
@@ -45,7 +45,7 @@ public class Block {
 			new Vector2(1, 1)
 		};
 
-		MeshData data = new MeshData ();
+		MeshData data = new MeshData();
 
 		if (chunk.getBlock(x, y - 1, z).isTransparent()){
 			Face bottom = new Face (new Vector3[]{v[0], v[1], v[4], v[5]}, t2, uvs);
@@ -75,10 +75,6 @@ public class Block {
 		if (chunk.getBlock (x, y + 1, z).isTransparent ()) {
 			Face top = new Face (new Vector3[]{v [2], v [3], v [6], v [7]}, t1, uvs);
 			data.add (top.getMeshData ());
-		}
-
-		if (data.verticies == null) {
-			return new MeshData(new Vector3[]{}, new int[]{}, new Vector2[]{});
 		}
 
 		data.addPos (new Vector3 (0.5f, 0.5f, 0.5f));
