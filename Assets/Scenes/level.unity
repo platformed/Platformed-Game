@@ -318,7 +318,7 @@ GameObject:
   - 23: {fileID: 1739442817}
   - 114: {fileID: 1739442816}
   m_Layer: 0
-  m_Name: Plane
+  m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
