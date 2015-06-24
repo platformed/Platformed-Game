@@ -21,5 +21,23 @@ public class CameraMove : MonoBehaviour {
 		float h = Input.GetAxis("Horizontal") * speed;
 		float v = Input.GetAxis("Vertical") * speed;
 		transform.Translate(new Vector3(h, 0.0f, v));
+
+		clampPos ();
+	}
+
+	void clampPos() {
+		if (transform.position.x < 0) {
+			transform.position = new Vector3(0, transform.position.y, transform.position.z);
+		}
+		if (transform.position.x > World.worldSize * Chunk.chunkSize) {
+			transform.position = new Vector3(World.worldSize * Chunk.chunkSize, transform.position.y, transform.position.z);
+		}
+		
+		if (transform.position.z < 0) {
+			transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+		}
+		if (transform.position.z > World.worldSize * Chunk.chunkSize) {
+			transform.position = new Vector3(transform.position.x, transform.position.y, World.worldSize * Chunk.chunkSize);
+		}
 	}
 }

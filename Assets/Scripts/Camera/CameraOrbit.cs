@@ -40,7 +40,7 @@ public class CameraOrbit : MonoBehaviour {
 				y -= Input.GetAxis("Mouse Y") * ySpeed * 0.1f;
 			}
 			
-			y = ClampAngle(y, yMinLimit, yMaxLimit);
+			y = clampAngle(y, yMinLimit, yMaxLimit);
 			
 			Quaternion rotation = Quaternion.Euler(y, x, 0);
 			
@@ -59,7 +59,7 @@ public class CameraOrbit : MonoBehaviour {
 		}
 	}
 	
-	public static float ClampAngle(float angle, float min, float max){
+	public static float clampAngle(float angle, float min, float max){
 		if (angle < -360F) {
 			angle += 360F;
 		}
