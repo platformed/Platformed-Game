@@ -77,7 +77,8 @@ public class Block {
 			data.add (top.getMeshData ());
 		}
 
-		data.addPos (new Vector3 (-0.5f, -0.5f, -0.5f));
+		//This is making the block placement slightly off, disabling this is a temporary fix
+		//data.addPos (new Vector3 (-0.5f, -0.5f, -0.5f));
 		return data;
 	}
 }

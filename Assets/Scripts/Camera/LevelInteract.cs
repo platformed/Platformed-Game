@@ -10,7 +10,6 @@ public class LevelInteract : MonoBehaviour {
 	}
 	
 	void Update() {
-
 		if (Input.GetMouseButton(0)) {
 			Vector3 hit = raycast();
 
