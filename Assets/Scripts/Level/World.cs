@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class World : MonoBehaviour {
-	public int worldSize = 10;
+	public static int worldSize = 10;
 	public List<Chunk> chunks = new List<Chunk>();
 	GameObject chunk;
 
@@ -17,10 +17,21 @@ public class World : MonoBehaviour {
 		}
 	}
 
+	public Chunk posToChunk(Vector3 pos){
+		foreach (Chunk c in chunks) {
+			if((int) Mathf.Floor(pos.x / Chunk.chunkSize) == (int) Mathf.Floor(c.gameObject.transform.position.x / Chunk.chunkSize)) {
+				if((int) Mathf.Floor(pos.z / Chunk.chunkSize) == (int) Mathf.Floor(c.gameObject.transform.position.z / Chunk.chunkSize)) {
+					return c;
+				}
+			}
+		}
+		return null;
+	}
+
 	void createChunk(int x, int z){
 		Transform t = Instantiate (chunk.transform, new Vector3 (x * Chunk.chunkSize, 0, z * Chunk.chunkSize), Quaternion.identity) as Transform;
-		t.transform.name = "Chunk X" + t.transform.position.x / Chunk.chunkSize + " Z" + t.transform.position.z / Chunk.chunkSize;
-		t.transform.parent = this.transform;
+		t.name = "Chunk X" + t.transform.position.x / Chunk.chunkSize + " Z" + t.transform.position.z / Chunk.chunkSize;
+		t.parent = this.transform;
 		chunks.Add (t.GetComponent<Chunk> ());
 	}
 

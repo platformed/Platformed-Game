@@ -77,7 +77,7 @@ public class Block {
 			data.add (top.getMeshData ());
 		}
 
-		data.addPos (new Vector3 (0.5f, 0.5f, 0.5f));
+		data.addPos (new Vector3 (-0.5f, -0.5f, -0.5f));
 		return data;
 	}
 }
