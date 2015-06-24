@@ -48,15 +48,15 @@ public class Chunk : MonoBehaviour {
 		blocks = new Block[chunkSize, chunkHeight, chunkSize];
 		for (int x = 0; x < chunkSize; x++) {
 			for (int z = 0; z < chunkSize; z++) {
-				int height = getY(x, z);
+				//int height = getY(x, z);
 				for (int y = 0; y < chunkHeight; y++) {
-					Block b;
+					/*Block b;
 					if(y <= height) {
 						b = Block.block;
 					} else {
 						b = Block.air;
-					}
-					blocks[x, y, z] = b;
+					}*/
+					blocks[x, y, z] = Block.air;
 				}
 			}
 		}

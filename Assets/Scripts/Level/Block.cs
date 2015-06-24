@@ -25,14 +25,14 @@ public class Block {
 		}
 
 		Vector3[] v = new Vector3[]{
-			new Vertex (0, 0, 0).toVector(),	//0
-			new Vertex (0, 0, 1).toVector(),	//1
-			new Vertex (0, 1, 0).toVector(),	//2
-			new Vertex (0, 1, 1).toVector(),	//3
-			new Vertex (1, 0, 0).toVector(),	//4
-			new Vertex (1, 0, 1).toVector(),	//5
-			new Vertex (1, 1, 0).toVector(),	//6
-			new Vertex (1, 1, 1).toVector()		//7
+			new Vector3(0, 0, 0),	//0
+			new Vector3(0, 0, 1),	//1
+			new Vector3(0, 1, 0),	//2
+			new Vector3(0, 1, 1),	//3
+			new Vector3(1, 0, 0),	//4
+			new Vector3(1, 0, 1),	//5
+			new Vector3(1, 1, 0),	//6
+			new Vector3(1, 1, 1)	//7
 		};
 
 		int[] t1 = new int[]{0, 1, 2, 3, 2, 1};
