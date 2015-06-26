@@ -6,10 +6,10 @@ public class Block {
 	public static Block block = new Block(1, "block", false);
 
 	public string name;
-	public int id;
+	public ushort id;
 	public bool transparent;
 
-	public Block(int i, string n, bool t){
+	public Block(ushort i, string n, bool t){
 		name = n;
 		id = i;
 		transparent = t;
@@ -17,6 +17,10 @@ public class Block {
 
 	public bool isTransparent(){
 		return transparent;
+	}
+
+	public ushort getID(){
+		return id;
 	}
 
 	public MeshData draw(Chunk chunk, int x, int y, int z){
