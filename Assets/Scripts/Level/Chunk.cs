@@ -52,7 +52,7 @@ public class Chunk : MonoBehaviour {
 				for (int y = 0; y < chunkHeight; y++) {
 					/*Block b;
 					if(y <= height) {
-						b = Block.block;
+						b = Block.testBlock1;
 					} else {
 						b = Block.air;
 					}*/

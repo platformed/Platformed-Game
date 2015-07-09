@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class CameraMove : MonoBehaviour {
+	public static float smooth = 10f;
 	float speed = -0.3f;
 	float normalSpeed = -0.3f;
 	float shiftSpeed = -0.75f;
@@ -38,7 +39,10 @@ public class CameraMove : MonoBehaviour {
 		float h = Input.GetAxis ("Horizontal") * speed;
 		float v = Input.GetAxis ("Vertical") * speed;
 		transform.Translate (new Vector3 (h, 0.0f, v));
-		
+
+		//Smooth transition using lerp
+		transform.position = new Vector3 (transform.position.x, Mathf.Lerp(transform.position.y, floor, Time.deltaTime * smooth), transform.position.z);
+
 		clampPos ();
 	}
 
@@ -58,16 +62,14 @@ public class CameraMove : MonoBehaviour {
 		if (transform.position.z > size) {
 			transform.position = new Vector3(transform.position.x, transform.position.y, size);
 		}
-
-		transform.position = new Vector3 (transform.position.x, floor, transform.position.z);
 	}
 
 	void clampFloor() {
 		if (floor < 0) {
 			floor = 0;
 		}
-		if (floor > Chunk.chunkHeight) {
-			floor = Chunk.chunkHeight;
+		if (floor > Chunk.chunkHeight - 1) {
+			floor = Chunk.chunkHeight - 1;
 		}
 	}
 }

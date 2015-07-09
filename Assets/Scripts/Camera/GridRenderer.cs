@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class GridRenderer : MonoBehaviour {
-	float offset = 0.01f;
+	float offset = 0.05f;
 	bool visible;
 
 	void Start () {
@@ -14,7 +14,7 @@ public class GridRenderer : MonoBehaviour {
 	}
 
 	void Update () {
-
-		transform.position = new Vector3 (transform.position.x, CameraMove.floor + offset, transform.position.z);
+		//Smooth transition with lerp
+		transform.position = new Vector3 (transform.position.x, Mathf.Lerp(transform.position.y, CameraMove.floor + offset, Time.deltaTime * CameraMove.smooth), transform.position.z);
 	}
 }

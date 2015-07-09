@@ -3,7 +3,11 @@ using System.Collections;
 
 public class Block {
 	public static Block air = new Block(0, "air", true);
-	public static Block block = new Block(1, "block", false);
+	public static Block testBlock1 = new Block(1, "block1", false);
+	public static Block testBlock2 = new Block(2, "block2", false);
+	public static Block testBlock3 = new Block(3, "block3", false);
+
+	public Block[] blocks = new Block[] {air, testBlock1, testBlock2, testBlock3};
 
 	public string name;
 	public ushort id;
