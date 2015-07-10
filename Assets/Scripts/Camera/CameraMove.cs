@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class CameraMove : MonoBehaviour {
-	public static float smooth = 10f;
+	public static float smooth = 15f;
 	float speed = -0.3f;
 	float normalSpeed = -0.3f;
 	float shiftSpeed = -0.75f;

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class LevelInteract : MonoBehaviour {
 	Vector3 offset = new Vector3(0.5f, 0.5f, 0.5f);
-	float smooth = 15f;
+	float smooth = 20f;
 	public GameObject target;
 	public GameObject world;
 	Block block = Block.testBlock1;

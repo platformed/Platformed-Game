@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class GridRenderer : MonoBehaviour {
-	float offset = 0.05f;
+	float offset = 0.01f;
 	bool visible;
 
 	void Start () {
