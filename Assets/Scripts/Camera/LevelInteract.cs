@@ -16,7 +16,7 @@ public class LevelInteract : MonoBehaviour {
 		Vector3 hit = raycast ();
 
 		if (Input.GetKey ("1")) {
-			block = Block.testBlock1;
+			block = Block.testBlock1; 
 		}
 		if (Input.GetKey ("2")) {
 			block = Block.testBlock2;
@@ -25,27 +25,29 @@ public class LevelInteract : MonoBehaviour {
 			block = Block.testBlock3;
 		}
 
-		//Smooth transition using lerp
-		Vector3 newPos = new Vector3 (Mathf.Floor(hit.x), Mathf.Floor(hit.y), Mathf.Floor(hit.z)) + offset;
-		transform.position = Vector3.Lerp (transform.position, newPos, Time.deltaTime * smooth);
+		if(Input.mousePosition.y < Screen.height - 50){
+			//Smooth transition using lerp
+			Vector3 newPos = new Vector3 (Mathf.Floor(hit.x), Mathf.Floor(hit.y), Mathf.Floor(hit.z)) + offset;
+			transform.position = Vector3.Lerp (transform.position, newPos, Time.deltaTime * smooth);
 
-		clampPos ();
+			clampPos ();
 
-		if (Input.GetMouseButton(0)) {
-			World w = world.GetComponent<World>();
-			Chunk c = w.posToChunk(hit);
-			if(c != null){
-				Vector3 p = c.posToBlock(hit);
-				c.setBlock(block, (int) p.x, (int) p.y, (int) p.z);
+			if (Input.GetMouseButton(0)) {
+				World w = world.GetComponent<World>();
+				Chunk c = w.posToChunk(hit);
+				if(c != null){
+					Vector3 p = c.posToBlock(hit);
+					c.setBlock(block, (int) p.x, (int) p.y, (int) p.z);
+				}
 			}
-		}
-
-		if (Input.GetMouseButton(1)) {
-			World w = world.GetComponent<World>();
-			Chunk c = w.posToChunk(hit);
-			if(c != null){
-				Vector3 p = c.posToBlock(hit);
-				c.setBlock(Block.air, (int) p.x, (int) p.y, (int) p.z);
+				
+			if (Input.GetMouseButton(1)) {
+				World w = world.GetComponent<World>();
+				Chunk c = w.posToChunk(hit);
+				if(c != null){
+					Vector3 p = c.posToBlock(hit);
+					c.setBlock(Block.air, (int) p.x, (int) p.y, (int) p.z);
+				}
 			}
 		}
 	}

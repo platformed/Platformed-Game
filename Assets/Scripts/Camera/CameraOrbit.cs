@@ -56,6 +56,9 @@ public class CameraOrbit : MonoBehaviour {
 			
 			transform.rotation = rotation;
 			transform.position = position;
+
+			int h = Screen.height;
+			Camera.main.rect = new Rect(0, 0, 1, (h - 50) / (float) h);
 		}
 	}
 	
