@@ -4,20 +4,23 @@ using System.Collections;
 public class CameraOrbit : MonoBehaviour {
 	
 	public Transform target;
-	public float distance = 8f;
-	public float xSpeed = 40f;
-	public float ySpeed = 350f;
+	float distance = 8f;
+	float xSpeed = 40f;
+	float ySpeed = 250f;
+	float zoomSpeed = -0.1f;
 	
-	public float yMinLimit = -90f;
-	public float yMaxLimit = 90f;
+	float yMinLimit = -89.9f;
+	float yMaxLimit = 89.9f;
 	
-	public float distanceMin = 2f;
-	public float distanceMax = 30f;
+	float distanceMin = 2f;
+	float distanceMax = 30f;
 	
 	//private Rigidbody rigidbody;
 	
 	float x = 0.0f;
 	float y = 0.0f;
+
+	float lastPos;
 
 	void Start () {
 		Vector3 angles = transform.eulerAngles;
@@ -35,30 +38,54 @@ public class CameraOrbit : MonoBehaviour {
 	void LateUpdate () {
 		if (target) 
 		{
-			if((Input.GetMouseButton(2)) || (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) && (Input.GetMouseButton(0) || Input.GetMouseButton(2))){
-				x += Input.GetAxis("Mouse X") * xSpeed * distance * 0.1f / distance;
-				y -= Input.GetAxis("Mouse Y") * ySpeed * 0.1f;
+			//Get inputs
+			if((Input.GetMouseButton(2)) ||
+			   (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) && (Input.GetMouseButton(0) || Input.GetMouseButton(1)) ||
+			   (UIManager.tool == Tool.ORBIT && (Input.GetMouseButton(0) || Input.GetMouseButton(1)))){
+
+				x += Input.GetAxis("Mouse X") * xSpeed * 0.1f;
+				y -= Input.GetAxis("Mouse Y") * ySpeed * 0.1f / (distance / 2);
 			}
 			
 			y = clampAngle(y, yMinLimit, yMaxLimit);
 			
 			Quaternion rotation = Quaternion.Euler(y, x, 0);
-			
-			distance = Mathf.Clamp(distance - Input.GetAxis("Mouse ScrollWheel") * 5, distanceMin, distanceMax);
-			
-			RaycastHit hit;
-			if (Physics.Linecast (target.position, transform.position, out hit)) 
-			{
-				distance -=  hit.distance;
+
+			//Adjust for zoom tool
+			if(UIManager.tool == Tool.ZOOM){
+				if(Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)){
+					lastPos = Input.mousePosition.y;
+				}
+				
+				if(Input.GetMouseButton(0) || Input.GetMouseButton(1)){
+					float delta = Input.mousePosition.y - lastPos;
+					distance += delta * zoomSpeed;
+					lastPos = Input.mousePosition.y;
+				}
 			}
+
+			//Adjust for scrollwheel and clamp
+			distance = Mathf.Clamp(distance - Input.GetAxis("Mouse ScrollWheel") * 5, distanceMin, distanceMax);
+
+			//BROKEN, adjust for hitting blocks
+			//RaycastHit hit;
+			//if (Physics.Linecast (target.position, transform.position, out hit)) 
+			//{
+			//	distance -=  hit.distance;
+			//}
+
+			//Set position
 			Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
 			Vector3 position = rotation * negDistance + target.position;
 			
 			transform.rotation = rotation;
 			transform.position = position;
 
+			//Set position on screen
 			int h = Screen.height;
-			Camera.main.rect = new Rect(0, 0, 1, (h - 50) / (float) h);
+			int bottom = 100;
+			int top = 48;
+			Camera.main.rect = new Rect(0, 1 - (h - bottom) / (float) h, 1, (h - top - bottom) / (float) h);
 		}
 	}
 	

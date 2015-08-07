@@ -2,12 +2,13 @@
 using System.Collections;
 
 public class Block {
-	public static Block air = new Block(0, "air", null, true);
-	public static Block testBlock1 = new Block(1, "block1", "testblock1", false);
-	public static Block testBlock2 = new Block(2, "block2", "testblock2", false);
-	public static Block testBlock3 = new Block(3, "block3", "testblock3", false);
+	public static Block air = new Block(0, "Air", null, true);
+	public static Block testBlock1 = new Block(1, "Block 1", "testblock1", false);
+	public static Block testBlock2 = new Block(2, "Block 2", "testblock2", false);
+	public static Block testBlock3 = new Block(3, "Block 3", "testblock3", false);
+	public static Block stone1 = new Block(4, "Stone 1", "stone1", false);
 
-	public static Block[] blocks = new Block[] {air, testBlock1, testBlock2, testBlock3};
+	public static Block[] blocks = new Block[] {air, testBlock1, testBlock2, testBlock3, stone1};
 
 	string name;
 	ushort id;
@@ -23,6 +24,10 @@ public class Block {
 
 	public bool isTransparent(){
 		return transparent;
+	}
+
+	public string getName(){
+		return name;
 	}
 
 	public ushort getID(){

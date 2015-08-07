@@ -6,17 +6,21 @@ public class CameraMove : MonoBehaviour {
 	float speed = -0.3f;
 	float normalSpeed = -0.3f;
 	float shiftSpeed = -0.75f;
+	float panSpeed = 0.05f;
 
 	public static int floor = Chunk.chunkHeight / 2;
 	int floorSpeed = 1;
 	int normalFloorSpeed = 1;
 	int shiftFloorSpeed = 10;
 
+	Vector3 lastPos;
+
 	void Start () {
 	
 	}
 
 	void LateUpdate () {
+		//Adjust floor level
 		if (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) {
 			speed = shiftSpeed;
 			floorSpeed = shiftFloorSpeed;
@@ -33,12 +37,26 @@ public class CameraMove : MonoBehaviour {
 		}
 		clampFloor ();
 
+		//Adjust for pan tool
+		if (UIManager.tool == Tool.PAN && !(Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt))){
+			if(Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)){
+				lastPos = Input.mousePosition;
+			}
+
+			if(Input.GetMouseButton(0) || Input.GetMouseButton(1)){
+				Vector3 delta = Input.mousePosition - lastPos;
+				transform.Translate(delta.x * panSpeed, 0f, delta.y * panSpeed);
+				lastPos = Input.mousePosition;
+			}
+		}
+
+		//Adjust for wasd
 		Vector3 point = Camera.main.transform.position;
 		point.y = transform.position.y;
 		transform.LookAt (point);
 		float h = Input.GetAxis ("Horizontal") * speed;
 		float v = Input.GetAxis ("Vertical") * speed;
-		transform.Translate (new Vector3 (h, 0.0f, v));
+		transform.Translate (new Vector3 (h, 0f, v));
 
 		//Smooth transition using lerp
 		transform.position = new Vector3 (transform.position.x, Mathf.Lerp(transform.position.y, floor, Time.deltaTime * smooth), transform.position.z);
