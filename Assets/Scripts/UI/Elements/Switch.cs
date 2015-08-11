@@ -11,7 +11,6 @@ public class Switch : MonoBehaviour {
 
 	Vector3 thumbPos = new Vector3(-26f, 0f, 0f);
 	Vector3 mouseOffset;
-	bool dragging = false;
 
 	float speed = 16;
 	float colorSpeed = 24;

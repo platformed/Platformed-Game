@@ -8,11 +8,14 @@ public class Window : MonoBehaviour {
 	public GameObject bottomPanel;
 	public GameObject titleObj;
 
+	GameObject button;
+
 	string title;
 
 	Vector3 mouseOffset;
 
 	void Start () {
+		button = Resources.Load ("UI Elements/FlatButton") as GameObject;
 	}
 
 	void Update () {
@@ -30,9 +33,13 @@ public class Window : MonoBehaviour {
 	}
 
 	public void addButton(string name, int id){
-		GameObject button = Resources.Load ("UI Elements/FlatButton") as GameObject;
-		Text t = button.GetComponentInChildren<Text> ();
+		Transform b = Instantiate (button).transform;
+
+		b.parent = bottomPanel.transform;
+
+		Text t = b.GetComponentInChildren<Text> ();
 		t.text = name.ToUpper();
+
 
 
 	}
