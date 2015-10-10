@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
 public class World : MonoBehaviour {
 	public static int worldSize = 10;
@@ -33,6 +34,26 @@ public class World : MonoBehaviour {
 		t.name = "Chunk X" + t.transform.position.x / Chunk.chunkSize + " Z" + t.transform.position.z / Chunk.chunkSize;
 		t.parent = this.transform;
 		chunks.Add (t.GetComponent<Chunk> ());
+	}
+
+	public void saveWorld(string name){
+		FileStream stream = File.Open (Application.dataPath + name, FileMode.Create);
+
+		foreach(Chunk c in chunks){
+			c.save(stream);
+		}
+
+		stream.Close ();
+	}
+
+	public void loadWorld(string name){
+		FileStream stream = File.Open (Application.dataPath + name, FileMode.Open);
+		
+		foreach(Chunk c in chunks){
+			c.load(stream);
+		}
+
+		stream.Close ();
 	}
 
 	void Update () {

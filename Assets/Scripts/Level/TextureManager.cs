@@ -18,7 +18,7 @@ public class TextureManager : MonoBehaviour {
 		}
 
 		Texture2D atlas = new Texture2D (0, 0);
-		uvs = atlas.PackTextures (textures.ToArray(), 16, 16384);
+		uvs = atlas.PackTextures (textures.ToArray(), 0, 16384);
 
 		atlasWidth = atlas.width;
 		atlasHeight = atlas.height;

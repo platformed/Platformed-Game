@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Runtime.Serialization;
 
 public class Block {
 	public static Block air = new Block(0, "Air", null, true);
@@ -11,7 +12,7 @@ public class Block {
 	public static Block[] blocks = new Block[] {air, testBlock1, testBlock2, testBlock3, stone1};
 
 	string name;
-	ushort id;
+	public ushort id;
 	bool transparent;
 	string texture;
 
@@ -100,40 +101,6 @@ public class Block {
 			data.add (top.getMeshData ());
 		}
 
-		//This is making the block placement slightly off, disabling this is a temporary fix
-		//data.addPos (new Vector3 (-0.5f, -0.5f, -0.5f));
 		return data;
 	}
 }
-
-/*
-if (chunk.getBlock(x, y - 1, z).isTransparent()){
-			Face bottom = new Face (new Vector3[]{v[0], v[1], v[4], v[5]}, t2, uvs);
-			data.add (bottom.getMeshData());
-		}
-
-		if (chunk.getBlock(x, y, z + 1).isTransparent()){
-			Face right = new Face (new Vector3[]{v[1], v[5], v[3], v[7]}, t1, uvs);
-			data.add (right.getMeshData());
-		}
-
-		if (chunk.getBlock (x, y, z - 1).isTransparent ()) {
-			Face left = new Face (new Vector3[]{v [0], v [4], v [2], v [6]}, t2, uvs);
-			data.add (left.getMeshData ());
-		}
-
-		if (chunk.getBlock (x + 1, y, z).isTransparent ()) {
-			Face back = new Face (new Vector3[]{v [4], v [5], v [6], v [7]}, t2, uvs);
-			data.add (back.getMeshData ());
-		}
-
-		if (chunk.getBlock (x - 	1, y, z).isTransparent ()) {
-			Face front = new Face (new Vector3[]{v [0], v [1], v [2], v [3]}, t1, uvs);
-			data.add (front.getMeshData ());
-		}
-
-		if (chunk.getBlock (x, y + 1, z).isTransparent ()) {
-			Face top = new Face (new Vector3[]{v [2], v [3], v [6], v [7]}, t1, uvs);
-			data.add (top.getMeshData ());
-		}
- */

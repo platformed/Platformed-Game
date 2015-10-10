@@ -1,5 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System;
+
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(MeshCollider))]
@@ -17,6 +22,32 @@ public class Chunk : MonoBehaviour {
 
 	void Start () {
 		generateChunk ();
+		drawChunk ();
+	}
+
+	public void save(FileStream stream){
+		BinaryFormatter formatter = new BinaryFormatter ();
+
+		for (int x = 0; x < chunkSize; x++) {
+			for (int z = 0; z < chunkSize; z++) {
+				for (int y = 0; y < chunkHeight; y++) {
+					formatter.Serialize (stream, blocks[x, y, z].id);
+				}
+			}
+		}
+	}
+
+	public void load(FileStream stream){
+		BinaryFormatter formatter = new BinaryFormatter ();
+		
+		for (int x = 0; x < chunkSize; x++) {
+			for (int z = 0; z < chunkSize; z++) {
+				for (int y = 0; y < chunkHeight; y++) {
+					blocks [x, y, z] = Block.blocks[Convert.ToInt32(formatter.Deserialize (stream))];
+				}
+			}
+		}
+
 		drawChunk ();
 	}
 

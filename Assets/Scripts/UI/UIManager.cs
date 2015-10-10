@@ -5,8 +5,12 @@ using System.Collections;
 public class UIManager : MonoBehaviour {
 	public static Tool tool = Tool.SELECT;
 	public Transform blockLibrary;
-	public GameObject saveInputField;
+	public GameObject world;
 	public static bool isDraging = false;
+	public static string scene;
+	public static string version = "Alpha v0.0.0";
+
+	static bool mouseOverWindow = false;
 
 	Animator anim;
 	bool levelSaved = true;
@@ -14,7 +18,7 @@ public class UIManager : MonoBehaviour {
 
 	void Start() {
 		//Add block buttons to bottom
-		blockButton = Resources.Load ("BlockButton") as GameObject;
+		blockButton = Resources.Load ("UI Elements/BlockButton") as GameObject;
 		foreach(Block block in Block.blocks){
 			if(block.getID() != 0){
 				GameObject button = Instantiate (blockButton) as GameObject;
@@ -35,10 +39,12 @@ public class UIManager : MonoBehaviour {
 
 	}
 
-	public static bool canInteract(){
+	public static bool canInteract() {
 		if (isDraging)
 			return false;
 		if (Input.mousePosition.y > Screen.height - 48 || Input.mousePosition.y < 100)
+			return false;
+		if (mouseOverWindow)
 			return false;
 		return true;
 	}
@@ -68,6 +74,14 @@ public class UIManager : MonoBehaviour {
 		Cursor.block = Block.blocks [id];
 	}
 
+	public void pointerEnter() {
+		mouseOverWindow = true;
+	}
+
+	public void pointerExit() {
+		mouseOverWindow = false;
+	}
+
 	public void exitToMenu() {
 		if(levelSaved){
 			Application.LoadLevel("main-menu");
@@ -79,11 +93,11 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void openLevel() {
-
+		//world.GetComponent<World>().loadWorld("testSave2.level");
 	}
 
 	public void saveLevel() {
-
+		//world.GetComponent<World>().saveWorld("testSave2.level");
 	}
 
 	public void levelSettings() {
@@ -119,6 +133,21 @@ public class UIManager : MonoBehaviour {
 			return hit;
 		}
 		return new Vector3();
+	}
+
+	//Gets the scene that the level is loading
+	public static string getScene() {
+		return scene;
+	}
+
+	//Puts the game into the loading screen to load a level
+	public static void loadScene(string s) {
+		scene = s;
+		Application.LoadLevel("loading-screen");
+	}
+
+	public static string getVersion() {
+		return version;
 	}
 }
 
