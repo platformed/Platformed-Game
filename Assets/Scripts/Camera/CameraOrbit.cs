@@ -6,7 +6,7 @@ public class CameraOrbit : MonoBehaviour {
 	public Transform target;
 	float distance = 8f;
 	float xSpeed = 40f;
-	float ySpeed = 250f;
+	float ySpeed = 25f;
 	float zoomSpeed = -0.1f;
 
 	float yMinLimit = -89.9f;
@@ -43,7 +43,7 @@ public class CameraOrbit : MonoBehaviour {
 			   (UIManager.tool == Tool.ORBIT && (Input.GetMouseButton(0) || Input.GetMouseButton(1)) && UIManager.canInteract())) {
 
 				x += Input.GetAxis("Mouse X") * xSpeed * 0.1f;
-				y -= Input.GetAxis("Mouse Y") * ySpeed * 0.1f / (distance / 2);
+				y -= Input.GetAxis("Mouse Y") * ySpeed * 0.1f;
 			}
 
 			y = clampAngle(y, yMinLimit, yMaxLimit);
@@ -77,6 +77,7 @@ public class CameraOrbit : MonoBehaviour {
 			Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
 			Vector3 position = rotation * negDistance + target.position;
 
+			//Acctualy set the rot and pos of the camera
 			transform.rotation = rotation;
 			transform.position = position;
 
