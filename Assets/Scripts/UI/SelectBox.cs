@@ -31,6 +31,12 @@ public class SelectBox : MonoBehaviour {
 	void setPosition(){
 		transform.position = new Vector3 ((p1.x + p2.x) / 2, (p1.y + p2.y) / 2, (p1.z + p2.z) / 2);
 		transform.localScale = new Vector3 (p2.x - p1.x + 0.01f, p2.y - p1.y + 0.01f, p2.z - p1.z + 0.01f);
+
+		/*if (corner) {
+			transform.position = p1;
+		} else {
+			transform.position = p2;
+		}*/
 	}
 
 	Vector3 round1(Vector3 v){
@@ -43,8 +49,18 @@ public class SelectBox : MonoBehaviour {
 
 	Vector3 round2(Vector3 v){
 		int x = (int) Mathf.Floor (v.x);
-		int y = (int) Mathf.Floor (v.y);
+		int y = (int)Mathf.Floor(v.y);
 		int z = (int) Mathf.Floor (v.z);
+
+		if (v.x >= p1.x) {
+			x++;
+		}
+		if (v.y >= p1.y) {
+			y++;
+		}
+		if (v.z >= p1.z) {
+			z++;
+		}
 
 		return new Vector3 (x, y, z);
 	}

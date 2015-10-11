@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.IO;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System;
 
@@ -58,7 +56,7 @@ public class Chunk : MonoBehaviour {
 		for (int x = 0; x < chunkSize; x++) {
 			for (int z = 0; z < chunkSize; z++) {
 				for (int y = 0; y < chunkHeight; y++) {
-					MeshData temp = blocks[x, y, z].draw(this, x, y, z);
+					MeshData temp = blocks[x, y, z].draw(this, x, y, z, false);
 					temp.addPos(new Vector3(x, y, z));
 					d.add(temp);
 				}
@@ -79,14 +77,7 @@ public class Chunk : MonoBehaviour {
 		blocks = new Block[chunkSize, chunkHeight, chunkSize];
 		for (int x = 0; x < chunkSize; x++) {
 			for (int z = 0; z < chunkSize; z++) {
-				//int height = getY(x, z);
 				for (int y = 0; y < chunkHeight; y++) {
-					/*Block b;
-					if(y <= height) {
-						b = Block.testBlock1;
-					} else {
-						b = Block.air;
-					}*/
 					blocks[x, y, z] = Block.air;
 				}
 			}

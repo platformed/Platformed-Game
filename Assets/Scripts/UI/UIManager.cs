@@ -39,10 +39,11 @@ public class UIManager : MonoBehaviour {
 
 	}
 
+	//Returns weather the user can interact with the level
 	public static bool canInteract() {
 		if (isDraging)
 			return false;
-		if (Input.mousePosition.y > Screen.height - 48 || Input.mousePosition.y < 100)
+		if (Input.mousePosition.y > Screen.height - 48 || Input.mousePosition.x < 200)
 			return false;
 		if (mouseOverWindow)
 			return false;
@@ -118,6 +119,14 @@ public class UIManager : MonoBehaviour {
 
 	public void uploadLevel() {
 
+	}
+
+	public void upFloor() {
+		CameraMove.floor++;
+	}
+
+	public void downFloor() {
+		CameraMove.floor--;
 	}
 
 	//Raycasts from the mouse cursor to the plane that the camera target is on

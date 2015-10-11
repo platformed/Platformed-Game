@@ -1,14 +1,15 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Cursor : MonoBehaviour {
-	Vector3 offset = new Vector3(0.5f, 0.5f, 0.5f);
+	Vector3 offset = new Vector3(0, 0, 0);
 	float smooth = 20f;
 	public GameObject target;
 	public GameObject world;
 	public static Block block = Block.testBlock1;
 
 	void Update() {
+		drawBlock();
+
 		Vector3 newPos = new Vector3(0,0,0);
 
 		if (UIManager.tool == Tool.BLOCK && UIManager.canInteract()) {
@@ -36,6 +37,19 @@ public class Cursor : MonoBehaviour {
 
 		transform.position = Vector3.Lerp (transform.position, newPos, Time.deltaTime * smooth);
 		clampPos ();
+	}
+
+	void drawBlock() {
+		MeshData d = block.draw(null, 0, 0, 0, true);
+		Mesh mesh = new Mesh();
+		mesh.vertices = d.verticies.ToArray();
+		mesh.triangles = d.triangles.ToArray();
+		mesh.uv = d.uvs.ToArray();
+		mesh.Optimize();
+		mesh.RecalculateBounds();
+		mesh.RecalculateNormals();
+		GetComponent<MeshFilter>().mesh = mesh;
+		GetComponent<MeshFilter>().sharedMesh = mesh;
 	}
 	
 	void clampPos() {

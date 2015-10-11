@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Runtime.Serialization;
 
 public class Block {
 	public static Block air = new Block(0, "Air", null, true);
@@ -39,7 +37,7 @@ public class Block {
 		return texture;
 	}
 
-	public MeshData draw(Chunk chunk, int x, int y, int z){
+	public MeshData draw(Chunk chunk, int x, int y, int z, bool cursor){
 		if(this.id == 0){
 			return new MeshData();
 		}
@@ -71,32 +69,32 @@ public class Block {
 
 		MeshData data = new MeshData();
 
-		if (chunk.getBlock(x, y - 1, z).isTransparent()){
+		if (cursor || chunk.getBlock(x, y - 1, z).isTransparent()){
 			Face bottom = new Face (new Vector3[]{v[0], v[1], v[4], v[5]}, t, uvs);
 			data.add (bottom.getMeshData());
 		}
 		
-		if (chunk.getBlock(x, y, z + 1).isTransparent()){
+		if (cursor || chunk.getBlock(x, y, z + 1).isTransparent()){
 			Face right = new Face (new Vector3[]{v[7], v[5], v[3], v[1]}, t, uvs);
 			data.add (right.getMeshData());
 		}
 		
-		if (chunk.getBlock (x, y, z - 1).isTransparent ()) {
+		if (cursor || chunk.getBlock (x, y, z - 1).isTransparent ()) {
 			Face left = new Face (new Vector3[]{v [2], v [0], v [6], v [4]}, t, uvs);
 			data.add (left.getMeshData ());
 		}
 		
-		if (chunk.getBlock (x + 1, y, z).isTransparent ()) {
+		if (cursor || chunk.getBlock (x + 1, y, z).isTransparent ()) {
 			Face back = new Face (new Vector3[]{v [6], v [4], v [7], v [5]}, t, uvs);
 			data.add (back.getMeshData ());
 		}
 		
-		if (chunk.getBlock (x - 	1, y, z).isTransparent ()) {
+		if (cursor || chunk.getBlock (x - 1, y, z).isTransparent ()) {
 			Face front = new Face (new Vector3[]{v [3], v [1], v [2], v [0]}, t, uvs);
 			data.add (front.getMeshData ());
 		}
 		
-		if (chunk.getBlock (x, y + 1, z).isTransparent ()) {
+		if (cursor || chunk.getBlock (x, y + 1, z).isTransparent ()) {
 			Face top = new Face (new Vector3[]{v [6], v [7], v [2], v [3]}, t, uvs);
 			data.add (top.getMeshData ());
 		}
