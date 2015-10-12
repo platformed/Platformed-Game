@@ -7,8 +7,14 @@ public class UIManager : MonoBehaviour {
 	public Transform blockLibrary;
 	public GameObject world;
 	public static bool isDraging = false;
+	public static Gamemode gamemode = Gamemode.DESIGN;
 	public static string scene;
 	public static string version = "Alpha v0.0.0";
+	public static Camera designCam;
+	public static Camera playCam;
+
+	public GameObject designCanvas;
+	public GameObject playCanvas;
 
 	static bool mouseOverWindow = false;
 
@@ -17,6 +23,10 @@ public class UIManager : MonoBehaviour {
 	GameObject blockButton;
 
 	void Start() {
+		//Get camera
+		designCam = GameObject.Find("DesignCamera").GetComponent<Camera>();
+		playCam = GameObject.Find("PlayCamera").GetComponent<Camera>();
+
 		//Add block buttons to bottom
 		blockButton = Resources.Load ("UI Elements/BlockButton") as GameObject;
 		foreach(Block block in Block.blocks){
@@ -36,7 +46,32 @@ public class UIManager : MonoBehaviour {
 	}
 	
 	void Update() {
+		if (gamemode == Gamemode.DESIGN) {
+			designCanvas.SetActive(true);
+			playCanvas.SetActive(false);
 
+			//TODO: FIX THIS
+			//designCamera.GetComponent<AudioListener>().enabled = true;
+			//playCamera.GetComponent<AudioListener>().enabled = false;
+
+			designCam.gameObject.SetActive(true);
+			playCam.gameObject.SetActive(false);
+		}
+		if (gamemode == Gamemode.PLAY) {
+			designCanvas.SetActive(false);
+			playCanvas.SetActive(true);
+
+			//designCamera.GetComponent<AudioListener>().enabled = false;
+			//playCamera.GetComponent<AudioListener>().enabled = true;
+
+			designCam.gameObject.SetActive(false);
+			playCam.gameObject.SetActive(true);
+
+			//Press ESC to go back to design mode
+			if (Input.GetKey(KeyCode.Escape)) {
+				gamemode = Gamemode.DESIGN;
+			}
+		}
 	}
 
 	//Returns weather the user can interact with the level
@@ -114,7 +149,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void playLevel() {
-
+		gamemode = Gamemode.PLAY;
 	}
 
 	public void uploadLevel() {
@@ -134,7 +169,7 @@ public class UIManager : MonoBehaviour {
 		Plane plane = new Plane(Vector3.up, new Vector3(0, CameraMove.floor, 0));
 		
 		Vector3 hit;
-		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		Ray ray = designCam.ScreenPointToRay(Input.mousePosition);
 		ray.direction = ray.direction * 1000;
 		float distance;
 		if (plane.Raycast(ray, out distance)) {
@@ -166,4 +201,9 @@ public enum Tool {
 	PAN,
 	ORBIT,
 	ZOOM
+}
+
+public enum Gamemode {
+	PLAY,
+	DESIGN
 }

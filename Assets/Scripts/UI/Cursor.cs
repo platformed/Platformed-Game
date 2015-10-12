@@ -8,35 +8,41 @@ public class Cursor : MonoBehaviour {
 	public static Block block = Block.testBlock1;
 
 	void Update() {
-		drawBlock();
+		if (UIManager.gamemode == Gamemode.DESIGN) {
+			gameObject.SetActive(true);
 
-		Vector3 newPos = new Vector3(0,0,0);
+			drawBlock();
 
-		if (UIManager.tool == Tool.BLOCK && UIManager.canInteract()) {
-			Vector3 hit = UIManager.raycast();
-			newPos = new Vector3 (Mathf.Floor (hit.x), Mathf.Floor (hit.y), Mathf.Floor (hit.z)) + offset;
+			Vector3 newPos = new Vector3(0, 0, 0);
 
-			if (Input.GetMouseButton(0)) {
-				World w = world.GetComponent<World>();
-				Chunk c = w.posToChunk(hit);
-				if(c != null){
-					Vector3 p = c.posToBlock(hit);
-					c.setBlock(block, (int) p.x, (int) p.y, (int) p.z);
+			if (UIManager.tool == Tool.BLOCK && UIManager.canInteract()) {
+				Vector3 hit = UIManager.raycast();
+				newPos = new Vector3(Mathf.Floor(hit.x), Mathf.Floor(hit.y), Mathf.Floor(hit.z)) + offset;
+
+				if (Input.GetMouseButton(0)) {
+					World w = world.GetComponent<World>();
+					Chunk c = w.posToChunk(hit);
+					if (c != null) {
+						Vector3 p = c.posToBlock(hit);
+						c.setBlock(block, (int)p.x, (int)p.y, (int)p.z);
+					}
+				}
+
+				if (Input.GetMouseButton(1)) {
+					World w = world.GetComponent<World>();
+					Chunk c = w.posToChunk(hit);
+					if (c != null) {
+						Vector3 p = c.posToBlock(hit);
+						c.setBlock(Block.air, (int)p.x, (int)p.y, (int)p.z);
+					}
 				}
 			}
-			
-			if (Input.GetMouseButton(1)) {
-				World w = world.GetComponent<World>();
-				Chunk c = w.posToChunk(hit);
-				if(c != null){
-					Vector3 p = c.posToBlock(hit);
-					c.setBlock(Block.air, (int) p.x, (int) p.y, (int) p.z);
-				}
-			}
+
+			transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime * smooth);
+			clampPos();
+		} else {
+			gameObject.SetActive(false);
 		}
-
-		transform.position = Vector3.Lerp (transform.position, newPos, Time.deltaTime * smooth);
-		clampPos ();
 	}
 
 	void drawBlock() {

@@ -51,7 +51,7 @@ public class CameraMove : MonoBehaviour {
 		}
 
 		//Adjust for wasd
-		Vector3 point = Camera.main.transform.position;
+		Vector3 point = UIManager.designCam.transform.position;
 		point.y = transform.position.y;
 		transform.LookAt (point);
 		float h = Input.GetAxis ("Horizontal") * speed;

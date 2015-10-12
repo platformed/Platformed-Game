@@ -4,28 +4,35 @@ using System.Collections;
 public class SelectBox : MonoBehaviour {
 	Vector3 p1;
 	Vector3 p2;
-	bool selected = false;
+	//bool selected = false;
 	
 	void Start () {
 		
 	}
 	
 	void Update () {
-		if(UIManager.tool == Tool.SELECT && UIManager.canInteract()){
-			if(Input.GetMouseButtonDown(0)){
-				p1 = round1(UIManager.raycast());
-				selected = true;
-			}
-			if(Input.GetMouseButton(0)){
-				p2 = round2(UIManager.raycast());
-			}
-		}
+		if (UIManager.gamemode == Gamemode.DESIGN) {
+			gameObject.SetActive(true);
 
-		if (UIManager.tool != Tool.SELECT) {
-			selected = false;
-		}
+			if (UIManager.tool == Tool.SELECT && UIManager.canInteract()) {
+				if (Input.GetMouseButtonDown(0)) {
+					p1 = round1(UIManager.raycast());
+					//selected = true;
+				}
+				if (Input.GetMouseButton(0)) {
+					p2 = round2(UIManager.raycast());
+				}
+			}
 
-		setPosition ();
+			if (UIManager.tool != Tool.SELECT) {
+				//selected = false;
+			}
+
+			setPosition();
+		} else {
+			//Hide in play mode
+			gameObject.SetActive(false);
+		}
 	}
 
 	void setPosition(){

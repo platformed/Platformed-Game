@@ -12,9 +12,9 @@ public class LoadingScreen : MonoBehaviour {
 	IEnumerator LoadLevel(string level) {
 		AsyncOperation async = Application.LoadLevelAsync(level);
 		while (!async.isDone) {
-			transform.localScale = new Vector3(async.progress, 1);
+			//transform.localScale = new Vector3(async.progress, 1);
 			loadingText.text = "LOADING " + Mathf.Round(async.progress * 100) + "%";
-			Debug.Log(async.progress);
+			//Debug.Log(async.progress);
 			yield return null;
 		}
 	}
