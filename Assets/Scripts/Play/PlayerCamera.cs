@@ -21,7 +21,7 @@ public class PlayerCamera : MonoBehaviour {
 
 	}
 
-	void LateUpdate() {
+	void FixedUpdate() {
 		if (UIManager.gamemode == Gamemode.PLAY) {
 			x += Input.GetAxis("Mouse X") * xSpeed * 0.1f;
 			y -= Input.GetAxis("Mouse Y") * ySpeed * 0.1f;
