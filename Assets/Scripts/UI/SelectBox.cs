@@ -5,12 +5,12 @@ public class SelectBox : MonoBehaviour {
 	Vector3 p1;
 	Vector3 p2;
 	//bool selected = false;
-	
-	void Start () {
-		
+
+	void Start() {
+
 	}
-	
-	void Update () {
+
+	void Update() {
 		if (UIManager.gamemode == Gamemode.DESIGN) {
 			gameObject.SetActive(true);
 
@@ -35,9 +35,9 @@ public class SelectBox : MonoBehaviour {
 		}
 	}
 
-	void setPosition(){
-		transform.position = new Vector3 ((p1.x + p2.x) / 2, (p1.y + p2.y) / 2, (p1.z + p2.z) / 2);
-		transform.localScale = new Vector3 (p2.x - p1.x + 0.01f, p2.y - p1.y + 0.01f, p2.z - p1.z + 0.01f);
+	void setPosition() {
+		transform.position = new Vector3((p1.x + p2.x) / 2, (p1.y + p2.y) / 2, (p1.z + p2.z) / 2);
+		transform.localScale = new Vector3(p2.x - p1.x + 0.01f, p2.y - p1.y + 0.01f, p2.z - p1.z + 0.01f);
 
 		/*if (corner) {
 			transform.position = p1;
@@ -46,18 +46,28 @@ public class SelectBox : MonoBehaviour {
 		}*/
 	}
 
-	Vector3 round1(Vector3 v){
-		int x = (int) Mathf.Floor (v.x);
-		int y = (int) Mathf.Floor (v.y);
-		int z = (int) Mathf.Floor (v.z);
+	Vector3 round1(Vector3 v) {
+		int x = (int)Mathf.Floor(v.x);
+		int y = (int)Mathf.Floor(v.y);
+		int z = (int)Mathf.Floor(v.z);
 
-		return new Vector3 (x, y, z);
+		/*if (v.x >= 0) {
+			x++;
+		}
+		if (v.y >= 0) {
+			y++;
+		}
+		if (v.z >= 0) {
+			z++;
+		}*/
+
+		return new Vector3(x, y, z);
 	}
 
-	Vector3 round2(Vector3 v){
-		int x = (int) Mathf.Floor (v.x);
+	Vector3 round2(Vector3 v) {
+		int x = (int)Mathf.Floor(v.x);
 		int y = (int)Mathf.Floor(v.y);
-		int z = (int) Mathf.Floor (v.z);
+		int z = (int)Mathf.Floor(v.z);
 
 		if (v.x >= p1.x) {
 			x++;
@@ -69,6 +79,6 @@ public class SelectBox : MonoBehaviour {
 			z++;
 		}
 
-		return new Vector3 (x, y, z);
+		return new Vector3(x, y, z);
 	}
 }

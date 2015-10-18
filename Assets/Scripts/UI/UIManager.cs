@@ -10,11 +10,16 @@ public class UIManager : MonoBehaviour {
 	public static Gamemode gamemode = Gamemode.DESIGN;
 	public static string scene;
 	public static string version = "Alpha v0.0.0";
+
 	public static Camera designCam;
 	public static Camera playCam;
-
+	public GameObject target;
 	public GameObject designCanvas;
 	public GameObject playCanvas;
+	public GameObject grid1;
+	public GameObject grid2;
+	public GameObject grid3;
+	public GameObject cursor;
 
 	static bool mouseOverWindow = false;
 
@@ -56,6 +61,13 @@ public class UIManager : MonoBehaviour {
 
 			designCam.gameObject.SetActive(true);
 			playCam.gameObject.SetActive(false);
+			target.SetActive(true);
+
+			grid1.SetActive(true);
+			grid2.SetActive(true);
+			grid3.SetActive(true);
+
+			cursor.SetActive(true);
 		}
 		if (gamemode == Gamemode.PLAY) {
 			designCanvas.SetActive(false);
@@ -66,6 +78,13 @@ public class UIManager : MonoBehaviour {
 
 			designCam.gameObject.SetActive(false);
 			playCam.gameObject.SetActive(true);
+			target.SetActive(false);
+
+			grid1.SetActive(false);
+			grid2.SetActive(false);
+			grid3.SetActive(false);
+
+			cursor.SetActive(false);
 
 			//Press ESC to go back to design mode
 			if (Input.GetKey(KeyCode.Escape)) {

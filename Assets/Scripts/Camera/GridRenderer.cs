@@ -16,12 +16,5 @@ public class GridRenderer : MonoBehaviour {
 	void Update () {
 		//Smooth transition with lerp
 		transform.position = new Vector3 (transform.position.x, Mathf.Lerp(transform.position.y, CameraMove.floor + offset, Time.deltaTime * CameraMove.smooth), transform.position.z);
-
-		//Hide in play mode
-		if (UIManager.gamemode == Gamemode.PLAY) {
-			gameObject.SetActive(false);
-		} else {
-			gameObject.SetActive(true);
-		}
 	}
 }
