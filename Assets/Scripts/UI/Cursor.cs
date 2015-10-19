@@ -5,11 +5,13 @@ public class Cursor : MonoBehaviour {
 	float smooth = 20f;
 	public GameObject target;
 	public GameObject world;
-	public static Block block = Block.testBlock1;
+	public static BlockType block;
+
+	void Start() {
+		block = Block.getBlock("Air");
+	}
 
 	void Update() {
-		gameObject.SetActive(true);
-
 		drawBlock();
 
 		Vector3 newPos = new Vector3(0, 0, 0);
@@ -23,7 +25,7 @@ public class Cursor : MonoBehaviour {
 				Chunk c = w.posToChunk(hit);
 				if (c != null) {
 					Vector3 p = c.posToBlock(hit);
-					c.setBlock(block, (int)p.x, (int)p.y, (int)p.z);
+					c.setBlock(Block.newBlock(block), (int)p.x, (int)p.y, (int)p.z);
 				}
 			}
 
@@ -32,7 +34,7 @@ public class Cursor : MonoBehaviour {
 				Chunk c = w.posToChunk(hit);
 				if (c != null) {
 					Vector3 p = c.posToBlock(hit);
-					c.setBlock(Block.air, (int)p.x, (int)p.y, (int)p.z);
+					c.setBlock(Block.newBlock("Air"), (int)p.x, (int)p.y, (int)p.z);
 				}
 			}
 		}
@@ -42,7 +44,7 @@ public class Cursor : MonoBehaviour {
 	}
 
 	void drawBlock() {
-		MeshData d = block.draw(null, 0, 0, 0, true);
+		MeshData d = Block.newBlock(block).draw(null, 0, 0, 0, true);
 		Mesh mesh = new Mesh();
 		mesh.vertices = d.verticies.ToArray();
 		mesh.triangles = d.triangles.ToArray();

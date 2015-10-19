@@ -11,28 +11,23 @@ public class SelectBox : MonoBehaviour {
 	}
 
 	void Update() {
-		if (UIManager.gamemode == Gamemode.DESIGN) {
-			gameObject.SetActive(true);
+		gameObject.SetActive(true);
 
-			if (UIManager.tool == Tool.SELECT && UIManager.canInteract()) {
-				if (Input.GetMouseButtonDown(0)) {
-					p1 = round1(UIManager.raycast());
-					//selected = true;
-				}
-				if (Input.GetMouseButton(0)) {
-					p2 = round2(UIManager.raycast());
-				}
+		if (UIManager.tool == Tool.SELECT && UIManager.canInteract()) {
+			if (Input.GetMouseButtonDown(0)) {
+				p1 = round1(UIManager.raycast());
+				//selected = true;
 			}
-
-			if (UIManager.tool != Tool.SELECT) {
-				//selected = false;
+			if (Input.GetMouseButton(0)) {
+				p2 = round2(UIManager.raycast());
 			}
-
-			setPosition();
-		} else {
-			//Hide in play mode
-			gameObject.SetActive(false);
 		}
+
+		if (UIManager.tool != Tool.SELECT) {
+			//selected = false;
+		}
+
+		setPosition();
 	}
 
 	void setPosition() {

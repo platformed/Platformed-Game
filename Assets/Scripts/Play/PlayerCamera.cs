@@ -5,8 +5,8 @@ public class PlayerCamera : MonoBehaviour {
 	public Transform target;
 
 	float distance = 4f;
-	float xSpeed = 40f;
-	float ySpeed = 25f;
+	float xSpeed = 20f;
+	float ySpeed = 12.5f;
 
 	float yMinLimit = -89.9f;
 	float yMaxLimit = 89.9f;

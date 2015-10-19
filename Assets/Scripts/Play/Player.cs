@@ -71,9 +71,6 @@ public class Player : MonoBehaviour {
 		climbable = false;
 
 		foreach (ContactPoint contact in collision.contacts) {
-			//Debug.DrawRay(contact.point, contact.normal * 100, Color.white);
-			Debug.Log(contact.normal);
-
 			if (checkClimbableSurface(contact.normal)) {
 				climbable = true;
 			}

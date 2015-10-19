@@ -14,7 +14,6 @@ public class LoadingScreen : MonoBehaviour {
 		while (!async.isDone) {
 			//transform.localScale = new Vector3(async.progress, 1);
 			loadingText.text = "LOADING " + Mathf.Round(async.progress * 100) + "%";
-			//Debug.Log(async.progress);
 			yield return null;
 		}
 	}

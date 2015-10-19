@@ -23,7 +23,8 @@ public class Chunk : MonoBehaviour {
 		drawChunk();
 	}
 
-	public void save(FileStream stream) {
+	//TODO saving and loading
+	/*public void save(FileStream stream) {
 		BinaryFormatter formatter = new BinaryFormatter();
 
 		for (int x = 0; x < chunkSize; x++) {
@@ -47,9 +48,9 @@ public class Chunk : MonoBehaviour {
 		}
 
 		drawChunk();
-	}
+	}*/
 
-	void drawChunk() {
+	public void drawChunk() {
 		Mesh mesh = new Mesh();
 
 		MeshData d = new MeshData();
@@ -79,7 +80,7 @@ public class Chunk : MonoBehaviour {
 		for (int x = 0; x < chunkSize; x++) {
 			for (int z = 0; z < chunkSize; z++) {
 				for (int y = 0; y < chunkHeight; y++) {
-					blocks[x, y, z] = Block.air;
+					blocks[x, y, z] = Block.newBlock("Air");
 				}
 			}
 		}
@@ -87,13 +88,13 @@ public class Chunk : MonoBehaviour {
 
 	public Block getBlock(int x, int y, int z) {
 		if (x < 0 || x >= chunkSize) {
-			return Block.air;
+			return Block.newBlock("Air");
 		}
 		if (y < 0 || y >= chunkHeight) {
-			return Block.air;
+			return Block.newBlock("Air");
 		}
 		if (z < 0 || z >= chunkSize) {
-			return Block.air;
+			return Block.newBlock("Air");
 		}
 		return blocks[x, y, z];
 	}
@@ -105,7 +106,6 @@ public class Chunk : MonoBehaviour {
 	public void setBlock(Block block, int x, int y, int z) {
 		blocks[x, y, z] = block;
 		drawChunk();
-		//Debug.Log ("set block x:" + x + " y:" + y + " z:" + z);
 	}
 
 	int getY(int x, int z) {

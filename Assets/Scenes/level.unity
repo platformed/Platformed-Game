@@ -3023,6 +3023,7 @@ MonoBehaviour:
   grid2: {fileID: 1563176011}
   grid3: {fileID: 1873644304}
   cursor: {fileID: 1308866127}
+  selectBox: {fileID: 10135435}
 --- !u!4 &1086438913
 Transform:
   m_ObjectHideFlags: 0

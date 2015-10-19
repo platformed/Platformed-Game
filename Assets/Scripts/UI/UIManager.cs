@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour {
 	public static string scene;
 	public static string version = "Alpha v0.0.0";
 
+	//GameObjects that need to be enabled/disabled for play/design mode
 	public static Camera designCam;
 	public static Camera playCam;
 	public GameObject target;
@@ -20,6 +21,7 @@ public class UIManager : MonoBehaviour {
 	public GameObject grid2;
 	public GameObject grid3;
 	public GameObject cursor;
+	public GameObject selectBox;
 
 	static bool mouseOverWindow = false;
 
@@ -27,25 +29,36 @@ public class UIManager : MonoBehaviour {
 	bool levelSaved = true;
 	GameObject blockButton;
 
+	void Awake() {
+	}
+
 	void Start() {
+		//Add blocks to block list
+		Block.addBlock(new AirBlock());
+		Block.addBlock(new StoneBlock());
+		Block.addBlock(new DirtBlock());
+		Block.addBlock(new TestBlock1Block());
+		Block.addBlock(new TestBlock2Block());
+		Block.addBlock(new TestBlock3Block());
+
 		//Get camera
 		designCam = GameObject.Find("DesignCamera").GetComponent<Camera>();
 		playCam = GameObject.Find("PlayCamera").GetComponent<Camera>();
 
 		//Add block buttons to bottom
 		blockButton = Resources.Load ("UI Elements/BlockButton") as GameObject;
-		foreach(Block block in Block.blocks){
-			if(block.getID() != 0){
+		foreach(BlockType block in Block.getBlocks()){
+			if(!block.getName().Equals("Air")){
 				GameObject button = Instantiate (blockButton) as GameObject;
 				button.transform.SetParent(blockLibrary);
 				button.name = "BlockButton" + block.getName();
 
 				Button b = button.GetComponent<Button>();
-				int id = block.getID();
-				b.onClick.AddListener(() => setToolBlock(id));
+				string n = block.getName();
+				b.onClick.AddListener(() => setToolBlock(n));
 
 				Text name = button.GetComponentInChildren<Text>();
-				name.text = block.getName();
+				name.text = block.getDisplayName();
 			}
 		}
 	}
@@ -68,6 +81,7 @@ public class UIManager : MonoBehaviour {
 			grid3.SetActive(true);
 
 			cursor.SetActive(true);
+			selectBox.SetActive(true);
 		}
 		if (gamemode == Gamemode.PLAY) {
 			designCanvas.SetActive(false);
@@ -85,6 +99,7 @@ public class UIManager : MonoBehaviour {
 			grid3.SetActive(false);
 
 			cursor.SetActive(false);
+			selectBox.SetActive(false);
 
 			//Press ESC to go back to design mode
 			if (Input.GetKey(KeyCode.Escape)) {
@@ -124,9 +139,9 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
-	public void setToolBlock(int id){
+	public void setToolBlock(string name){
 		setTool (1);
-		Cursor.block = Block.blocks [id];
+		Cursor.block = Block.getBlock(name);
 	}
 
 	public void pointerEnter() {
@@ -144,7 +159,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void newLevel() {
-
+		world.GetComponent<World>().newWorld();
 	}
 
 	public void openLevel() {

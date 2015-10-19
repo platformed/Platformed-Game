@@ -4,16 +4,17 @@ using System.Collections.Generic;
 using System.IO;
 
 public class TextureManager : MonoBehaviour {
+	//TODO fix textures
 	List<Texture2D> textures = new List<Texture2D>();
 	public static Rect[] uvs;
 	public static int atlasWidth;
 	public static int atlasHeight;
 
 	void Start () {
-		foreach(Block b in Block.blocks) {
-			string tex = b.getTexture();
+		foreach(BlockType b in Block.getBlocks()) {
+			string tex = b.getName();
 			if(tex != null) {
-				textures.Add(Resources.Load("Blocks/" + tex) as Texture2D);
+				textures.Add(Resources.Load("Blocks/" + tex + "/" + tex) as Texture2D);
 			}
 		}
 

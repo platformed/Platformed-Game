@@ -40,7 +40,8 @@ public class World : MonoBehaviour {
 		FileStream stream = File.Open (Application.dataPath + name, FileMode.Create);
 
 		foreach(Chunk c in chunks){
-			c.save(stream);
+			//TODO: SAVING AND LOADING
+			//c.save(stream);
 		}
 
 		stream.Close ();
@@ -49,11 +50,19 @@ public class World : MonoBehaviour {
 	public void loadWorld(string name){
 		FileStream stream = File.Open (Application.dataPath + name, FileMode.Open);
 		
-		foreach(Chunk c in chunks){
-			c.load(stream);
+		foreach(Chunk c in chunks) {
+			//TODO: SAVING AND LOADING
+			//c.load(stream);
 		}
 
 		stream.Close ();
+	}
+
+	public void newWorld() {
+		foreach (Chunk c in chunks) {
+			c.generateChunk();
+			c.drawChunk();
+		}
 	}
 
 	void Update () {
