@@ -2,9 +2,10 @@
 using System.Collections;
 
 public class SelectBox : MonoBehaviour {
+	Vector3 start;
+	Vector3 end;
 	Vector3 p1;
 	Vector3 p2;
-	//bool selected = false;
 
 	void Start() {
 
@@ -15,30 +16,22 @@ public class SelectBox : MonoBehaviour {
 
 		if (UIManager.tool == Tool.SELECT && UIManager.canInteract()) {
 			if (Input.GetMouseButtonDown(0)) {
-				p1 = round1(UIManager.raycast());
-				//selected = true;
+				start = UIManager.raycast();
 			}
 			if (Input.GetMouseButton(0)) {
-				p2 = round2(UIManager.raycast());
+				end = UIManager.raycast();
 			}
 		}
 
-		if (UIManager.tool != Tool.SELECT) {
-			//selected = false;
-		}
+		p1 = round1(start);
+		p2 = round2(end);
 
 		setPosition();
 	}
 
 	void setPosition() {
 		transform.position = new Vector3((p1.x + p2.x) / 2, (p1.y + p2.y) / 2, (p1.z + p2.z) / 2);
-		transform.localScale = new Vector3(p2.x - p1.x + 0.01f, p2.y - p1.y + 0.01f, p2.z - p1.z + 0.01f);
-
-		/*if (corner) {
-			transform.position = p1;
-		} else {
-			transform.position = p2;
-		}*/
+		transform.localScale = new Vector3(p2.x - p1.x, p2.y - p1.y, p2.z - p1.z);
 	}
 
 	Vector3 round1(Vector3 v) {
@@ -46,15 +39,15 @@ public class SelectBox : MonoBehaviour {
 		int y = (int)Mathf.Floor(v.y);
 		int z = (int)Mathf.Floor(v.z);
 
-		/*if (v.x >= 0) {
+		if (v.x > p2.x) {
 			x++;
 		}
-		if (v.y >= 0) {
+		if (v.y > p2.y) {
 			y++;
 		}
-		if (v.z >= 0) {
+		if (v.z > p2.z) {
 			z++;
-		}*/
+		}
 
 		return new Vector3(x, y, z);
 	}
@@ -73,7 +66,7 @@ public class SelectBox : MonoBehaviour {
 		if (v.z >= p1.z) {
 			z++;
 		}
-
+		
 		return new Vector3(x, y, z);
 	}
 }
