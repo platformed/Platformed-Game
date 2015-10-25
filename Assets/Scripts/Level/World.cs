@@ -37,24 +37,26 @@ public class World : MonoBehaviour {
 	}
 
 	public void saveWorld(string name){
-		FileStream stream = File.Open (Application.dataPath + name, FileMode.Create);
+		FileStream stream = File.Open (Application.persistentDataPath + name, FileMode.Create);
+
+		Block.saveBlockIDs(stream);
 
 		foreach(Chunk c in chunks){
-			//TODO: SAVING AND LOADING
-			//c.save(stream);
+			c.save(stream);
 		}
 
 		stream.Close ();
 	}
 
 	public void loadWorld(string name){
-		FileStream stream = File.Open (Application.dataPath + name, FileMode.Open);
+		FileStream stream = File.Open (Application.persistentDataPath + name, FileMode.Open);
+
+		Block.LoadBlockIDs(stream);
 		
 		foreach(Chunk c in chunks) {
-			//TODO: SAVING AND LOADING
-			//c.load(stream);
+			c.load(stream);
 		}
-
+		
 		stream.Close ();
 	}
 

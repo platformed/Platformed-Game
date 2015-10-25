@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 public class Block {
@@ -103,5 +106,38 @@ public class Block {
 		}
 
 		return data;
+	}
+
+	public static BlockType getBlockByID(int id) {
+		foreach (BlockType b in blocks) {
+			if (b.getID() == id) {
+				return b;
+			}
+		}
+		return null;
+	}
+
+	//TODO: only save block ids that are in the level
+	public static void saveBlockIDs(FileStream stream) {
+		BinaryFormatter formatter = new BinaryFormatter();
+
+		//TODO: try unsigned int
+		int i = 0;
+		foreach (BlockType b in blocks) {
+			formatter.Serialize(stream, b.getName());
+			formatter.Serialize(stream, i);
+			i++;
+		}
+	}
+
+	public static void LoadBlockIDs(FileStream stream) {
+		BinaryFormatter formatter = new BinaryFormatter();
+
+		for (int i = 0; i < blocks.Count; i++) {
+			string name = Convert.ToString(formatter.Deserialize(stream));
+			int id = Convert.ToInt32(formatter.Deserialize(stream));
+			BlockType b = getBlock(name);
+			b.setID(id);
+        }
 	}
 }

@@ -2877,9 +2877,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0923359e9e352a4b9b11c7b7161ad67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Radius: .400000006
+  m_Radius: .25
   m_SampleCount: 1
-  m_OcclusionIntensity: 1.5
+  m_OcclusionIntensity: 1
   m_Blur: 2
   m_Downsampling: 2
   m_OcclusionAttenuation: 1
@@ -3730,9 +3730,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0923359e9e352a4b9b11c7b7161ad67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Radius: .400000006
+  m_Radius: .25
   m_SampleCount: 1
-  m_OcclusionIntensity: 1.5
+  m_OcclusionIntensity: 1
   m_Blur: 2
   m_Downsampling: 2
   m_OcclusionAttenuation: 1

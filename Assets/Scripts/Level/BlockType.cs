@@ -5,6 +5,7 @@ public class BlockType {
 	protected string name;
 	protected string displayName;
 	protected bool isCube;
+	int id;
 
 	public BlockType() {
 
@@ -20,5 +21,13 @@ public class BlockType {
 
 	public string getDisplayName() {
 		return displayName;
+	}
+
+	public void setID(int i) {
+		id = i;
+	}
+
+	public int getID() {
+		return id;
 	}
 }

@@ -24,31 +24,35 @@ public class Chunk : MonoBehaviour {
 	}
 
 	//TODO saving and loading
-	/*public void save(FileStream stream) {
-		BinaryFormatter formatter = new BinaryFormatter();
+	public void save(FileStream stream) {
+		//BinaryFormatter formatter = new BinaryFormatter();
+		BinaryWriter writer = new BinaryWriter(stream);
 
 		for (int x = 0; x < chunkSize; x++) {
 			for (int z = 0; z < chunkSize; z++) {
 				for (int y = 0; y < chunkHeight; y++) {
-					formatter.Serialize(stream, blocks[x, y, z].id);
+					//formatter.Serialize(stream, blocks[x, y, z].getBlockType().getID());
+					writer.Write(blocks[x, y, z].getBlockType().getID());
 				}
 			}
 		}
 	}
 
 	public void load(FileStream stream) {
-		BinaryFormatter formatter = new BinaryFormatter();
+		//BinaryFormatter formatter = new BinaryFormatter();
+		BinaryReader reader = new BinaryReader(stream);
 
 		for (int x = 0; x < chunkSize; x++) {
 			for (int z = 0; z < chunkSize; z++) {
 				for (int y = 0; y < chunkHeight; y++) {
-					blocks[x, y, z] = Block.blocks[Convert.ToInt32(formatter.Deserialize(stream))];
+					//blocks[x, y, z] = Block.newBlock(Block.getBlockByID(Convert.ToInt32(formatter.Deserialize(stream))));
+					blocks[x, y, z] = Block.newBlock(Block.getBlockByID(reader.ReadInt32()));
 				}
 			}
 		}
 
 		drawChunk();
-	}*/
+	}
 
 	public void drawChunk() {
 		Mesh mesh = new Mesh();

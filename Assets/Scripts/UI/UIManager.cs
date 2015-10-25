@@ -170,11 +170,11 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void openLevel() {
-		//world.GetComponent<World>().loadWorld("testSave2.level");
+		world.GetComponent<World>().loadWorld("save1.level");
 	}
 
 	public void saveLevel() {
-		//world.GetComponent<World>().saveWorld("testSave2.level");
+		world.GetComponent<World>().saveWorld("save1.level");
 	}
 
 	public void levelSettings() {
