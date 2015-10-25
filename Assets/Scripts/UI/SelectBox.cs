@@ -35,38 +35,54 @@ public class SelectBox : MonoBehaviour {
 	}
 
 	Vector3 round1(Vector3 v) {
-		int x = (int)Mathf.Floor(v.x);
-		int y = (int)Mathf.Floor(v.y);
-		int z = (int)Mathf.Floor(v.z);
+		float x = (int)Mathf.Floor(v.x);
+		float y = (int)Mathf.Floor(v.y);
+		float z = (int)Mathf.Floor(v.z);
 
 		if (v.x > p2.x) {
-			x++;
+			x += 1.01f;
+		} else {
+			x -= 0.01f;
 		}
+
 		if (v.y > p2.y) {
-			y++;
+			y += 1.01f;
+		} else {
+			y -= 0.01f;
 		}
+
 		if (v.z > p2.z) {
-			z++;
+			z += 1.01f;
+		} else {
+			z -= 0.01f;
 		}
 
 		return new Vector3(x, y, z);
 	}
 
 	Vector3 round2(Vector3 v) {
-		int x = (int)Mathf.Floor(v.x);
-		int y = (int)Mathf.Floor(v.y);
-		int z = (int)Mathf.Floor(v.z);
+		float x = (int)Mathf.Floor(v.x);
+		float y = (int)Mathf.Floor(v.y);
+		float z = (int)Mathf.Floor(v.z);
 
 		if (v.x >= p1.x) {
-			x++;
+			x += 1.01f;
+		} else {
+			x -= 0.01f;
 		}
+
 		if (v.y >= p1.y) {
-			y++;
+			y += 1.01f;
+		} else {
+			y -= 0.01f;
 		}
+
 		if (v.z >= p1.z) {
-			z++;
+			z += 1.01f;
+		} else {
+			z -= 0.01f;
 		}
-		
+
 		return new Vector3(x, y, z);
 	}
 }

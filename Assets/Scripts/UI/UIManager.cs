@@ -220,8 +220,10 @@ public class UIManager : MonoBehaviour {
 		float distance;
 		if (plane.Raycast(ray, out distance)) {
 			hit = ray.GetPoint(distance);
+			//Debug.Log("raycast: " + hit.ToString());
 			return hit;
 		}
+
 		return new Vector3();
 	}
 
