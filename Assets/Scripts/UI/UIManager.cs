@@ -11,6 +11,10 @@ public class UIManager : MonoBehaviour {
 	public static string scene;
 	public static string version = "Alpha v0.0.0";
 
+	public static int lives = 3;
+	public static float time = 600000;
+	public static int score = 0;
+
 	//GameObjects that need to be enabled/disabled for play/design mode
 	public static Camera designCam;
 	public static Camera playCam;
@@ -46,10 +50,10 @@ public class UIManager : MonoBehaviour {
 		playCam = GameObject.Find("PlayCamera").GetComponent<Camera>();
 
 		//Add block buttons to bottom
-		blockButton = Resources.Load ("UI Elements/BlockButton") as GameObject;
-		foreach(BlockType block in Block.getBlocks()){
-			if(!block.getName().Equals("Air")){
-				GameObject button = Instantiate (blockButton) as GameObject;
+		blockButton = Resources.Load("UI Elements/BlockButton") as GameObject;
+		foreach (BlockType block in Block.getBlocks()) {
+			if (!block.getName().Equals("Air")) {
+				GameObject button = Instantiate(blockButton) as GameObject;
 				button.transform.SetParent(blockLibrary);
 				button.name = "BlockButton" + block.getName();
 
@@ -62,7 +66,7 @@ public class UIManager : MonoBehaviour {
 			}
 		}
 	}
-	
+
 	void Update() {
 		if (gamemode == Gamemode.DESIGN) {
 			designCanvas.SetActive(true);
@@ -108,6 +112,9 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
+	void FixedUpdate() {
+	}
+
 	//Returns weather the user can interact with the level
 	public static bool canInteract() {
 		if (isDraging)
@@ -139,8 +146,8 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
-	public void setToolBlock(string name){
-		setTool (1);
+	public void setToolBlock(string name) {
+		setTool(1);
 		Cursor.block = Block.getBlock(name);
 	}
 
@@ -153,7 +160,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void exitToMenu() {
-		if(levelSaved){
+		if (levelSaved) {
 			Application.LoadLevel("main-menu");
 		}
 	}
@@ -198,10 +205,15 @@ public class UIManager : MonoBehaviour {
 		CameraMove.floor--;
 	}
 
+	public static string getTime() {
+		//TODO: format time
+		return "10:00";
+	}
+
 	//Raycasts from the mouse cursor to the plane that the camera target is on
 	public static Vector3 raycast() {
 		Plane plane = new Plane(Vector3.up, new Vector3(0, CameraMove.floor, 0));
-		
+
 		Vector3 hit;
 		Ray ray = designCam.ScreenPointToRay(Input.mousePosition);
 		ray.direction = ray.direction * 1000;
