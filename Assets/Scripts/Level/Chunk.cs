@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
@@ -46,7 +44,8 @@ public class Chunk : MonoBehaviour {
 			for (int z = 0; z < chunkSize; z++) {
 				for (int y = 0; y < chunkHeight; y++) {
 					//blocks[x, y, z] = Block.newBlock(Block.getBlockByID(Convert.ToInt32(formatter.Deserialize(stream))));
-					blocks[x, y, z] = Block.newBlock(Block.getBlockByID(reader.ReadInt32()));
+					Block b = Block.newBlock(Block.getBlockByID(reader.ReadInt32()));
+					blocks[x, y, z] = b;
 				}
 			}
 		}

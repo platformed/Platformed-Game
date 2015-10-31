@@ -37,7 +37,7 @@ public class World : MonoBehaviour {
 	}
 
 	public void saveWorld(string name){
-		FileStream stream = File.Open (Application.persistentDataPath + name, FileMode.Create);
+		FileStream stream = File.Open (Application.persistentDataPath + "\\" + name, FileMode.Create);
 
 		Block.saveBlockIDs(stream);
 
@@ -49,7 +49,7 @@ public class World : MonoBehaviour {
 	}
 
 	public void loadWorld(string name){
-		FileStream stream = File.Open (Application.persistentDataPath + name, FileMode.Open);
+		FileStream stream = File.Open (Application.persistentDataPath + "\\" + name, FileMode.Open);
 
 		Block.LoadBlockIDs(stream);
 		
