@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour {
 	public static bool isDraging = false;
 	public static Gamemode gamemode = Gamemode.DESIGN;
 	public static string scene;
+	public static GameObject tooltip;
 
 	public static int lives = 3;
 	public static float time = 600000;
@@ -55,6 +56,9 @@ public class UIManager : MonoBehaviour {
 
 		//Get World
 		world = GameObject.Find("World");
+
+		//Get tooltip
+		tooltip = Resources.Load("UI Elements/Tooltip") as GameObject;
 
 		//Get windows
 		saveWindow = Resources.Load("UI Elements/SaveWindow") as GameObject;

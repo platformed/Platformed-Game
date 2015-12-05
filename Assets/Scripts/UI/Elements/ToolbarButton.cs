@@ -4,10 +4,16 @@ using System.Collections;
 
 public class ToolbarButton : MonoBehaviour {
 	public Image ripple;
+	public string tooltipText;
 
 	bool isPressed = false;
+	bool isHovering = false;
+	float hoverTime = 0f;
+
 	float rippleSpeed = 16;
 	float rippleFadeSpeed = 4;
+
+	GameObject tooltip = null;
 
 	void Start() {
 		ripple.rectTransform.localScale = new Vector3(0, 0, 1);
@@ -18,6 +24,26 @@ public class ToolbarButton : MonoBehaviour {
 		if (!isPressed) {
 			ripple.color = new Color(1f, 1f, 1f, Mathf.Lerp(ripple.color.a, 0, Time.deltaTime * rippleFadeSpeed));
 		}
+
+		if (isHovering) {
+			hoverTime += Time.deltaTime;
+		}
+		if(hoverTime >= 1f && tooltip == null && tooltipText != "") {
+			tooltip = Instantiate(UIManager.tooltip, transform.position - new Vector3(0, 28, 0), Quaternion.identity) as GameObject;
+			tooltip.GetComponentInChildren<Text>().text = tooltipText;
+			tooltip.transform.SetParent(transform);
+			tooltip.name = "Tooltip";
+		}
+	}
+
+	public void hover() {
+		isHovering = true;
+	}
+
+	public void stopHover() {
+		isHovering = false;
+		hoverTime = 0f;
+		Destroy(tooltip);
 	}
 
 	public void click() {
