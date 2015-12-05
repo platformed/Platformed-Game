@@ -4,15 +4,15 @@ using System.Collections;
 public class PlayerCamera : MonoBehaviour {
 	public Transform target;
 
-	float distance = 4f;
+	float distance = 3f;
 	float xSpeed = 20f;
 	float ySpeed = 12.5f;
 
 	float yMinLimit = -89.9f;
 	float yMaxLimit = 89.9f;
 
-	float distanceMin = 2f;
-	float distanceMax = 30f;
+	float distanceMin = 1f;
+	float distanceMax = 10f;
 
 	float x = 0.0f;
 	float y = 0.0f;
@@ -32,6 +32,12 @@ public class PlayerCamera : MonoBehaviour {
 
 			//Adjust for scrollwheel and clamp
 			distance = Mathf.Clamp(distance - Input.GetAxis("Mouse ScrollWheel") * 5, distanceMin, distanceMax);
+
+			/*RaycastHit hit;
+			if (Physics.Linecast (target.position, transform.position, out hit)) 
+			{
+				distance -=  hit.distance;
+			}*/
 
 			//Set position
 			Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);

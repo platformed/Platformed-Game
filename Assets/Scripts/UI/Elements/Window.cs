@@ -9,9 +9,7 @@ public class Window : MonoBehaviour {
 	public GameObject titleObj;
 
 	GameObject button;
-
 	string title;
-
 	Vector3 mouseOffset;
 
 	void Start () {
@@ -23,7 +21,7 @@ public class Window : MonoBehaviour {
 	}
 
 	public void close(){
-		
+		Destroy(gameObject);
 	}
 
 	public void setTitle(string t){

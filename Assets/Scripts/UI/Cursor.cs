@@ -5,10 +5,10 @@ public class Cursor : MonoBehaviour {
 	float smooth = 20f;
 	public GameObject target;
 	public GameObject world;
-	public static BlockType block;
+	public static Block[,,] block;
 
 	void Start() {
-		block = Block.getBlock("Air");
+		block =  new Block[,,] { { { Block.newBlock("Air") } } };
 	}
 
 	void Update() {
@@ -25,7 +25,14 @@ public class Cursor : MonoBehaviour {
 				Chunk c = w.posToChunk(hit);
 				if (c != null) {
 					Vector3 p = c.posToBlock(hit);
-					c.setBlock(Block.newBlock(block), (int)p.x, (int)p.y, (int)p.z);
+					//c.setBlock(Block.newBlock(block), (int)p.x, (int)p.y, (int)p.z);
+					for (int x = 0; x < block.GetLength(0); x++) {
+						for (int z = 0; z < block.GetLength(1); z++) {
+							for (int y = 0; y < block.GetLength(2); y++) {
+								c.setBlock(block[x, y, z], (int)p.x + x, (int)p.y + y, (int)p.z + z);
+							}
+						}
+					}
 				}
 			}
 
@@ -44,8 +51,22 @@ public class Cursor : MonoBehaviour {
 	}
 
 	void drawBlock() {
-		MeshData d = Block.newBlock(block).draw(null, 0, 0, 0, true);
+		MeshData d = new MeshData();
 		Mesh mesh = new Mesh();
+
+		for (int x = 0; x < block.GetLength(0); x++) {
+			for (int z = 0; z < block.GetLength(1); z++) {
+				for (int y = 0; y < block.GetLength(2); y++) {
+					//TODO: find alternative way other than cursor = true
+					//Debug.Log("array size: x:" + block.GetLength(0) + " y:" + block.GetLength(1) + " z:" + block.GetLength(2));
+					//Debug.Log(new Vector3(x, y, z).ToString());
+					MeshData temp = block[x, y, z].draw(null, x, y, z, true);
+					temp.addPos(new Vector3(x, y, z));
+					d.add(temp);
+				}
+			}
+		}
+
 		mesh.vertices = d.verticies.ToArray();
 		mesh.triangles = d.triangles.ToArray();
 		mesh.uv = d.uvs.ToArray();

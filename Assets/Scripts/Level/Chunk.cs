@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.IO;
+using System.Collections;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
@@ -76,7 +77,67 @@ public class Chunk : MonoBehaviour {
 		GetComponent<MeshFilter>().mesh = mesh;
 		GetComponent<MeshFilter>().sharedMesh = mesh;
 		GetComponent<MeshCollider>().sharedMesh = mesh;
+
+		/*for (int x = 0; x < chunkSize; x++) {
+			for (int z = 0; z < chunkSize; z++) {
+				for (int y = 0; y < chunkHeight; y++) {
+					if (blocks[x, y, z].getBlockType().getDisplayName() != "Air") {
+						MeshData data = blocks[x, y, z].draw(this, x, y, z, false);
+						data.addPos(new Vector3(x, y, z));
+
+						Mesh mesh = new Mesh();
+						mesh.vertices = data.verticies.ToArray();
+						mesh.triangles = data.triangles.ToArray();
+						mesh.uv = data.uvs.ToArray();
+						//mesh.Optimize();
+						mesh.RecalculateBounds();
+						mesh.RecalculateNormals();
+
+						GameObject b = Instantiate(World.block, transform.position, Quaternion.identity) as GameObject;
+						b.transform.SetParent(transform);
+						b.name = "Block X" + x + " Y" + y + " Z" + z;
+
+						b.GetComponent<MeshFilter>().mesh = mesh;
+						b.GetComponent<MeshFilter>().sharedMesh = mesh;
+						b.GetComponent<MeshCollider>().sharedMesh = mesh;
+					}
+				}
+			}
+		}
+
+		StartCoroutine(createBlocks());*/
 	}
+
+	/*IEnumerator createBlocks() {
+		for (int x = 0; x < chunkSize; x++) {
+			for (int z = 0; z < chunkSize; z++) {
+				for (int y = 0; y < chunkHeight; y++) {
+					if (blocks[x, y, z].getBlockType().getDisplayName() != "Air" || true) {
+						MeshData data = blocks[x, y, z].draw(this, x, y, z, false);
+						data.addPos(new Vector3(x, y, z));
+
+						Mesh mesh = new Mesh();
+						mesh.vertices = data.verticies.ToArray();
+						mesh.triangles = data.triangles.ToArray();
+						mesh.uv = data.uvs.ToArray();
+						//mesh.Optimize();
+						mesh.RecalculateBounds();
+						mesh.RecalculateNormals();
+
+						GameObject b = Instantiate(World.block, transform.position, Quaternion.identity) as GameObject;
+						b.transform.SetParent(transform);
+						b.name = "Block X" + x + " Y" + y + " Z" + z;
+
+						b.GetComponent<MeshFilter>().mesh = mesh;
+						b.GetComponent<MeshFilter>().sharedMesh = mesh;
+						b.GetComponent<MeshCollider>().sharedMesh = mesh;
+
+						yield return null;
+					}
+				}
+			}
+		}
+	}*/
 
 	public void generateChunk() {
 		blocks = new Block[chunkSize, chunkHeight, chunkSize];

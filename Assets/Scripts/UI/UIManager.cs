@@ -5,11 +5,10 @@ using System.Collections;
 public class UIManager : MonoBehaviour {
 	public static Tool tool = Tool.SELECT;
 	public Transform blockLibrary;
-	public GameObject world;
+	public static GameObject world;
 	public static bool isDraging = false;
 	public static Gamemode gamemode = Gamemode.DESIGN;
 	public static string scene;
-	public static string version = "Alpha v0.0.0";
 
 	public static int lives = 3;
 	public static float time = 600000;
@@ -33,14 +32,19 @@ public class UIManager : MonoBehaviour {
 	bool levelSaved = true;
 	GameObject blockButton;
 
+	public GameObject windowCanvas;
+	GameObject saveWindow;
+
 	void Awake() {
 	}
 
 	void Start() {
 		//Add blocks to block list
 		Block.addBlock(new AirBlock());
+		Block.addBlock(new GreenStoneBlock());
 		Block.addBlock(new StoneBlock());
 		Block.addBlock(new DirtBlock());
+		Block.addBlock(new SandcastleWallBlock());
 		Block.addBlock(new TestBlock1Block());
 		Block.addBlock(new TestBlock2Block());
 		Block.addBlock(new TestBlock3Block());
@@ -48,6 +52,12 @@ public class UIManager : MonoBehaviour {
 		//Get camera
 		designCam = GameObject.Find("DesignCamera").GetComponent<Camera>();
 		playCam = GameObject.Find("PlayCamera").GetComponent<Camera>();
+
+		//Get World
+		world = GameObject.Find("World");
+
+		//Get windows
+		saveWindow = Resources.Load("UI Elements/SaveWindow") as GameObject;
 
 		//Add block buttons to bottom
 		blockButton = Resources.Load("UI Elements/BlockButton") as GameObject;
@@ -69,6 +79,9 @@ public class UIManager : MonoBehaviour {
 
 	void Update() {
 		if (gamemode == Gamemode.DESIGN) {
+			UnityEngine.Cursor.lockState = CursorLockMode.None;
+			UnityEngine.Cursor.visible = true;
+
 			designCanvas.SetActive(true);
 			playCanvas.SetActive(false);
 
@@ -88,6 +101,9 @@ public class UIManager : MonoBehaviour {
 			selectBox.SetActive(true);
 		}
 		if (gamemode == Gamemode.PLAY) {
+			UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+			UnityEngine.Cursor.visible = false;
+
 			designCanvas.SetActive(false);
 			playCanvas.SetActive(true);
 
@@ -115,40 +131,20 @@ public class UIManager : MonoBehaviour {
 	void FixedUpdate() {
 	}
 
+	public void setToolBlock(string name) {
+		tool = Tool.BLOCK;
+		Cursor.block = new Block[,,] { { { Block.newBlock(name) } } };
+	}
+
 	//Returns weather the user can interact with the level
 	public static bool canInteract() {
 		if (isDraging)
 			return false;
-		if (Input.mousePosition.y > Screen.height - 48 || Input.mousePosition.x < 200)
+		if (Input.mousePosition.y > Screen.height - 56 || Input.mousePosition.x > Screen.width - 200)
 			return false;
 		if (mouseOverWindow)
 			return false;
 		return true;
-	}
-
-	public void setTool(int t) {
-		switch (t) {
-			case 0:
-				tool = Tool.SELECT;
-				break;
-			case 1:
-				tool = Tool.BLOCK;
-				break;
-			case 2:
-				tool = Tool.PAN;
-				break;
-			case 3:
-				tool = Tool.ORBIT;
-				break;
-			case 4:
-				tool = Tool.ZOOM;
-				break;
-		}
-	}
-
-	public void setToolBlock(string name) {
-		setTool(1);
-		Cursor.block = Block.getBlock(name);
 	}
 
 	public void pointerEnter() {
@@ -157,52 +153,6 @@ public class UIManager : MonoBehaviour {
 
 	public void pointerExit() {
 		mouseOverWindow = false;
-	}
-
-	public void exitToMenu() {
-		if (levelSaved) {
-			Application.LoadLevel("main-menu");
-		}
-	}
-
-	public void newLevel() {
-		world.GetComponent<World>().newWorld();
-	}
-
-	public void openLevel() {
-		world.GetComponent<World>().loadWorld("save1.level");
-	}
-
-	public void saveLevel() {
-		world.GetComponent<World>().saveWorld("save1.level");
-	}
-
-	public void levelSettings() {
-
-	}
-
-	public void rotateBlock() {
-
-	}
-
-	public void blockProperties() {
-
-	}
-
-	public void playLevel() {
-		gamemode = Gamemode.PLAY;
-	}
-
-	public void uploadLevel() {
-
-	}
-
-	public void upFloor() {
-		CameraMove.floor++;
-	}
-
-	public void downFloor() {
-		CameraMove.floor--;
 	}
 
 	public static string getTime() {
@@ -236,10 +186,6 @@ public class UIManager : MonoBehaviour {
 	public static void loadScene(string s) {
 		scene = s;
 		Application.LoadLevel("loading-screen");
-	}
-
-	public static string getVersion() {
-		return version;
 	}
 }
 

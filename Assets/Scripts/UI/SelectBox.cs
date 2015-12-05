@@ -6,14 +6,11 @@ public class SelectBox : MonoBehaviour {
 	Vector3 end;
 	Vector3 p1;
 	Vector3 p2;
-
-	void Start() {
-
-	}
+	
+	public World world;
+	Block[,,] clipboard;
 
 	void Update() {
-		gameObject.SetActive(true);
-
 		if (UIManager.tool == Tool.SELECT && UIManager.canInteract()) {
 			if (Input.GetMouseButtonDown(0)) {
 				start = UIManager.raycast();
@@ -27,6 +24,43 @@ public class SelectBox : MonoBehaviour {
 		p2 = round2(end);
 
 		setPosition();
+	}
+
+	public void copy() {
+		Vector3 c1 = new Vector3(lower(p1.x, p2.x), lower(p1.y, p2.y), lower(p1.z, p2.z));
+		Vector3 c2 = new Vector3(higher(p1.x, p2.x), higher(p1.y, p2.y), higher(p1.z, p2.z));
+
+		Debug.Log(c1.ToString() + " " + c2.ToString());
+		Cursor.block = new Block[(int)(c2.x - c1.x) - 1, (int)(c2.y - c1.y) - 1, (int)(c2.z - c1.z) - 1];
+
+		for (int x = (int) c1.x; x < c2.x - 1; x++) {
+			for (int y = (int)c1.y; y < c2.y - 1; y++) {
+				for (int z = (int)c1.z; z < c2.z - 1; z++) {
+					Chunk chunk = world.posToChunk(new Vector3(x, y, z));
+					Vector3 pos = chunk.posToBlock(new Vector3(x, y, z));
+
+					//Debug.Log("array size: x:" + Cursor.block.GetLength(0) + " y:" + Cursor.block.GetLength(1) + " z:" + Cursor.block.GetLength(2));
+					//Debug.Log("array pos:" + new Vector3((int)(x - chunk.transform.position.x - pos.x), (int)(y - chunk.transform.position.y - pos.y), (int)(z - chunk.transform.position.z - pos.z)).ToString() + " block pos:" + pos.ToString());
+					//Debug.Log("array pos:" + new Vector3((int)(x - c1.x), (int)(y - c1.y), (int)(z - c1.z)).ToString() + " block pos:" + pos.ToString());
+					Debug.Log(chunk.getBlock((int)pos.x, (int)pos.y, (int)pos.z).getBlockType().getDisplayName());
+					Cursor.block[(int)(x - c1.x), (int)(y - c1.y), (int)(z - c1.z)] = chunk.getBlock((int)pos.x, (int)pos.y, (int)pos.z);
+				}
+			}
+		}
+	}
+
+	int lower(float a, float b) {
+		if (a < b)
+			return Mathf.FloorToInt(a);
+		else
+			return Mathf.FloorToInt(b);
+	}
+
+	int higher(float a, float b) {
+		if (a > b)
+			return Mathf.FloorToInt(a);
+		else
+			return Mathf.FloorToInt(b);
 	}
 
 	void setPosition() {

@@ -4,14 +4,20 @@ using System.Collections.Generic;
 using System.IO;
 
 public class World : MonoBehaviour {
+	public Transform world;
+
 	public static int worldSize = 10;
 	public List<Chunk> chunks = new List<Chunk>();
 	GameObject chunk;
+	public static GameObject block;
 
 	void Start () {
-		chunk = Resources.Load ("Chunk") as GameObject;
+		world = transform;
 
-		for(int x = 0; x < worldSize; x++){
+		chunk = Resources.Load ("Chunk") as GameObject;
+		block = Resources.Load ("Block") as GameObject;
+
+		for (int x = 0; x < worldSize; x++){
 			for(int z = 0; z < worldSize; z++){
 				createChunk(x, z);
 			}
@@ -31,8 +37,8 @@ public class World : MonoBehaviour {
 
 	void createChunk(int x, int z){
 		Transform t = Instantiate (chunk.transform, new Vector3 (x * Chunk.chunkSize, 0, z * Chunk.chunkSize), Quaternion.identity) as Transform;
-		t.name = "Chunk X" + t.transform.position.x / Chunk.chunkSize + " Z" + t.transform.position.z / Chunk.chunkSize;
-		t.parent = this.transform;
+		t.name = "Chunk X" + t.position.x / Chunk.chunkSize + " Z" + t.position.z / Chunk.chunkSize;
+		t.parent = world;
 		chunks.Add (t.GetComponent<Chunk> ());
 	}
 

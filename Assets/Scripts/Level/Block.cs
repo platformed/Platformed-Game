@@ -7,9 +7,7 @@ using UnityEngine;
 public class Block {
 	Vector3 rotation;
 	BlockType blockType;
-
-	//static string[] blockNames;
-	//static List<string> blockNames = new List<string>();
+	
 	static List<BlockType> blocks = new List<BlockType>();
 
 	public Block(BlockType b) {
@@ -18,29 +16,11 @@ public class Block {
 
 	public static void addBlock(BlockType b) {
 		blocks.Add(b);
-		//blockNames.Add(b.getName());
 	}
-
-	//Updates blockNames
-	/*public static void addBlockNames() {
-		blockNames = new string[blocks.Count];
-		for(int i = 0; i < blocks.Count; i++) {
-			blockNames[i] = blocks[i].getName();
-		}
-	}*/
 
 	public static BlockType getBlock(string name) {
 		return blocks.Find(i => i.getName() == name);
 	}
-
-	/*public static BlockType getBlock(string name) {
-		foreach(BlockType b in blocks) {
-			if (b.getName().Equals(name)) {
-				return b;
-			}
-		}
-		return null;
-	}*/
 
 	public static List<BlockType> getBlocks() {
 		return blocks;
@@ -86,6 +66,10 @@ public class Block {
 			new Vector2(u.xMin + cWidth, u.yMin + cHeight),
 			new Vector2(u.xMax - cWidth, u.yMax - cHeight),
 			new Vector2(u.xMax - cWidth, u.yMin + cHeight)
+			/*new Vector2(0, 0),
+			new Vector2(0, 1),
+            new Vector2(1, 0),
+			new Vector2(1, 1)*/
 		};
 
 		MeshData data = new MeshData();

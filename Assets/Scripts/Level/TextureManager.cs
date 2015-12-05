@@ -24,10 +24,10 @@ public class TextureManager : MonoBehaviour {
 		atlasWidth = atlas.width;
 		atlasHeight = atlas.height;
 
-#if !UNITY_WEBPLAYER
+//#if !UNITY_WEBPLAYER
 		byte[] bytes = atlas.EncodeToPNG ();
 		File.WriteAllBytes (Application.dataPath + "/Materials/blockAtlas.png", bytes);
-#endif
+//#endif
 	}
 
 	void Update () {
