@@ -28,7 +28,7 @@ public class ToolbarButton : MonoBehaviour {
 		if (isHovering) {
 			hoverTime += Time.deltaTime;
 		}
-		if(hoverTime >= 1f && tooltip == null && tooltipText != "") {
+		if(hoverTime >= 1.5f && tooltip == null && tooltipText != "") {
 			tooltip = Instantiate(UIManager.tooltip, transform.position - new Vector3(0, 28, 0), Quaternion.identity) as GameObject;
 			tooltip.GetComponentInChildren<Text>().text = tooltipText;
 			tooltip.transform.SetParent(transform);

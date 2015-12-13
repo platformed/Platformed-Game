@@ -21,9 +21,7 @@ public class UIManager : MonoBehaviour {
 	public GameObject target;
 	public GameObject designCanvas;
 	public GameObject playCanvas;
-	public GameObject grid1;
-	public GameObject grid2;
-	public GameObject grid3;
+	public GameObject grid;
 	public GameObject cursor;
 	public GameObject selectBox;
 
@@ -97,9 +95,7 @@ public class UIManager : MonoBehaviour {
 			playCam.gameObject.SetActive(false);
 			target.SetActive(true);
 
-			grid1.SetActive(true);
-			grid2.SetActive(true);
-			grid3.SetActive(true);
+			grid.SetActive(true);
 
 			cursor.SetActive(true);
 			selectBox.SetActive(true);
@@ -118,9 +114,7 @@ public class UIManager : MonoBehaviour {
 			playCam.gameObject.SetActive(true);
 			target.SetActive(false);
 
-			grid1.SetActive(false);
-			grid2.SetActive(false);
-			grid3.SetActive(false);
+			grid.SetActive(false);
 
 			cursor.SetActive(false);
 			selectBox.SetActive(false);
