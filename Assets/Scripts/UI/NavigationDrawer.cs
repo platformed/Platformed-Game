@@ -4,6 +4,7 @@ using System.Collections;
 
 public class NavigationDrawer : MonoBehaviour {
 	public GameObject navDrawer;
+	public GameObject rightShadow;
 	public Image shadow;
 	float shadowValue;
 
@@ -22,11 +23,13 @@ public class NavigationDrawer : MonoBehaviour {
 	public void showDrawer() {
 		anim.Play("NavDrawerSlideIn");
 		shadowValue = 0.5f;
+		rightShadow.SetActive(true);
 	}
 
 	public void hideDrawer() {
 		anim.Play("NavDrawerSlideOut");
 		shadowValue = 0f;
+		rightShadow.SetActive(false);
 	}
 
 	void loadScene(string s) {
