@@ -25,15 +25,15 @@ public class ToolbarManager : MonoBehaviour {
 	}
 
 	public static void save(string name) {
-		UIManager.world.GetComponent<World>().saveWorld(name + ".level");
+		//UIManager.world.GetComponent<World>().saveWorld(name + ".level");
 	}
 
 	public static void load(string name) {
-		UIManager.world.GetComponent<World>().loadWorld(name + ".level");
+		//UIManager.world.GetComponent<World>().loadWorld(name + ".level");
 	}
 
 	public void newLevel() {
-		UIManager.world.GetComponent<World>().newWorld();
+		//UIManager.world.GetComponent<World>().newWorld();
 	}
 
 	public void openLevel() {
@@ -51,8 +51,8 @@ public class ToolbarManager : MonoBehaviour {
 	}
 
 	public void copy() {
-		selectBox.GetComponent<SelectBox>().copy();
-		setTool(1);
+		//selectBox.GetComponent<SelectBox>().copy();
+		//setTool(1);
 	}
 
 	public void rotateBlock() {
