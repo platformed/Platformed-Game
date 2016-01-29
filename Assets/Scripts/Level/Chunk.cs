@@ -1,0 +1,83 @@
+﻿using UnityEngine;
+using System.Collections;
+
+[RequireComponent(typeof(MeshFilter))]
+[RequireComponent(typeof(MeshRenderer))]
+[RequireComponent(typeof(MeshCollider))]
+
+public class Chunk : MonoBehaviour {
+	MeshFilter filter;
+	MeshCollider coll;
+
+	Block[,,] blocks;
+	public static int chunkSize = 16;
+
+	//If this chunk be updated at the end of the frame
+	public bool update = true;
+	
+	void Start () {
+		filter = GetComponent<MeshFilter>();
+		coll = GetComponent<MeshCollider>();
+
+		blocks = new Block[chunkSize, chunkSize, chunkSize];
+
+		//Fill the chunk with air
+		for (int x = 0; x < chunkSize; x++) {
+			for (int y = 0; y < chunkSize; y++) {
+				for (int z = 0; z < chunkSize; z++) {
+					blocks[x, y, z] = new BlockAir();
+				}
+			}
+		}
+
+		//Add test block
+		blocks[3, 5, 2] = new Block();
+
+		UpdateChunk();
+	}
+	
+	void Update () {
+	
+	}
+
+	public Block GetBlock(int x, int y, int z) {
+		return blocks[x, y, z];
+	}
+
+	/// <summary>
+	/// Updates the chunk based on its contents
+	/// </summary>
+	void UpdateChunk() {
+		MeshData data = new MeshData();
+
+		for (int x = 0; x < chunkSize; x++) {
+			for (int y = 0; y < chunkSize; y++) {
+				for (int z = 0; z < chunkSize; z++) {
+					data = blocks[x, y, z].BlockData(this, x, y, z, data);
+				}
+			}
+		}
+
+		RenderMesh(data);
+	}
+
+	/// <summary>
+	/// Sends the mesh information to the mesh and collision components
+	/// </summary>
+	void RenderMesh(MeshData data) {
+		//Update mesh
+		filter.mesh.Clear();
+		filter.mesh.vertices = data.vertices.ToArray();
+		filter.mesh.triangles = data.triangles.ToArray();
+		filter.mesh.uv = data.uvs.ToArray();
+		filter.mesh.RecalculateNormals();
+
+		//Update collision mesh
+		coll.sharedMesh = null;
+		Mesh mesh = new Mesh();
+		mesh.vertices = data.colVerticies.ToArray();
+		mesh.triangles = data.colTriangles.ToArray();
+		mesh.RecalculateNormals();
+		coll.sharedMesh = mesh;
+	}
+}
