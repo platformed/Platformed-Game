@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour {
 	public static Tool tool = Tool.SELECT;
@@ -186,7 +187,7 @@ public class UIManager : MonoBehaviour {
 	//Puts the game into the loading screen to load a level
 	public static void loadScene(string s) {
 		scene = s;
-		Application.LoadLevel("loading-screen");
+		SceneManager.LoadScene("loading-screen");
 	}
 }
 
