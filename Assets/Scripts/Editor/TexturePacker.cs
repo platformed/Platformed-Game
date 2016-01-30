@@ -10,7 +10,7 @@ public class TexturePacker : EditorWindow {
 	public static int atlasWidth;
 	public static int atlasHeight;*/
 
-	[MenuItem("Editor/Pack Textures")]
+	[MenuItem("Platformed/Pack Textures")]
 	public static void ShowWindow() {
 		PackTextures();
 	}

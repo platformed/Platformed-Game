@@ -5,12 +5,15 @@ using System.Collections;
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(MeshCollider))]
 
+/// <summary>
+/// Represents a 10 by 10 area in the level
+/// </summary>
 public class Chunk : MonoBehaviour {
 	MeshFilter filter;
 	MeshCollider coll;
 
 	Block[ , , ] blocks = new Block[chunkSize, chunkSize, chunkSize];
-	public static int chunkSize = 16;
+	public static int chunkSize = 10;
 
 	public World world;
 	public WorldPos pos;

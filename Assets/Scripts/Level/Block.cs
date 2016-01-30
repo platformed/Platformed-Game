@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Represents a block in the game
+/// </summary>
 public class Block {
 	//Base block constructor
 	public Block() {

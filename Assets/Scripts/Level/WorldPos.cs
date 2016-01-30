@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Used for the position of chunks
+/// </summary>
 public struct WorldPos {
 	public int x, y, z;
 
@@ -11,17 +14,20 @@ public struct WorldPos {
 	}
 
 	public override bool Equals(object obj) {
-		//Return false if not a WorldPos
-		if (!(obj is WorldPos))
-			return false;
-
-		WorldPos pos = (WorldPos) obj;
-
-		//Check if the positions match
-		if(pos.x != x || pos.y != y || pos.z != z) {
-			return false;
-		} else {
+		if (GetHashCode() == obj.GetHashCode())
 			return true;
+		return false;
+	}
+
+	public override int GetHashCode() {
+		unchecked {
+			int hash = 47;
+
+			hash = hash * 227 + x.GetHashCode();
+			hash = hash * 227 + y.GetHashCode();
+			hash = hash * 227 + z.GetHashCode();
+
+			return hash;
 		}
 	}
 }

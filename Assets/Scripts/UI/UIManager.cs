@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour {
-	public static Tool tool = Tool.SELECT;
+	public static Tool tool = Tool.BLOCK;
 	public Transform blockLibrary;
 	public static GameObject world;
 	public static bool isDraging = false;

@@ -2,15 +2,19 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/// <summary>
+/// The current level that is open in the game
+/// </summary>
 public class World : MonoBehaviour {
 	public Dictionary<WorldPos, Chunk> chunks = new Dictionary<WorldPos, Chunk>();
 	public GameObject chunkPrefab;
+	int worldSize = 10;
 
 	void Start() {
-		for (int x = -2; x < 2; x++) {
-			for (int y = -1; y < 1; y++) {
-				for (int z = -1; z < 1; z++) {
-					CreateChunk(x * 16, y * 16, z * 16);
+		for (int x = 0; x < worldSize; x++) {
+			for (int y = 0; y < worldSize; y++) {
+				for (int z = 0; z < worldSize; z++) {
+					CreateChunk(x * Chunk.chunkSize, y * Chunk.chunkSize, z * Chunk.chunkSize);
 				}
 			}
 		}
@@ -29,8 +33,8 @@ public class World : MonoBehaviour {
 	public void CreateChunk(int x, int y, int z) {
 		WorldPos worldPos = new WorldPos(x, y, z);
 
-		//Instantiate the chunk
-		GameObject instance = Instantiate(chunkPrefab, new Vector3(x, y, z), Quaternion.identity) as GameObject;
+		//Instantiate the chunk with a 0.5f offset
+		GameObject instance = Instantiate(chunkPrefab, new Vector3(x + 0.5f, y + 0.5f, z + 0.5f), Quaternion.identity) as GameObject;
 		instance.transform.SetParent(transform);
 
 		Chunk chunk = instance.GetComponent<Chunk>();
@@ -42,14 +46,10 @@ public class World : MonoBehaviour {
 		chunks.Add(worldPos, chunk);
 
 		//Test
-		for (int xi = 0; xi < 16; xi++) {
-			for (int yi = 0; yi < 16; yi++) {
-				for (int zi = 0; zi < 16; zi++) {
-					if (yi <= 7) {
-						SetBlock(x + xi, y + yi, z + zi, new Block());
-					} else {
-						SetBlock(x + xi, y + yi, z + zi, new BlockAir());
-					}
+		for (int xx = 0; xx < Chunk.chunkSize; xx++) {
+			for (int yy = 0; yy < Chunk.chunkSize; yy++) {
+				for (int zz = 0; zz < Chunk.chunkSize; zz++) {
+					chunk.SetBlock(xx, yy, zz, new BlockAir());
 				}
 			}
 		}
