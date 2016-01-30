@@ -1,9 +1,6 @@
-# Platformed-Game
-Hello and welcome to the Platformed github page. 
-This is a game (or project) that is being made as a level creation and level playing game,                                             
-in the game you can create levels in the level design tool and place different types of blocks and enemies and other stuff into 
-a level then save it and publish it to the community hub, you can also play other peoples levels via downloading the levels off the
-community hub. This project is being made by the platformed development team.
+# Platformed
+Hello and welcome to the Platformed-Game GitHub page.
 
+This is a game being developed where you can play other peoples levels and create your own. In the game you can place different types of blocks and enemies into a level, then save it and publish it to the community hub. You can also play other peoples levels via downloading them. This project is being made by the platformed development team.
 
-Copyright 2016 Platformed Development Team
+Copyright © 2016 Platformed Development Team
