@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 /// <summary>
 /// A mesh, used for rendering levels
@@ -60,5 +61,9 @@ public class MeshData {
 			colTriangles.Add(vertices.Count - 2);
 			colTriangles.Add(vertices.Count - 1);
 		}
+	}
+
+	public void AddUVs(Vector2[] u) {
+		//uvs.AddRange(u);
 	}
 }

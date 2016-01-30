@@ -33,7 +33,6 @@ public class UIManager : MonoBehaviour {
 
 	Animator anim;
 	bool levelSaved = true;
-	GameObject blockButton;
 
 	public GameObject windowCanvas;
 	GameObject saveWindow;
@@ -42,16 +41,6 @@ public class UIManager : MonoBehaviour {
 	}
 
 	void Start() {
-		//Add blocks to block list
-		/*Block.addBlock(new AirBlock());
-		Block.addBlock(new GreenStoneBlock());
-		Block.addBlock(new StoneBlock());
-		Block.addBlock(new DirtBlock());
-		Block.addBlock(new SandcastleWallBlock());
-		Block.addBlock(new TestBlock1Block());
-		Block.addBlock(new TestBlock2Block());
-		Block.addBlock(new TestBlock3Block());*/
-
 		//Get camera
 		designCam = GameObject.Find("DesignCamera").GetComponent<Camera>();
 		playCam = GameObject.Find("PlayCamera").GetComponent<Camera>();
@@ -64,23 +53,6 @@ public class UIManager : MonoBehaviour {
 
 		//Get windows
 		saveWindow = Resources.Load("UI Elements/SaveWindow") as GameObject;
-
-		//Add block buttons to bottom
-		/*blockButton = Resources.Load("UI Elements/BlockButton") as GameObject;
-		foreach (BlockType block in Block.getBlocks()) {
-			if (!block.getName().Equals("Air")) {
-				GameObject button = Instantiate(blockButton) as GameObject;
-				button.transform.SetParent(blockLibrary);
-				button.name = "BlockButton" + block.getName();
-
-				Button b = button.GetComponent<Button>();
-				string n = block.getName();
-				b.onClick.AddListener(() => setToolBlock(n));
-
-				Text name = button.GetComponentInChildren<Text>();
-				name.text = block.getDisplayName();
-			}
-		}*/
 	}
 
 	void Update() {
@@ -133,9 +105,9 @@ public class UIManager : MonoBehaviour {
 	void FixedUpdate() {
 	}
 
-	public void setToolBlock(string name) {
-		//tool = Tool.BLOCK;
-		//Cursor.block = new Block[,,] { { { Block.newBlock(name) } } };
+	public static void setToolBlock(string name) {
+		tool = Tool.BLOCK;
+		Cursor.block = BlockManager.GetBlock(name);
 	}
 
 	//Returns weather the user can interact with the level
