@@ -138,19 +138,32 @@ public class Block {
 	}
 	
 	public virtual Vector2[] FaceUVs(Direction direction) {
-		/*Vector2[] uvs = new Vector2[4];
+		/*
+		I'm currently using a texture atlas for the textures,
+		generated every time you start the game, but because of
+		rounding errors, you will get seams on the textures. I will
+		fix this by switching to array textures when Unity 5.4 gets
+		released on March 16th, 2016.
+		*/
+
+		Vector2[] uvs = new Vector2[4];
 
 		//TODO: Get better way of finding uv coords
-		int textureIndex = BlockManager.GetBlocks().FindIndex(x => x.GetName() == name);
+		int textureIndex = BlockManager.GetBlocks().FindIndex(x => x.GetName() == name) - 1;
 		Rect rect = TextureManager.uvs[textureIndex];
+
+		//Half pixel correction
+		/*rect.x += (1f / TextureManager.atlasWidth);
+		rect.y += (1f / TextureManager.atlasHeight);
+		rect.width -= (2f / TextureManager.atlasWidth);
+		rect.height -= (2f / TextureManager.atlasHeight);*/
 
 		uvs[0] = new Vector2(rect.x + rect.width, rect.y);					//1, 0
 		uvs[1] = new Vector2(rect.x + rect.width, rect.y + rect.height);	//1, 1
 		uvs[2] = new Vector2(rect.x, rect.y + rect.height);					//0, 1
 		uvs[3] = new Vector2(rect.x, rect.y);								//0, 0
 		
-		return uvs;*/
-		return null;
+		return uvs;
 	}
 
 	/// <summary>

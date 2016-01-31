@@ -10,7 +10,7 @@ public class Cursor : MonoBehaviour {
 	public static Block block;
 
 	void Start() {
-		block = new Block();
+		block = new TestBlock();
 	}
 
 	void Update() {

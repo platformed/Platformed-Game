@@ -510,6 +510,10 @@ Prefab:
       propertyPath: m_Name
       value: BottomLines
       objectReference: {fileID: 0}
+    - target: {fileID: 2350886, guid: 8cae3b67ec65ce34bb01ed755153e104, type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 11f6f1799a99a6749b7cd379d96d0488, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8cae3b67ec65ce34bb01ed755153e104, type: 2}
   m_IsPrefabParent: 0

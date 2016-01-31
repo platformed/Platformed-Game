@@ -64,6 +64,6 @@ public class MeshData {
 	}
 
 	public void AddUVs(Vector2[] u) {
-		//uvs.AddRange(u);
+		uvs.AddRange(u);
 	}
 }

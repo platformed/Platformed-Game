@@ -4,6 +4,14 @@ using System.IO;
 using System.Collections.Generic;
 using UnityEditor;
 
+/*
+I'm currently using a texture atlas for the textures,
+generated every time you start the game, but because of
+rounding errors, you will get seams on the textures. I will
+fix this by switching to array textures when Unity 5.4 gets
+released on March 16th, 2016.
+*/
+
 public class TextureManager : MonoBehaviour {
 	static List<Texture2D> textures = new List<Texture2D>();
 
