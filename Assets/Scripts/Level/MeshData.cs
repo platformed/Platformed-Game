@@ -1,55 +1,69 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.CodeDom;
+using System;
 
-public class MeshData{
-	public List<Vector3> verticies = new List<Vector3> ();
-	public List<int> triangles = new List<int> ();
-	public List<Vector2> uvs = new List<Vector2> ();
+/// <summary>
+/// A mesh, used for rendering levels
+/// </summary>
+public class MeshData {
+	public List<Vector3> vertices = new List<Vector3>();
+	public List<int> triangles = new List<int>();
+	public List<Vector2> uvs = new List<Vector2>();
 
-	public MeshData(){
+	public List<Vector3> colVerticies = new List<Vector3>();
+	public List<int> colTriangles = new List<int>();
 
+	public bool useRenderDataForCol;
+
+	public MeshData() { }
+
+	/// <summary>
+	/// Add a vertex to the meshdata
+	/// </summary>
+	public void AddVertex(Vector3 vertex) {
+		vertices.Add(vertex);
+
+		if (useRenderDataForCol) {
+			colVerticies.Add(vertex);
+		}
 	}
 
-	public MeshData(Vector3[] v, int[] t, Vector2[] u){
-		foreach (Vector3 i in v) {
-			verticies.Add(i);
-		}
-		foreach (int i in t) {
-			triangles.Add(i);
-		}
-		foreach (Vector2 i in u) {
-			uvs.Add(i);
+	/// <summary>
+	/// Add a triangle to the meshdata
+	/// </summary>
+	public void AddTriangle(int tri) {
+		triangles.Add(tri);
+
+		if (useRenderDataForCol) {
+			colTriangles.Add(tri);
 		}
 	}
 
-	public void addPos(Vector3 p){
-		for(int i = 0; i < verticies.Count; i++){
-			verticies[i] += p;
+	/// <summary>
+	/// Finishes a quad by adding the triangles
+	/// </summary>
+	public void AddQuadTriangles() {
+		triangles.Add(vertices.Count - 4);
+		triangles.Add(vertices.Count - 3);
+		triangles.Add(vertices.Count - 2);
+
+		triangles.Add(vertices.Count - 4);
+		triangles.Add(vertices.Count - 2);
+		triangles.Add(vertices.Count - 1);
+
+		if (useRenderDataForCol) {
+			colTriangles.Add(vertices.Count - 4);
+			colTriangles.Add(vertices.Count - 3);
+			colTriangles.Add(vertices.Count - 2);
+
+			colTriangles.Add(vertices.Count - 4);
+			colTriangles.Add(vertices.Count - 2);
+			colTriangles.Add(vertices.Count - 1);
 		}
 	}
 
-	//Add another meshdata to this one
-	public void add(MeshData d){
-		//If this meshdata is null, just set it
-		if(verticies == null){
-			verticies = d.verticies;
-			triangles = d.triangles;
-			uvs = d.uvs;
-			return;
-		}
-
-		//Add the other mesh
-		int count = verticies.Count;
-		foreach (Vector3 i in d.verticies) {
-			verticies.Add(i);
-		}
-		foreach (int i in d.triangles) {
-			triangles.Add(i + count);
-		}
-		foreach (Vector3 i in d.uvs) {
-			uvs.Add(i);
-		}
+	public void AddUVs(Vector2[] u) {
+		uvs.AddRange(u);
 	}
 }

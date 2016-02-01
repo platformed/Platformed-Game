@@ -1,18 +1,26 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
+/// <summary>
+/// A cursor that shows where you are placing blocks
+/// </summary>
 public class Cursor : MonoBehaviour {
-	Vector3 offset = new Vector3(0, 0, 0);
-	float smooth = 20f;
-	public GameObject target;
-	public GameObject world;
-	public static Block[,,] block;
+	Vector3 offset = new Vector3(0.5f, 0.5f, 0.5f);
+	float smooth = 30f;
+	public World world;
+	public static Block block;
+
+	new MeshRenderer renderer;
+	MeshFilter filter;
 
 	void Start() {
-		block =  new Block[,,] { { { Block.newBlock("Air") } } };
+		block = new TestBlock();
+		renderer = GetComponent<MeshRenderer>();
+		filter = GetComponent<MeshFilter>();
 	}
 
 	void Update() {
-		drawBlock();
+		RenderCursor();
 
 		Vector3 newPos = new Vector3(0, 0, 0);
 
@@ -21,28 +29,11 @@ public class Cursor : MonoBehaviour {
 			newPos = new Vector3(Mathf.Floor(hit.x), Mathf.Floor(hit.y), Mathf.Floor(hit.z)) + offset;
 
 			if (Input.GetMouseButton(0)) {
-				World w = world.GetComponent<World>();
-				Chunk c = w.posToChunk(hit);
-				if (c != null) {
-					Vector3 p = c.posToBlock(hit);
-					//c.setBlock(Block.newBlock(block), (int)p.x, (int)p.y, (int)p.z);
-					for (int x = 0; x < block.GetLength(0); x++) {
-						for (int z = 0; z < block.GetLength(1); z++) {
-							for (int y = 0; y < block.GetLength(2); y++) {
-								c.setBlock(block[x, y, z], (int)p.x + x, (int)p.y + y, (int)p.z + z);
-							}
-						}
-					}
-				}
+				world.SetBlock((int) hit.x, (int) hit.y, (int) hit.z, block);
 			}
 
 			if (Input.GetMouseButton(1)) {
-				World w = world.GetComponent<World>();
-				Chunk c = w.posToChunk(hit);
-				if (c != null) {
-					Vector3 p = c.posToBlock(hit);
-					c.setBlock(Block.newBlock("Air"), (int)p.x, (int)p.y, (int)p.z);
-				}
+				world.SetBlock((int)hit.x, (int)hit.y, (int)hit.z, new AirBlock());
 			}
 		}
 
@@ -50,36 +41,19 @@ public class Cursor : MonoBehaviour {
 		clampPos();
 	}
 
-	void drawBlock() {
-		MeshData d = new MeshData();
-		Mesh mesh = new Mesh();
+	void RenderCursor() {
+		MeshData data = new MeshData();
+		block.BlockData(null, 0, 0, 0, data, true);
 
-		for (int x = 0; x < block.GetLength(0); x++) {
-			for (int z = 0; z < block.GetLength(1); z++) {
-				for (int y = 0; y < block.GetLength(2); y++) {
-					//TODO: find alternative way other than cursor = true
-					//Debug.Log("array size: x:" + block.GetLength(0) + " y:" + block.GetLength(1) + " z:" + block.GetLength(2));
-					//Debug.Log(new Vector3(x, y, z).ToString());
-					MeshData temp = block[x, y, z].draw(null, x, y, z, true);
-					temp.addPos(new Vector3(x, y, z));
-					d.add(temp);
-				}
-			}
-		}
-
-		mesh.vertices = d.verticies.ToArray();
-		mesh.triangles = d.triangles.ToArray();
-		mesh.uv = d.uvs.ToArray();
-		mesh.Optimize();
-		mesh.RecalculateBounds();
-		mesh.RecalculateNormals();
-		GetComponent<MeshFilter>().mesh = mesh;
-		GetComponent<MeshFilter>().sharedMesh = mesh;
+		filter.mesh.Clear();
+		filter.mesh.vertices = data.vertices.ToArray();
+		filter.mesh.triangles = data.triangles.ToArray();
+		filter.mesh.uv = data.uvs.ToArray();
+		filter.mesh.RecalculateNormals();
 	}
 
 	void clampPos() {
-		MeshRenderer renderer = GetComponent<MeshRenderer>();
-		float size = World.worldSize * Chunk.chunkSize - 0.5f;
+		float size = UIManager.worldSize;
 
 		renderer.enabled = true;
 

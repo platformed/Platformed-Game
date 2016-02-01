@@ -1,142 +1,200 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
+using System;
 
+/// <summary>
+/// Represents a block in the game
+/// </summary>
 public class Block {
-	Vector3 rotation;
-	BlockType blockType;
-	
-	static List<BlockType> blocks = new List<BlockType>();
+	protected string name;
+	protected string displayName;
+	protected Rect uv;
+	public int textureID;
 
-	public Block(BlockType b) {
-		blockType = b;
+	//Base block constructor
+	public Block() {
+
 	}
 
-	public static void addBlock(BlockType b) {
-		blocks.Add(b);
+	/// <summary>
+	/// Gets the name of the block used for internal purposes
+	/// </summary>
+	/// <returns>Name</returns>
+	public string GetName() {
+		return name;
 	}
 
-	public static BlockType getBlock(string name) {
-		return blocks.Find(i => i.getName() == name);
+	/// <summary>
+	/// Gets the name of the block used for display purposes
+	/// </summary>
+	/// <returns>Name</returns>
+	public string GetDisplayName() {
+		return displayName;
 	}
 
-	public static List<BlockType> getBlocks() {
-		return blocks;
-	}
+	/// <summary>
+	/// Adds the blocks to a meshdata 
+	/// </summary>
+	/// <param name="chunk">Chunk that the block is in</param>
+	/// <param name="x">X position of the block</param>
+	/// <param name="y">Y position of the block</param>
+	/// <param name="z">Z position of the block</param>
+	/// <param name="data">The meshdata to add to</param>
+	/// <param name="ignoreChunk">If the solidity of the neighboring blocks should be checked</param>
+	/// <returns>Meshdata with added block meshdata</returns>
+	public virtual MeshData BlockData(Chunk chunk, int x, int y, int z, MeshData data, bool ignoreChunk) {
+		data.useRenderDataForCol = true;
 
-	public static Block newBlock(string name) {
-		return new Block(getBlock(name));
-	}
-
-	public static Block newBlock(BlockType b) {
-		return new Block(b);
-	}
-
-	public BlockType getBlockType() {
-		return blockType;
-	}
-
-	public MeshData draw(Chunk chunk, int x, int y, int z, bool cursor){
-		if(getBlockType().getName().Equals("Air")){
-			return new MeshData();
+		if (ignoreChunk || !chunk.GetBlock(x, y + 1, z).IsSolid(Direction.Down)) {
+			data = FaceDataUp(chunk, x, y, z, data);
 		}
 
-		Vector3[] v = new Vector3[]{
-			new Vector3(0, 0, 0),	//0
-			new Vector3(0, 0, 1),	//1
-			new Vector3(0, 1, 0),	//2
-			new Vector3(0, 1, 1),	//3
-			new Vector3(1, 0, 0),	//4
-			new Vector3(1, 0, 1),	//5
-			new Vector3(1, 1, 0),	//6
-			new Vector3(1, 1, 1)	//7
-		};
-
-		int[] t = new int[]{0, 2, 1, 3, 1, 2};
-		
-		Rect u = TextureManager.uvs[blocks.IndexOf(blockType)];
-
-		float cWidth = 1f / TextureManager.atlasWidth;
-		float cHeight = 1f / TextureManager.atlasHeight;
-
-		Vector2[] uvs = new Vector2[]{
-			new Vector2(u.xMin + cWidth, u.yMax - cHeight),
-			new Vector2(u.xMin + cWidth, u.yMin + cHeight),
-			new Vector2(u.xMax - cWidth, u.yMax - cHeight),
-			new Vector2(u.xMax - cWidth, u.yMin + cHeight)
-			/*new Vector2(0, 0),
-			new Vector2(0, 1),
-            new Vector2(1, 0),
-			new Vector2(1, 1)*/
-		};
-
-		MeshData data = new MeshData();
-
-		if (cursor || !chunk.getBlock(x, y - 1, z).getBlockType().hasModel()){
-			Face bottom = new Face (new Vector3[]{v[0], v[1], v[4], v[5]}, t, uvs);
-			data.add (bottom.getMeshData());
+		if (ignoreChunk || !chunk.GetBlock(x, y - 1, z).IsSolid(Direction.Up)) {
+			data = FaceDataDown(chunk, x, y, z, data);
 		}
-		
-		if (cursor || !chunk.getBlock(x, y, z + 1).getBlockType().hasModel()) {
-			Face right = new Face (new Vector3[]{v[7], v[5], v[3], v[1]}, t, uvs);
-			data.add (right.getMeshData());
+
+		if (ignoreChunk || !chunk.GetBlock(x, y, z + 1).IsSolid(Direction.South)) {
+			data = FaceDataNorth(chunk, x, y, z, data);
 		}
-		
-		if (cursor || !chunk.getBlock (x, y, z - 1).getBlockType().hasModel()) {
-			Face left = new Face (new Vector3[]{v [2], v [0], v [6], v [4]}, t, uvs);
-			data.add (left.getMeshData ());
+
+		if (ignoreChunk || !chunk.GetBlock(x, y, z - 1).IsSolid(Direction.North)) {
+			data = FaceDataSouth(chunk, x, y, z, data);
 		}
-		
-		if (cursor || !chunk.getBlock (x + 1, y, z).getBlockType().hasModel()) {
-			Face back = new Face (new Vector3[]{v [6], v [4], v [7], v [5]}, t, uvs);
-			data.add (back.getMeshData ());
+
+		if (ignoreChunk || !chunk.GetBlock(x + 1, y, z).IsSolid(Direction.West)) {
+			data = FaceDataEast(chunk, x, y, z, data);
 		}
-		
-		if (cursor || !chunk.getBlock (x - 1, y, z).getBlockType().hasModel()) {
-			Face front = new Face (new Vector3[]{v [3], v [1], v [2], v [0]}, t, uvs);
-			data.add (front.getMeshData ());
-		}
-		
-		if (cursor || !chunk.getBlock (x, y + 1, z).getBlockType().hasModel()) {
-			Face top = new Face (new Vector3[]{v [6], v [7], v [2], v [3]}, t, uvs);
-			data.add (top.getMeshData ());
+
+		if (ignoreChunk || !chunk.GetBlock(x - 1, y, z).IsSolid(Direction.East)) {
+			data = FaceDataWest(chunk, x, y, z, data);
 		}
 
 		return data;
 	}
 
-	public static BlockType getBlockByID(int id) {
-		foreach (BlockType b in blocks) {
-			if (b.getID() == id) {
-				return b;
-			}
+	protected virtual MeshData FaceDataUp(Chunk chunk, int x, int y, int z, MeshData data) {
+		data.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z + 0.5f));
+		data.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f));
+		data.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z - 0.5f));
+		data.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f));
+		data.AddQuadTriangles();
+		data.AddUVs(FaceUVs(Direction.Up));
+
+		return data;
+	}
+
+	protected virtual MeshData FaceDataDown(Chunk chunk, int x, int y, int z, MeshData data) {
+		data.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f));
+		data.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f));
+		data.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f));
+		data.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z + 0.5f));
+		data.AddQuadTriangles();
+		data.AddUVs(FaceUVs(Direction.Down));
+
+		return data;
+	}
+
+	protected virtual MeshData FaceDataNorth(Chunk chunk, int x, int y, int z, MeshData data) {
+		data.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f));
+		data.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f));
+		data.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z + 0.5f));
+		data.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z + 0.5f));
+		data.AddQuadTriangles();
+		data.AddUVs(FaceUVs(Direction.North));
+
+		return data;
+	}
+
+	protected virtual MeshData FaceDataEast(Chunk chunk, int x, int y, int z, MeshData data) {
+		data.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f));
+		data.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z - 0.5f));
+		data.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z + 0.5f));
+		data.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z + 0.5f));
+		data.AddQuadTriangles();
+		data.AddUVs(FaceUVs(Direction.East));
+
+		return data;
+	}
+
+	protected virtual MeshData FaceDataSouth(Chunk chunk, int x, int y, int z, MeshData data) {
+		data.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f));
+		data.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f));
+		data.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z - 0.5f));
+		data.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f));
+		data.AddQuadTriangles();
+		data.AddUVs(FaceUVs(Direction.South));
+
+		return data;
+	}
+
+	protected virtual MeshData FaceDataWest(Chunk chunk, int x, int y, int z, MeshData data) {
+		data.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z + 0.5f));
+		data.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z + 0.5f));
+		data.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f));
+		data.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f));
+		data.AddQuadTriangles();
+		data.AddUVs(FaceUVs(Direction.West));
+
+		return data;
+	}
+	
+	public virtual Vector2[] FaceUVs(Direction direction) {
+		/*
+		I'm currently using a texture atlas for the textures,
+		generated every time you start the game, but because of
+		rounding errors, you will get seams on the textures. I will
+		fix this by switching to array textures when Unity 5.4 gets
+		released on March 16th, 2016.
+		*/
+
+		Vector2[] uvs = new Vector2[4];
+
+		//TODO: Get better way of finding uv coords
+		int textureIndex = BlockManager.GetBlocks().FindIndex(x => x.GetName() == name) - 1;
+		Rect rect = TextureManager.uvs[textureIndex];
+
+		//Half pixel correction
+		/*rect.x += (1f / TextureManager.atlasWidth);
+		rect.y += (1f / TextureManager.atlasHeight);
+		rect.width -= (2f / TextureManager.atlasWidth);
+		rect.height -= (2f / TextureManager.atlasHeight);*/
+
+		uvs[0] = new Vector2(rect.x + rect.width, rect.y);					//1, 0
+		uvs[1] = new Vector2(rect.x + rect.width, rect.y + rect.height);	//1, 1
+		uvs[2] = new Vector2(rect.x, rect.y + rect.height);					//0, 1
+		uvs[3] = new Vector2(rect.x, rect.y);								//0, 0
+		
+		return uvs;
+	}
+
+	/// <summary>
+	/// Gets the solidity of a blocks face
+	/// </summary>
+	public virtual bool IsSolid(Direction direction) {
+		switch (direction) {
+			case Direction.North:
+				return true;
+			case Direction.South:
+				return true;
+			case Direction.East:
+				return true;
+			case Direction.West:
+				return true;
+			case Direction.Up:
+				return true;
+			case Direction.Down:
+				return true;
 		}
-		return null;
+
+		return false;
 	}
+}
 
-	//TODO: only save block ids that are in the level
-	public static void saveBlockIDs(FileStream stream) {
-		BinaryFormatter formatter = new BinaryFormatter();
-
-		//TODO: try unsigned int
-		int i = 0;
-		foreach (BlockType b in blocks) {
-			formatter.Serialize(stream, b.getName());
-			formatter.Serialize(stream, i);
-			i++;
-		}
-	}
-
-	public static void LoadBlockIDs(FileStream stream) {
-		BinaryFormatter formatter = new BinaryFormatter();
-
-		for (int i = 0; i < blocks.Count; i++) {
-			string name = Convert.ToString(formatter.Deserialize(stream));
-			int id = Convert.ToInt32(formatter.Deserialize(stream));
-			BlockType b = getBlock(name);
-			b.setID(id);
-        }
-	}
+public enum Direction {
+	North,
+	East,
+	South,
+	West,
+	Up,
+	Down
 }

@@ -3,6 +3,7 @@ using System.Collections;
 
 public class ToolbarManager : MonoBehaviour {
 	public GameObject selectBox;
+	public World world;
 
 	public void setTool(int t) {
 		switch (t) {
@@ -25,19 +26,19 @@ public class ToolbarManager : MonoBehaviour {
 	}
 
 	public static void save(string name) {
-		UIManager.world.GetComponent<World>().saveWorld(name + ".level");
+		//UIManager.world.GetComponent<World>().saveWorld(name + ".level");
 	}
 
 	public static void load(string name) {
-		UIManager.world.GetComponent<World>().loadWorld(name + ".level");
+		//UIManager.world.GetComponent<World>().loadWorld(name + ".level");
 	}
 
 	public void newLevel() {
-		UIManager.world.GetComponent<World>().newWorld();
+		world.ClearWorld();
 	}
 
 	public void openLevel() {
-		load("save1");
+		//load("save1");
 	}
 
 	public void saveLevel() {
@@ -51,8 +52,8 @@ public class ToolbarManager : MonoBehaviour {
 	}
 
 	public void copy() {
-		selectBox.GetComponent<SelectBox>().copy();
-		setTool(1);
+		//selectBox.GetComponent<SelectBox>().copy();
+		//setTool(1);
 	}
 
 	public void rotateBlock() {
