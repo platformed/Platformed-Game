@@ -109,7 +109,7 @@ public class UIManager : MonoBehaviour {
 	public static bool canInteract() {
 		if (isDraging)
 			return false;
-		if (Input.mousePosition.y > Screen.height - 56 || Input.mousePosition.x > Screen.width - 200)
+		if (Input.mousePosition.y > Screen.height - 64 || Input.mousePosition.x > Screen.width - 200)
 			return false;
 		if (mouseOverWindow)
 			return false;
