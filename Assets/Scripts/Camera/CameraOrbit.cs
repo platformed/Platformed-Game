@@ -85,8 +85,8 @@ public class CameraOrbit : MonoBehaviour {
 			int h = Screen.height;
 			int w = Screen.width;
 			int right = 200;
-			int top = 56;
-			Camera.main.rect = new Rect(/*(left / (float)w)*/0, 0, (w - right) / (float)w, (h - top) / (float)h);
+			int top = 64;
+			Camera.main.rect = new Rect(0, 0, (w - right) / (float)w, (h - top) / (float)h);
 		}
 	}
 
