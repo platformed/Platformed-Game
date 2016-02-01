@@ -1,15 +1,19 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour {
-	public static Tool tool = Tool.SELECT;
+	public static Tool tool = Tool.BLOCK;
 	public Transform blockLibrary;
 	public static GameObject world;
 	public static bool isDraging = false;
 	public static Gamemode gamemode = Gamemode.DESIGN;
 	public static string scene;
 	public static GameObject tooltip;
+
+	//Temporary
+	public static int worldSize = 100;
 
 	public static int lives = 3;
 	public static float time = 600000;
@@ -28,26 +32,13 @@ public class UIManager : MonoBehaviour {
 	static bool mouseOverWindow = false;
 
 	Animator anim;
-	bool levelSaved = true;
-	GameObject blockButton;
 
 	public GameObject windowCanvas;
-	GameObject saveWindow;
 
 	void Awake() {
 	}
 
 	void Start() {
-		//Add blocks to block list
-		Block.addBlock(new AirBlock());
-		Block.addBlock(new GreenStoneBlock());
-		Block.addBlock(new StoneBlock());
-		Block.addBlock(new DirtBlock());
-		Block.addBlock(new SandcastleWallBlock());
-		Block.addBlock(new TestBlock1Block());
-		Block.addBlock(new TestBlock2Block());
-		Block.addBlock(new TestBlock3Block());
-
 		//Get camera
 		designCam = GameObject.Find("DesignCamera").GetComponent<Camera>();
 		playCam = GameObject.Find("PlayCamera").GetComponent<Camera>();
@@ -57,26 +48,6 @@ public class UIManager : MonoBehaviour {
 
 		//Get tooltip
 		tooltip = Resources.Load("UI Elements/Tooltip") as GameObject;
-
-		//Get windows
-		saveWindow = Resources.Load("UI Elements/SaveWindow") as GameObject;
-
-		//Add block buttons to bottom
-		blockButton = Resources.Load("UI Elements/BlockButton") as GameObject;
-		foreach (BlockType block in Block.getBlocks()) {
-			if (!block.getName().Equals("Air")) {
-				GameObject button = Instantiate(blockButton) as GameObject;
-				button.transform.SetParent(blockLibrary);
-				button.name = "BlockButton" + block.getName();
-
-				Button b = button.GetComponent<Button>();
-				string n = block.getName();
-				b.onClick.AddListener(() => setToolBlock(n));
-
-				Text name = button.GetComponentInChildren<Text>();
-				name.text = block.getDisplayName();
-			}
-		}
 	}
 
 	void Update() {
@@ -129,9 +100,9 @@ public class UIManager : MonoBehaviour {
 	void FixedUpdate() {
 	}
 
-	public void setToolBlock(string name) {
+	public static void setToolBlock(string name) {
 		tool = Tool.BLOCK;
-		Cursor.block = new Block[,,] { { { Block.newBlock(name) } } };
+		Cursor.block = BlockManager.GetBlock(name);
 	}
 
 	//Returns weather the user can interact with the level
@@ -183,7 +154,7 @@ public class UIManager : MonoBehaviour {
 	//Puts the game into the loading screen to load a level
 	public static void loadScene(string s) {
 		scene = s;
-		Application.LoadLevel("loading-screen");
+		SceneManager.LoadScene("loading-screen");
 	}
 }
 

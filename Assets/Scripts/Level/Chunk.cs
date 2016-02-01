@@ -1,189 +1,117 @@
 ﻿using UnityEngine;
-using System.IO;
 using System.Collections;
+using System;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(MeshCollider))]
 
+/// <summary>
+/// Represents a 10 by 10 area in the level
+/// </summary>
 public class Chunk : MonoBehaviour {
-	Block[,,] blocks;
+	MeshFilter filter;
+	MeshCollider coll;
+
+	Block[ , , ] blocks = new Block[chunkSize, chunkSize, chunkSize];
 	public static int chunkSize = 10;
-	public static int chunkHeight = 100;
 
-	float parts = 20f;
-	float div = 0.075f;
-	float parts2 = 2.25f;
-	float div2 = 0.8f;
-	float add = -4f;
+	public World world;
+	public WorldPos pos;
 
-	void Start() {
-		generateChunk();
-		drawChunk();
+	//If this chunk be updated at the end of the frame
+	public bool update = true;
+	
+	void Start () {
+		filter = GetComponent<MeshFilter>();
+		coll = GetComponent<MeshCollider>();
 	}
-
-	//TODO saving and loading
-	public void save(FileStream stream) {
-		//BinaryFormatter formatter = new BinaryFormatter();
-		BinaryWriter writer = new BinaryWriter(stream);
-
-		for (int x = 0; x < chunkSize; x++) {
-			for (int z = 0; z < chunkSize; z++) {
-				for (int y = 0; y < chunkHeight; y++) {
-					//formatter.Serialize(stream, blocks[x, y, z].getBlockType().getID());
-					writer.Write(blocks[x, y, z].getBlockType().getID());
-				}
-			}
+	
+	void Update () {
+		if (update) {
+			update = false;
+			UpdateChunk();
 		}
 	}
 
-	public void load(FileStream stream) {
-		//BinaryFormatter formatter = new BinaryFormatter();
-		BinaryReader reader = new BinaryReader(stream);
-
+	/// <summary>
+	/// Replaces all the blocks in the chunk with air blocks
+	/// </summary>
+	public void ClearChunk() {
 		for (int x = 0; x < chunkSize; x++) {
-			for (int z = 0; z < chunkSize; z++) {
-				for (int y = 0; y < chunkHeight; y++) {
-					//blocks[x, y, z] = Block.newBlock(Block.getBlockByID(Convert.ToInt32(formatter.Deserialize(stream))));
-					Block b = Block.newBlock(Block.getBlockByID(reader.ReadInt32()));
-					blocks[x, y, z] = b;
+			for (int y = 0; y < chunkSize; y++) {
+				for (int z = 0; z < chunkSize; z++) {
+					SetBlock(x, y, z, new AirBlock());
 				}
 			}
 		}
 
-		drawChunk();
+		update = true;
 	}
 
-	public void drawChunk() {
+	/// <summary>
+	/// Gets a block based on its position
+	/// </summary>
+	/// <param name="x">X position of the block</param>
+	/// <param name="y">Y position of the block</param>
+	/// <param name="z">Z position of the block</param>
+	/// <returns>The block object</returns>
+	public Block GetBlock(int x, int y, int z) {
+		if(InRange(x) && InRange(y) && InRange(z))
+			return blocks[x, y, z];
+
+		return new AirBlock();
+	}
+
+	public void SetBlock(int x, int y, int z, Block block) {
+		if (InRange(x) && InRange(y) && InRange(z)) {
+			blocks[x, y, z] = block;
+		} else {
+			world.SetBlock(pos.x + x, pos.y + y, pos.z + z, block);
+		}
+	}
+
+	public static bool InRange(int index) {
+		if (index < 0 || index >= chunkSize)
+			return false;
+
+		return true;
+	}
+
+	/// <summary>
+	/// Updates the chunk based on its contents
+	/// </summary>
+	void UpdateChunk() {
+		MeshData data = new MeshData();
+
+		for (int x = 0; x < chunkSize; x++) {
+			for (int y = 0; y < chunkSize; y++) {
+				for (int z = 0; z < chunkSize; z++) {
+					data = blocks[x, y, z].BlockData(this, x, y, z, data, false);
+				}
+			}
+		}
+
+		RenderMesh(data);
+	}
+
+	/// <summary>
+	/// Sends the mesh information to the mesh and collision components
+	/// </summary>
+	void RenderMesh(MeshData data) {
+		//Update mesh
+		filter.mesh.Clear();
+		filter.mesh.vertices = data.vertices.ToArray();
+		filter.mesh.triangles = data.triangles.ToArray();
+		filter.mesh.uv = data.uvs.ToArray();
+		filter.mesh.RecalculateNormals();
+
+		//Update collision mesh
+		coll.sharedMesh = null;
 		Mesh mesh = new Mesh();
-
-		MeshData d = new MeshData();
-		for (int x = 0; x < chunkSize; x++) {
-			for (int z = 0; z < chunkSize; z++) {
-				for (int y = 0; y < chunkHeight; y++) {
-					MeshData temp = blocks[x, y, z].draw(this, x, y, z, false);
-					temp.addPos(new Vector3(x, y, z));
-					d.add(temp);
-				}
-			}
-		}
-
-		mesh.vertices = d.verticies.ToArray();
-		mesh.triangles = d.triangles.ToArray();
-		mesh.uv = d.uvs.ToArray();
-		mesh.Optimize();
-		mesh.RecalculateBounds();
+		mesh.vertices = data.colVerticies.ToArray();
+		mesh.triangles = data.colTriangles.ToArray();
 		mesh.RecalculateNormals();
-		GetComponent<MeshFilter>().mesh = mesh;
-		GetComponent<MeshFilter>().sharedMesh = mesh;
-		GetComponent<MeshCollider>().sharedMesh = mesh;
-
-		/*for (int x = 0; x < chunkSize; x++) {
-			for (int z = 0; z < chunkSize; z++) {
-				for (int y = 0; y < chunkHeight; y++) {
-					if (blocks[x, y, z].getBlockType().getDisplayName() != "Air") {
-						MeshData data = blocks[x, y, z].draw(this, x, y, z, false);
-						data.addPos(new Vector3(x, y, z));
-
-						Mesh mesh = new Mesh();
-						mesh.vertices = data.verticies.ToArray();
-						mesh.triangles = data.triangles.ToArray();
-						mesh.uv = data.uvs.ToArray();
-						//mesh.Optimize();
-						mesh.RecalculateBounds();
-						mesh.RecalculateNormals();
-
-						GameObject b = Instantiate(World.block, transform.position, Quaternion.identity) as GameObject;
-						b.transform.SetParent(transform);
-						b.name = "Block X" + x + " Y" + y + " Z" + z;
-
-						b.GetComponent<MeshFilter>().mesh = mesh;
-						b.GetComponent<MeshFilter>().sharedMesh = mesh;
-						b.GetComponent<MeshCollider>().sharedMesh = mesh;
-					}
-				}
-			}
-		}
-
-		StartCoroutine(createBlocks());*/
-	}
-
-	/*IEnumerator createBlocks() {
-		for (int x = 0; x < chunkSize; x++) {
-			for (int z = 0; z < chunkSize; z++) {
-				for (int y = 0; y < chunkHeight; y++) {
-					if (blocks[x, y, z].getBlockType().getDisplayName() != "Air" || true) {
-						MeshData data = blocks[x, y, z].draw(this, x, y, z, false);
-						data.addPos(new Vector3(x, y, z));
-
-						Mesh mesh = new Mesh();
-						mesh.vertices = data.verticies.ToArray();
-						mesh.triangles = data.triangles.ToArray();
-						mesh.uv = data.uvs.ToArray();
-						//mesh.Optimize();
-						mesh.RecalculateBounds();
-						mesh.RecalculateNormals();
-
-						GameObject b = Instantiate(World.block, transform.position, Quaternion.identity) as GameObject;
-						b.transform.SetParent(transform);
-						b.name = "Block X" + x + " Y" + y + " Z" + z;
-
-						b.GetComponent<MeshFilter>().mesh = mesh;
-						b.GetComponent<MeshFilter>().sharedMesh = mesh;
-						b.GetComponent<MeshCollider>().sharedMesh = mesh;
-
-						yield return null;
-					}
-				}
-			}
-		}
-	}*/
-
-	public void generateChunk() {
-		blocks = new Block[chunkSize, chunkHeight, chunkSize];
-		for (int x = 0; x < chunkSize; x++) {
-			for (int z = 0; z < chunkSize; z++) {
-				for (int y = 0; y < chunkHeight; y++) {
-					blocks[x, y, z] = Block.newBlock("Air");
-				}
-			}
-		}
-	}
-
-	public Block getBlock(int x, int y, int z) {
-		if (x < 0 || x >= chunkSize) {
-			return Block.newBlock("Air");
-		}
-		if (y < 0 || y >= chunkHeight) {
-			return Block.newBlock("Air");
-		}
-		if (z < 0 || z >= chunkSize) {
-			return Block.newBlock("Air");
-		}
-		return blocks[x, y, z];
-	}
-
-	public Vector3 posToBlock(Vector3 pos) {
-		return new Vector3((int)Mathf.Floor(pos.x -= transform.position.x), (int)Mathf.Floor(pos.y), (int)Mathf.Floor(pos.z -= transform.position.z));
-	}
-
-	public void setBlock(Block block, int x, int y, int z) {
-		blocks[x, y, z] = block;
-		drawChunk();
-	}
-
-	int getY(int x, int z) {
-		x += Mathf.RoundToInt(transform.position.x);
-		z += Mathf.RoundToInt(transform.position.z);
-
-		float perlin1 = Mathf.PerlinNoise(x / parts, z / parts) / div;
-		float perlin2 = Mathf.PerlinNoise(z / parts, x / parts) / div;
-		float perlin3 = Mathf.PerlinNoise(x / parts2, z / parts2) / div2;
-		float perlin4 = Mathf.PerlinNoise(z / parts2, x / parts2) / div2;
-		return Mathf.RoundToInt(perlin1 + perlin2 + perlin3 + perlin4 + add);
-	}
-
-	void Update() {
-
+		coll.sharedMesh = mesh;
 	}
 }

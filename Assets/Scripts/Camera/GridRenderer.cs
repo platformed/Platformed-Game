@@ -10,7 +10,7 @@ public class GridRenderer : MonoBehaviour {
 		//transform.localScale = new Vector3 (World.worldSize * Chunk.chunkSize / 10, 1, World.worldSize * Chunk.chunkSize / 10);
 
 		//Set position to the center of the world
-		transform.position = new Vector3 (World.worldSize * Chunk.chunkSize / 2, CameraMove.floor + offset, World.worldSize * Chunk.chunkSize / 2);
+		transform.position = new Vector3 (UIManager.worldSize / 2, CameraMove.floor + offset, UIManager.worldSize / 2);
 	}
 
 	void Update () {
