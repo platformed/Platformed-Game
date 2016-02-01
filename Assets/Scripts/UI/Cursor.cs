@@ -1,19 +1,27 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 /// <summary>
 /// A cursor that shows where you are placing blocks
 /// </summary>
 public class Cursor : MonoBehaviour {
-	Vector3 offset = new Vector3(0, 0, 0);
-	float smooth = 20f;
+	Vector3 offset = new Vector3(0.5f, 0.5f, 0.5f);
+	float smooth = 30f;
 	public World world;
 	public static Block block;
 
+	new MeshRenderer renderer;
+	MeshFilter filter;
+
 	void Start() {
 		block = new TestBlock();
+		renderer = GetComponent<MeshRenderer>();
+		filter = GetComponent<MeshFilter>();
 	}
 
 	void Update() {
+		RenderCursor();
+
 		Vector3 newPos = new Vector3(0, 0, 0);
 
 		if (UIManager.tool == Tool.BLOCK && UIManager.canInteract()) {
@@ -25,7 +33,7 @@ public class Cursor : MonoBehaviour {
 			}
 
 			if (Input.GetMouseButton(1)) {
-				world.SetBlock((int)hit.x, (int)hit.y, (int)hit.z, new BlockAir());
+				world.SetBlock((int)hit.x, (int)hit.y, (int)hit.z, new AirBlock());
 			}
 		}
 
@@ -33,8 +41,18 @@ public class Cursor : MonoBehaviour {
 		clampPos();
 	}
 
+	void RenderCursor() {
+		MeshData data = new MeshData();
+		block.BlockData(null, 0, 0, 0, data, true);
+
+		filter.mesh.Clear();
+		filter.mesh.vertices = data.vertices.ToArray();
+		filter.mesh.triangles = data.triangles.ToArray();
+		filter.mesh.uv = data.uvs.ToArray();
+		filter.mesh.RecalculateNormals();
+	}
+
 	void clampPos() {
-		MeshRenderer renderer = GetComponent<MeshRenderer>();
 		float size = UIManager.worldSize;
 
 		renderer.enabled = true;

@@ -18,7 +18,7 @@ public class BlockManager : MonoBehaviour {
 	}
 
 	void AddBlocks() {
-		AddBlock(new BlockAir());
+		AddBlock(new AirBlock());
 		AddBlock(new TestBlock());
 		AddBlock(new Test2Block());
 	}

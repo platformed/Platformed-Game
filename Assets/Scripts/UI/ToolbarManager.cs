@@ -3,6 +3,7 @@ using System.Collections;
 
 public class ToolbarManager : MonoBehaviour {
 	public GameObject selectBox;
+	public World world;
 
 	public void setTool(int t) {
 		switch (t) {
@@ -33,11 +34,11 @@ public class ToolbarManager : MonoBehaviour {
 	}
 
 	public void newLevel() {
-		//UIManager.world.GetComponent<World>().newWorld();
+		world.ClearWorld();
 	}
 
 	public void openLevel() {
-		load("save1");
+		//load("save1");
 	}
 
 	public void saveLevel() {

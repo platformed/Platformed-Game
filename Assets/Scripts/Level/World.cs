@@ -25,6 +25,15 @@ public class World : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Replaces all the blocks with air blocks
+	/// </summary>
+	public void ClearWorld() {
+		foreach(Chunk c in chunks.Values) {
+			c.ClearChunk();
+		}
+	}
+
+	/// <summary>
 	/// Creates an empty chunk
 	/// </summary>
 	/// <param name="x">X position of the chunk</param>
@@ -49,7 +58,7 @@ public class World : MonoBehaviour {
 		for (int xx = 0; xx < Chunk.chunkSize; xx++) {
 			for (int yy = 0; yy < Chunk.chunkSize; yy++) {
 				for (int zz = 0; zz < Chunk.chunkSize; zz++) {
-					chunk.SetBlock(xx, yy, zz, new BlockAir());
+					chunk.SetBlock(xx, yy, zz, new AirBlock());
 				}
 			}
 		}
@@ -104,7 +113,7 @@ public class World : MonoBehaviour {
 			Block block = containerChunk.GetBlock(x - containerChunk.pos.x, y - containerChunk.pos.y, z - containerChunk.pos.z);
 			return block;
 		} else {
-			return new BlockAir();
+			return new AirBlock();
 		}
 	}
 

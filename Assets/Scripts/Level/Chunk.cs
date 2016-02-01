@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
@@ -31,6 +32,21 @@ public class Chunk : MonoBehaviour {
 			update = false;
 			UpdateChunk();
 		}
+	}
+
+	/// <summary>
+	/// Replaces all the blocks in the chunk with air blocks
+	/// </summary>
+	public void ClearChunk() {
+		for (int x = 0; x < chunkSize; x++) {
+			for (int y = 0; y < chunkSize; y++) {
+				for (int z = 0; z < chunkSize; z++) {
+					SetBlock(x, y, z, new AirBlock());
+				}
+			}
+		}
+
+		update = true;
 	}
 
 	/// <summary>
@@ -71,7 +87,7 @@ public class Chunk : MonoBehaviour {
 		for (int x = 0; x < chunkSize; x++) {
 			for (int y = 0; y < chunkSize; y++) {
 				for (int z = 0; z < chunkSize; z++) {
-					data = blocks[x, y, z].BlockData(this, x, y, z, data);
+					data = blocks[x, y, z].BlockData(this, x, y, z, data, false);
 				}
 			}
 		}

@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BlockAir : Block {
-	public BlockAir(){
+public class AirBlock : Block {
+	public AirBlock(){
 		name = "Air";
 		displayName = "Air";
 	}
 
-	public override MeshData BlockData(Chunk chunk, int x, int y, int z, MeshData data) {
+	public override MeshData BlockData(Chunk chunk, int x, int y, int z, MeshData data, bool ignoreChunk) {
 		return data;
 	}
 

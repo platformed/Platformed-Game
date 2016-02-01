@@ -32,10 +32,8 @@ public class UIManager : MonoBehaviour {
 	static bool mouseOverWindow = false;
 
 	Animator anim;
-	bool levelSaved = true;
 
 	public GameObject windowCanvas;
-	GameObject saveWindow;
 
 	void Awake() {
 	}
@@ -50,9 +48,6 @@ public class UIManager : MonoBehaviour {
 
 		//Get tooltip
 		tooltip = Resources.Load("UI Elements/Tooltip") as GameObject;
-
-		//Get windows
-		saveWindow = Resources.Load("UI Elements/SaveWindow") as GameObject;
 	}
 
 	void Update() {

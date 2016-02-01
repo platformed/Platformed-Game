@@ -40,31 +40,32 @@ public class Block {
 	/// <param name="y">Y position of the block</param>
 	/// <param name="z">Z position of the block</param>
 	/// <param name="data">The meshdata to add to</param>
+	/// <param name="ignoreChunk">If the solidity of the neighboring blocks should be checked</param>
 	/// <returns>Meshdata with added block meshdata</returns>
-	public virtual MeshData BlockData(Chunk chunk, int x, int y, int z, MeshData data) {
+	public virtual MeshData BlockData(Chunk chunk, int x, int y, int z, MeshData data, bool ignoreChunk) {
 		data.useRenderDataForCol = true;
 
-		if (!chunk.GetBlock(x, y + 1, z).IsSolid(Direction.Down)) {
+		if (ignoreChunk || !chunk.GetBlock(x, y + 1, z).IsSolid(Direction.Down)) {
 			data = FaceDataUp(chunk, x, y, z, data);
 		}
 
-		if (!chunk.GetBlock(x, y - 1, z).IsSolid(Direction.Up)) {
+		if (ignoreChunk || !chunk.GetBlock(x, y - 1, z).IsSolid(Direction.Up)) {
 			data = FaceDataDown(chunk, x, y, z, data);
 		}
 
-		if (!chunk.GetBlock(x, y, z + 1).IsSolid(Direction.South)) {
+		if (ignoreChunk || !chunk.GetBlock(x, y, z + 1).IsSolid(Direction.South)) {
 			data = FaceDataNorth(chunk, x, y, z, data);
 		}
 
-		if (!chunk.GetBlock(x, y, z - 1).IsSolid(Direction.North)) {
+		if (ignoreChunk || !chunk.GetBlock(x, y, z - 1).IsSolid(Direction.North)) {
 			data = FaceDataSouth(chunk, x, y, z, data);
 		}
 
-		if (!chunk.GetBlock(x + 1, y, z).IsSolid(Direction.West)) {
+		if (ignoreChunk || !chunk.GetBlock(x + 1, y, z).IsSolid(Direction.West)) {
 			data = FaceDataEast(chunk, x, y, z, data);
 		}
 
-		if (!chunk.GetBlock(x - 1, y, z).IsSolid(Direction.East)) {
+		if (ignoreChunk || !chunk.GetBlock(x - 1, y, z).IsSolid(Direction.East)) {
 			data = FaceDataWest(chunk, x, y, z, data);
 		}
 

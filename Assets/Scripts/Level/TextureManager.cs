@@ -56,7 +56,5 @@ public class TextureManager : MonoBehaviour {
 
 		//Refresh the block atlas texture
 		AssetDatabase.Refresh();
-
-		Debug.Log("Packed " + textures.Count + " textures");
 	}
 }
