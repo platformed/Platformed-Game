@@ -60,7 +60,7 @@ public class Chunk : MonoBehaviour {
 		if(InRange(x) && InRange(y) && InRange(z))
 			return blocks[x, y, z];
 
-		return world.GetBlock(pos.x + x, pos.y + y, pos.z + z);
+		return new AirBlock();
 	}
 
 	public void SetBlock(int x, int y, int z, Block block) {
