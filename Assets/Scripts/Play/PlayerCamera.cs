@@ -18,7 +18,7 @@ public class PlayerCamera : MonoBehaviour {
 	float y = 0.0f;
 	
 	void Start () {
-
+		GetComponent<Camera>().enabled = true;
 	}
 
 	void FixedUpdate() {
