@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 
 /// <summary>
-/// A mesh, used for rendering levels
+/// Stores vertices, triangles, and uvs of a mesh and collision mesh
 /// </summary>
 public class MeshData {
 	public List<Vector3> vertices = new List<Vector3>();
@@ -30,6 +30,15 @@ public class MeshData {
 	}
 
 	/// <summary>
+	/// Add an array of vertices to the meshdata
+	/// </summary>
+	public void AddVertices(Vector3[] vertices, Vector3 posOffset, Quaternion rotOffset) {
+		foreach (Vector3 v in vertices) {
+			AddVertex((rotOffset * v) + posOffset);
+		}
+	}
+
+	/// <summary>
 	/// Add a triangle to the meshdata
 	/// </summary>
 	public void AddTriangle(int tri) {
@@ -37,6 +46,17 @@ public class MeshData {
 
 		if (useRenderDataForCol) {
 			colTriangles.Add(tri);
+		}
+	}
+
+	/// <summary>
+	/// Add an array of triangles to the meshdata
+	/// </summary>
+	public void AddTriangles(int[] triangles) {
+		int index = vertices.Count;
+
+		foreach (int t in triangles) {
+			AddTriangle(index + t);
 		}
 	}
 
@@ -63,6 +83,9 @@ public class MeshData {
 		}
 	}
 
+	/// <summary>
+	/// Add an array of uvs to the meshdata
+	/// </summary>
 	public void AddUVs(Vector2[] u) {
 		uvs.AddRange(u);
 	}

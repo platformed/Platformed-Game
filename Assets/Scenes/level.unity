@@ -1842,7 +1842,7 @@ GameObject:
   - 222: {fileID: 960325772}
   - 114: {fileID: 960325771}
   m_Layer: 5
-  m_Name: Top Right Shadow (1)
+  m_Name: Theme Selector Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

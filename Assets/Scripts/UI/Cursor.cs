@@ -50,7 +50,7 @@ public class Cursor : MonoBehaviour {
 		filter.mesh.triangles = data.triangles.ToArray();
 		filter.mesh.uv = data.uvs.ToArray();
 		filter.mesh.RecalculateNormals();
-	}
+    }
 
 	void clampPos() {
 		float size = UIManager.worldSize;

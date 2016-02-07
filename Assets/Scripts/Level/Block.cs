@@ -8,6 +8,7 @@ using System;
 public class Block {
 	protected string name;
 	protected string displayName;
+	protected bool hasCustomModel = false;
 	protected Rect uv;
 	public int textureID;
 
@@ -33,6 +34,14 @@ public class Block {
 	}
 
 	/// <summary>
+	/// Gets the mesh for the custom model
+	/// </summary>
+	/// <returns>Mesh</returns>
+	public Mesh GetCustomModel() {
+		return (Mesh) Resources.Load("Blocks/" + GetName() + "/" + GetName() + "Model", typeof(Mesh));
+	}
+
+	/// <summary>
 	/// Adds the blocks to a meshdata 
 	/// </summary>
 	/// <param name="chunk">Chunk that the block is in</param>
@@ -45,6 +54,19 @@ public class Block {
 	public virtual MeshData BlockData(Chunk chunk, int x, int y, int z, MeshData data, bool ignoreChunk) {
 		data.useRenderDataForCol = true;
 
+		//Use custom model if it exists
+		if (hasCustomModel) {
+			Mesh mesh = GetCustomModel();
+
+			//Add the verticies, triangles, and uvs
+			data.AddTriangles(mesh.triangles);
+			data.AddVertices(mesh.vertices, new Vector3(x, y - 0.5f, z), Quaternion.Euler(-90, 0, 0));
+			data.AddUVs(mesh.uv);
+
+			return data;
+		}
+
+		//Add cube verticies
 		if (ignoreChunk || !chunk.GetBlock(x, y + 1, z).IsSolid(Direction.Down)) {
 			data = FaceDataUp(chunk, x, y, z, data);
 		}
@@ -171,22 +193,11 @@ public class Block {
 	/// Gets the solidity of a blocks face
 	/// </summary>
 	public virtual bool IsSolid(Direction direction) {
-		switch (direction) {
-			case Direction.North:
-				return true;
-			case Direction.South:
-				return true;
-			case Direction.East:
-				return true;
-			case Direction.West:
-				return true;
-			case Direction.Up:
-				return true;
-			case Direction.Down:
-				return true;
+		if (!hasCustomModel) {
+			return true;
+		} else {
+			return false;
 		}
-
-		return false;
 	}
 }
 
