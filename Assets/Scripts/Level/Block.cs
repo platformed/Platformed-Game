@@ -61,7 +61,7 @@ public class Block {
 			//Add the verticies, triangles, and uvs
 			data.AddTriangles(mesh.triangles);
 			data.AddVertices(mesh.vertices, new Vector3(x, y - 0.5f, z), Quaternion.Euler(-90, 0, 0));
-			data.AddUVs(mesh.uv);
+			data.AddUVs(new Vector2[mesh.vertexCount]);
 
 			return data;
 		}
