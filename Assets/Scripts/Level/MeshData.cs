@@ -8,6 +8,7 @@ using System;
 /// </summary>
 public class MeshData {
 	public List<Vector3> vertices = new List<Vector3>();
+	public List<Vector3> normals = new List<Vector3>();
 	public List<int> triangles = new List<int>();
 	public List<Vector2> uvs = new List<Vector2>();
 
@@ -21,8 +22,9 @@ public class MeshData {
 	/// <summary>
 	/// Add a vertex to the meshdata
 	/// </summary>
-	public void AddVertex(Vector3 vertex) {
+	public void AddVertex(Vector3 vertex, Vector3 normal) {
 		vertices.Add(vertex);
+		normals.Add(normal);
 
 		if (useRenderDataForCol) {
 			colVerticies.Add(vertex);
@@ -32,10 +34,11 @@ public class MeshData {
 	/// <summary>
 	/// Add an array of vertices to the meshdata
 	/// </summary>
-	public void AddVertices(Vector3[] vertices, Vector3 posOffset, Quaternion rotOffset) {
-		foreach (Vector3 v in vertices) {
-			AddVertex((rotOffset * v) + posOffset);
+	public void AddVertices(Vector3[] vertices, Vector3[] normals, Vector3 posOffset, Quaternion rotOffset) {
+		for (int i = 0; i < vertices.Length; i++) {
+			AddVertex((rotOffset * vertices[i]) + posOffset, rotOffset * normals[i]);
 		}
+		
 	}
 
 	/// <summary>
@@ -64,23 +67,13 @@ public class MeshData {
 	/// Finishes a quad by adding the triangles
 	/// </summary>
 	public void AddQuadTriangles() {
-		triangles.Add(vertices.Count - 4);
-		triangles.Add(vertices.Count - 3);
-		triangles.Add(vertices.Count - 2);
+		AddTriangle(vertices.Count - 4);
+		AddTriangle(vertices.Count - 3);
+		AddTriangle(vertices.Count - 2);
 
-		triangles.Add(vertices.Count - 4);
-		triangles.Add(vertices.Count - 2);
-		triangles.Add(vertices.Count - 1);
-
-		if (useRenderDataForCol) {
-			colTriangles.Add(vertices.Count - 4);
-			colTriangles.Add(vertices.Count - 3);
-			colTriangles.Add(vertices.Count - 2);
-
-			colTriangles.Add(vertices.Count - 4);
-			colTriangles.Add(vertices.Count - 2);
-			colTriangles.Add(vertices.Count - 1);
-		}
+		AddTriangle(vertices.Count - 4);
+		AddTriangle(vertices.Count - 2);
+		AddTriangle(vertices.Count - 1);
 	}
 
 	/// <summary>

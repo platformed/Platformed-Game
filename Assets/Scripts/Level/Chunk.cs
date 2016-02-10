@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 
 [RequireComponent(typeof(MeshFilter))]
@@ -104,7 +105,12 @@ public class Chunk : MonoBehaviour {
 		filter.mesh.vertices = data.vertices.ToArray();
 		filter.mesh.triangles = data.triangles.ToArray();
 		filter.mesh.uv = data.uvs.ToArray();
-		filter.mesh.RecalculateNormals();
+		filter.mesh.normals = data.normals.ToArray();
+
+		//Visualize normals
+		/*for (int i = 0; i < filter.mesh.vertexCount; i++) {
+			Debug.DrawRay(filter.mesh.vertices[i] + pos.ToVector3() + new Vector3(0.5f, 0.5f, 0.5f), filter.mesh.normals[i], Color.yellow, 10);
+		}*/
 
 		//Update collision mesh
 		coll.sharedMesh = null;

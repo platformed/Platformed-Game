@@ -49,8 +49,8 @@ public class Cursor : MonoBehaviour {
 		filter.mesh.vertices = data.vertices.ToArray();
 		filter.mesh.triangles = data.triangles.ToArray();
 		filter.mesh.uv = data.uvs.ToArray();
-		filter.mesh.RecalculateNormals();
-    }
+		filter.mesh.normals = data.normals.ToArray();
+	}
 
 	void clampPos() {
 		float size = UIManager.worldSize;
