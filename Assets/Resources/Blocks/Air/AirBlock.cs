@@ -7,7 +7,7 @@ public class AirBlock : Block {
 		displayName = "Air";
 	}
 
-	public override MeshData BlockData(Chunk chunk, int x, int y, int z, MeshData data, bool ignoreChunk) {
+	public override MeshData BlockData(Chunk chunk, int x, int y, int z, MeshData data, int submesh, bool ignoreChunk) {
 		return data;
 	}
 

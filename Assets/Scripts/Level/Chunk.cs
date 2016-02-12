@@ -13,6 +13,7 @@ using System;
 public class Chunk : MonoBehaviour {
 	MeshFilter filter;
 	MeshCollider coll;
+	new MeshRenderer renderer;
 
 	Block[ , , ] blocks = new Block[chunkSize, chunkSize, chunkSize];
 	public static int chunkSize = 10;
@@ -22,10 +23,13 @@ public class Chunk : MonoBehaviour {
 
 	//If this chunk be updated at the end of the frame
 	public bool update = true;
+
+	List<string> blockTypes = new List<string>();
 	
 	void Start () {
 		filter = GetComponent<MeshFilter>();
 		coll = GetComponent<MeshCollider>();
+		renderer = GetComponent<MeshRenderer>();
 	}
 	
 	void Update () {
@@ -85,10 +89,22 @@ public class Chunk : MonoBehaviour {
 	void UpdateChunk() {
 		MeshData data = new MeshData();
 
+		blockTypes.Clear();
 		for (int x = 0; x < chunkSize; x++) {
 			for (int y = 0; y < chunkSize; y++) {
 				for (int z = 0; z < chunkSize; z++) {
-					data = blocks[x, y, z].BlockData(this, x, y, z, data, false);
+					if (blocks[x, y, z].GetName() != "Air") {
+						//Try to find if the block type already exists in chunk
+						int submesh = blockTypes.IndexOf(blocks[x, y, z].GetName());
+
+						//If there are no blocks with its type, add it
+						if (submesh == -1) {
+							blockTypes.Add(blocks[x, y, z].GetName());
+							submesh = blockTypes.Count - 1;
+						}
+
+						data = blocks[x, y, z].BlockData(this, x, y, z, data, submesh, false);
+					}
 				}
 			}
 		}
@@ -102,10 +118,26 @@ public class Chunk : MonoBehaviour {
 	void RenderMesh(MeshData data) {
 		//Update mesh
 		filter.mesh.Clear();
+
+		//Verticies
 		filter.mesh.vertices = data.vertices.ToArray();
-		filter.mesh.triangles = data.triangles.ToArray();
+
+		//Submeshes
+		filter.mesh.subMeshCount = data.triangles.Count;
+		for (int i = 0; i < data.triangles.Count; i++) {
+			filter.mesh.SetTriangles(data.triangles[i], i);
+		}
+
+		//UVs and normals
 		filter.mesh.uv = data.uvs.ToArray();
 		filter.mesh.normals = data.normals.ToArray();
+
+		//Materials
+		Material[] materials = new Material[filter.mesh.subMeshCount];
+		for (int i = 0; i < materials.Length; i++) {
+			materials[i] = Resources.Load("Blocks/" + blockTypes[i] + "/" + blockTypes[i] + "Material") as Material;
+		}
+		renderer.materials = materials;
 
 		//Visualize normals
 		/*for (int i = 0; i < filter.mesh.vertexCount; i++) {

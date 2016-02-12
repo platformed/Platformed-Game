@@ -9,7 +9,7 @@ using System;
 public class MeshData {
 	public List<Vector3> vertices = new List<Vector3>();
 	public List<Vector3> normals = new List<Vector3>();
-	public List<int> triangles = new List<int>();
+	public List<List<int>> triangles = new List<List<int>>();
 	public List<Vector2> uvs = new List<Vector2>();
 
 	public List<Vector3> colVerticies = new List<Vector3>();
@@ -44,8 +44,12 @@ public class MeshData {
 	/// <summary>
 	/// Add a triangle to the meshdata
 	/// </summary>
-	public void AddTriangle(int tri) {
-		triangles.Add(tri);
+	public void AddTriangle(int tri, int submesh) {
+		if (submesh >= triangles.Count) {
+			triangles.Add(new List<int>());
+		}
+
+        triangles[submesh].Add(tri);
 
 		if (useRenderDataForCol) {
 			colTriangles.Add(tri);
@@ -55,25 +59,25 @@ public class MeshData {
 	/// <summary>
 	/// Add an array of triangles to the meshdata
 	/// </summary>
-	public void AddTriangles(int[] triangles) {
+	public void AddTriangles(int[] triangles, int sub) {
 		int index = vertices.Count;
 
 		foreach (int t in triangles) {
-			AddTriangle(index + t);
+			AddTriangle(index + t, sub);
 		}
 	}
 
 	/// <summary>
 	/// Finishes a quad by adding the triangles
 	/// </summary>
-	public void AddQuadTriangles() {
-		AddTriangle(vertices.Count - 4);
-		AddTriangle(vertices.Count - 3);
-		AddTriangle(vertices.Count - 2);
+	public void AddQuadTriangles(int sub) {
+		AddTriangle(vertices.Count - 4, sub);
+		AddTriangle(vertices.Count - 3, sub);
+		AddTriangle(vertices.Count - 2, sub);
 
-		AddTriangle(vertices.Count - 4);
-		AddTriangle(vertices.Count - 2);
-		AddTriangle(vertices.Count - 1);
+		AddTriangle(vertices.Count - 4, sub);
+		AddTriangle(vertices.Count - 2, sub);
+		AddTriangle(vertices.Count - 1, sub);
 	}
 
 	/// <summary>

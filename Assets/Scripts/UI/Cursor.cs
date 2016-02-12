@@ -43,13 +43,15 @@ public class Cursor : MonoBehaviour {
 
 	void RenderCursor() {
 		MeshData data = new MeshData();
-		block.BlockData(null, 0, 0, 0, data, true);
+		block.BlockData(null, 0, 0, 0, data, 0, true);
 
 		filter.mesh.Clear();
 		filter.mesh.vertices = data.vertices.ToArray();
-		filter.mesh.triangles = data.triangles.ToArray();
+		filter.mesh.triangles = data.triangles[0].ToArray();
 		filter.mesh.uv = data.uvs.ToArray();
 		filter.mesh.normals = data.normals.ToArray();
+
+		renderer.material = Resources.Load("Blocks/" + block.GetName() + "/" + block.GetName() + "Material") as Material;
 	}
 
 	void clampPos() {

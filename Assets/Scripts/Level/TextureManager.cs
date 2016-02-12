@@ -13,7 +13,7 @@ released on March 16th, 2016.
 */
 
 public class TextureManager : MonoBehaviour {
-	static List<Texture2D> textures = new List<Texture2D>();
+	/*static List<Texture2D> textures = new List<Texture2D>();
 
 	public static Rect[] uvs;
 	public static int atlasWidth;
@@ -56,5 +56,5 @@ public class TextureManager : MonoBehaviour {
 
 		//Refresh the block atlas texture
 		AssetDatabase.Refresh();
-	}
+	}*/
 }
