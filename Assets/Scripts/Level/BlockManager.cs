@@ -19,6 +19,9 @@ public class BlockManager : MonoBehaviour {
 
 	void AddBlocks() {
 		AddBlock(new AirBlock());
+		AddBlock(new BarkBlock());
+		AddBlock(new GrassBlock());
+
 		AddBlock(new TestBlock());
 		AddBlock(new Test2Block());
 		AddBlock(new Test3Block());

@@ -19,6 +19,7 @@ ModelImporter:
     3300004: Sphere
     4300000: Sphere
     4300002: Cube
+    4300004: Text
     7400000: Default Take
     9500000: //RootNode
   materials:
