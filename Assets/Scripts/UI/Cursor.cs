@@ -16,7 +16,7 @@ public class Cursor : MonoBehaviour {
 	MeshFilter filter;
 
 	void Start() {
-		block = new TestBlock();
+		block = new BarkBlock();
 		renderer = GetComponent<MeshRenderer>();
 		filter = GetComponent<MeshFilter>();
 	}
