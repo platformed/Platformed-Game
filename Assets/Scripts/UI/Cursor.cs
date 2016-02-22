@@ -5,6 +5,8 @@ using UnityEngine;
 /// A cursor that shows where you are placing blocks
 /// </summary>
 public class Cursor : MonoBehaviour {
+	Vector3 rotation = Vector3.zero;
+
 	Vector3 offset = new Vector3(0.5f, 0.5f, 0.5f);
 	float smooth = 30f;
 	public World world;
@@ -14,7 +16,7 @@ public class Cursor : MonoBehaviour {
 	MeshFilter filter;
 
 	void Start() {
-		block = new TestBlock();
+		block = new BarkBlock();
 		renderer = GetComponent<MeshRenderer>();
 		filter = GetComponent<MeshFilter>();
 	}
@@ -22,11 +24,15 @@ public class Cursor : MonoBehaviour {
 	void Update() {
 		RenderCursor();
 
-		Vector3 newPos = new Vector3(0, 0, 0);
+		if (Input.GetKeyDown(KeyCode.R)) {
+			
+		}
+
+		Vector3 pos = new Vector3(0, 0, 0);
 
 		if (UIManager.tool == Tool.BLOCK && UIManager.canInteract()) {
 			Vector3 hit = UIManager.raycast();
-			newPos = new Vector3(Mathf.Floor(hit.x), Mathf.Floor(hit.y), Mathf.Floor(hit.z)) + offset;
+			pos = new Vector3(Mathf.Floor(hit.x), Mathf.Floor(hit.y), Mathf.Floor(hit.z)) + offset;
 
 			if (Input.GetMouseButton(0)) {
 				world.SetBlock((int) hit.x, (int) hit.y, (int) hit.z, block);
@@ -37,7 +43,8 @@ public class Cursor : MonoBehaviour {
 			}
 		}
 
-		transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime * smooth);
+		transform.position = Vector3.Lerp(transform.position, pos, Time.deltaTime * smooth);
+		transform.rotation = Quaternion.Euler(Vector3.Lerp(transform.rotation.eulerAngles, rotation, Time.deltaTime * smooth));
 		clampPos();
 	}
 
