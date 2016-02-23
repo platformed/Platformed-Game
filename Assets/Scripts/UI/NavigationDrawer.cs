@@ -5,14 +5,22 @@ using System.Collections;
 public class NavigationDrawer : MonoBehaviour {
 	public GameObject navDrawer;
 	public GameObject rightShadow;
+	public Transform windowCanvas;
 	public Image shadow;
 	float shadowValue;
 
 	private Animator anim;
 
+	GameObject aboutDialogPrefab;
+
+	GameObject aboutDialog;
+	GameObject settingsDialoge;
+
 	void Start () {
 		anim = navDrawer.GetComponent<Animator>();
-	}
+
+		aboutDialogPrefab = Resources.Load("UI/Dialog/About Dialog") as GameObject;
+    }
 	
 	void Update () {
 		if (shadow != null) {
@@ -20,47 +28,57 @@ public class NavigationDrawer : MonoBehaviour {
 		}
 	}
 
-	public void showDrawer() {
+	public void ShowDrawer() {
 		anim.Play("NavDrawerSlideIn");
 		shadowValue = 0.5f;
 		rightShadow.SetActive(true);
+
+		shadow.GetComponent<CanvasGroup>().blocksRaycasts = true;
+		UIManager.NavDrawerEnabled(true);
 	}
 
-	public void hideDrawer() {
+	public void HideDrawer() {
 		anim.Play("NavDrawerSlideOut");
 		shadowValue = 0f;
 		rightShadow.SetActive(false);
+
+		shadow.GetComponent<CanvasGroup>().blocksRaycasts = false;
+		UIManager.NavDrawerEnabled(false);
 	}
 
-	void loadScene(string s) {
+	void LoadScene(string s) {
 		UIManager.loadScene(s);
 		//hideDrawer();
 	}
 
-	public void home() {
-		hideDrawer();
-		loadScene("main-menu");
+	public void Home() {
+		HideDrawer();
+		LoadScene("main-menu");
 	}
 
-	public void design() {
-		hideDrawer();
-		loadScene("level");
+	public void Design() {
+		HideDrawer();
+		LoadScene("level");
 	}
 
-	public void play() {
-		hideDrawer();
-		loadScene("level-browser");
+	public void Play() {
+		HideDrawer();
+		LoadScene("level-browser");
 	}
 
-	public void quit() {
+	public void Quit() {
 		Application.Quit();
 	}
 
-	public void settings() {
+	public void Settings() {
 
 	}
 
-	public void about() {
-
+	public void About() {
+		if (aboutDialog == null) {
+			aboutDialog = Instantiate(aboutDialogPrefab, new Vector3(Screen.width / 2f, Screen.height / 2f), Quaternion.identity) as GameObject;
+			aboutDialog.transform.SetParent(transform.parent);
+			aboutDialog.transform.SetAsLastSibling();
+		}
 	}
 }

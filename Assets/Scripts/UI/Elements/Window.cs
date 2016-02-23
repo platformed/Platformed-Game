@@ -45,11 +45,11 @@ public class Window : MonoBehaviour {
 	public void startDrag(){
 		windowPanel.transform.SetAsLastSibling();
 		mouseOffset = transform.position - Input.mousePosition;
-		UIManager.isDraging = true;
+		UIManager.isDragging = true;
 	}
 
 	public void stopDrag(){
-		UIManager.isDraging = false;
+		UIManager.isDragging = false;
 	}
 
 	public void drag(){
