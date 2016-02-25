@@ -2309,7 +2309,7 @@ Canvas:
   m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
-  m_PixelPerfect: 1
+  m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -2422,22 +2422,10 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 11403078, guid: 7c0fa0d81a2b12a4f815033d54dd244a, type: 2}
-      propertyPath: m_Color.r
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11403078, guid: 7c0fa0d81a2b12a4f815033d54dd244a, type: 2}
-      propertyPath: m_Color.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11403078, guid: 7c0fa0d81a2b12a4f815033d54dd244a, type: 2}
-      propertyPath: m_Color.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 22563974, guid: 7c0fa0d81a2b12a4f815033d54dd244a, type: 2}
-      propertyPath: m_BlocksRaycasts
-      value: 0
-      objectReference: {fileID: 0}
+    - target: {fileID: 11480928, guid: 7c0fa0d81a2b12a4f815033d54dd244a, type: 2}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1480465734}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7c0fa0d81a2b12a4f815033d54dd244a, type: 2}
   m_IsPrefabParent: 0
@@ -3559,40 +3547,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1558557175}
---- !u!1 &1598361707 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 160022, guid: 7c0fa0d81a2b12a4f815033d54dd244a, type: 2}
-  m_PrefabInternal: {fileID: 1125811746}
---- !u!114 &1598361708
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1598361707}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 4
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1480465734}
-          m_MethodName: HideDrawer
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
-        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  delegates: []
 --- !u!224 &1705566275 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 22401672, guid: f7b0af81fe5e26e4caf8f05eea37bbf5,

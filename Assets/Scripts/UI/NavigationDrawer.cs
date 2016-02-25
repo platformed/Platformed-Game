@@ -12,15 +12,17 @@ public class NavigationDrawer : MonoBehaviour {
 	private Animator anim;
 
 	GameObject aboutDialogPrefab;
+	GameObject settingsDialogPrefab;
 
 	GameObject aboutDialog;
-	GameObject settingsDialoge;
+	GameObject settingsDialog;
 
 	void Start () {
 		anim = navDrawer.GetComponent<Animator>();
 
 		aboutDialogPrefab = Resources.Load("UI/Dialog/About Dialog") as GameObject;
-    }
+		settingsDialogPrefab = Resources.Load("UI/Dialog/Settings Dialog") as GameObject;
+	}
 	
 	void Update () {
 		if (shadow != null) {
@@ -71,7 +73,11 @@ public class NavigationDrawer : MonoBehaviour {
 	}
 
 	public void Settings() {
-
+		if (settingsDialog == null) {
+			settingsDialog = Instantiate(settingsDialogPrefab, new Vector3(Screen.width / 2f, Screen.height / 2f), Quaternion.identity) as GameObject;
+			settingsDialog.transform.SetParent(transform.parent);
+			settingsDialog.transform.SetAsLastSibling();
+		}
 	}
 
 	public void About() {
