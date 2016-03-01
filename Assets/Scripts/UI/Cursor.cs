@@ -28,7 +28,7 @@ public class Cursor : MonoBehaviour {
 			
 		}
 
-		Vector3 pos = new Vector3(0, 0, 0);
+		Vector3 pos = transform.position;
 
 		if (UIManager.tool == Tool.BLOCK && UIManager.canInteract()) {
 			Vector3 hit = UIManager.raycast();
@@ -82,6 +82,9 @@ public class Cursor : MonoBehaviour {
 		if (transform.position.z > size) {
 			renderer.enabled = false;
 			//transform.position = new Vector3(transform.position.x, transform.position.y, size);
+		}
+		if (!UIManager.canInteract()) {
+			renderer.enabled = false;
 		}
 	}
 }

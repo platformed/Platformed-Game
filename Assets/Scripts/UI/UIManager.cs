@@ -7,12 +7,11 @@ public class UIManager : MonoBehaviour {
 	public static Tool tool = Tool.BLOCK;
 	public Transform blockLibrary;
 	public static GameObject world;
-	public static bool isDraging = false;
+	public static bool isDragging = false;
 	public static Gamemode gamemode = Gamemode.DESIGN;
 	public static string scene;
 	public static GameObject tooltip;
-
-	//Temporary
+	
 	public static int worldSize = 100;
 
 	public static int lives = 3;
@@ -30,6 +29,7 @@ public class UIManager : MonoBehaviour {
 	public GameObject selectBox;
 
 	static bool mouseOverWindow = false;
+	static bool navDrawerEnabled = false;
 
 	Animator anim;
 
@@ -47,7 +47,7 @@ public class UIManager : MonoBehaviour {
 		world = GameObject.Find("World");
 
 		//Get tooltip
-		tooltip = Resources.Load("UI Elements/Tooltip") as GameObject;
+		tooltip = Resources.Load("UI/Toolbar/Tooltip") as GameObject;
 	}
 
 	void Update() {
@@ -107,21 +107,27 @@ public class UIManager : MonoBehaviour {
 
 	//Returns weather the user can interact with the level
 	public static bool canInteract() {
-		if (isDraging)
+		if (isDragging)
 			return false;
 		if (Input.mousePosition.y > Screen.height - 64 || Input.mousePosition.x > Screen.width - 200)
 			return false;
 		if (mouseOverWindow)
 			return false;
+		if (navDrawerEnabled)
+			return false;
 		return true;
 	}
 
-	public void pointerEnter() {
+	public static void pointerEnter() {
 		mouseOverWindow = true;
 	}
 
-	public void pointerExit() {
+	public static void pointerExit() {
 		mouseOverWindow = false;
+	}
+
+	public static void NavDrawerEnabled(bool b) {
+		navDrawerEnabled = b;
 	}
 
 	public static string getTime() {

@@ -490,6 +490,14 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 11480928, guid: 7c0fa0d81a2b12a4f815033d54dd244a, type: 2}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 614180670}
+    - target: {fileID: 11480928, guid: 7c0fa0d81a2b12a4f815033d54dd244a, type: 2}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HideDrawer
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7c0fa0d81a2b12a4f815033d54dd244a, type: 2}
   m_IsPrefabParent: 0
@@ -660,7 +668,7 @@ Prefab:
       objectReference: {fileID: 614180670}
     - target: {fileID: 11457214, guid: f7b0af81fe5e26e4caf8f05eea37bbf5, type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: showDrawer
+      value: ShowDrawer
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f7b0af81fe5e26e4caf8f05eea37bbf5, type: 2}
