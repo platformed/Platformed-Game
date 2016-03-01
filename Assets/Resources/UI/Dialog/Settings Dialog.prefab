@@ -334,6 +334,7 @@ GameObject:
   - 114: {fileID: 11430056}
   - 114: {fileID: 11433348}
   - 114: {fileID: 11435724}
+  - 114: {fileID: 11487670}
   m_Layer: 5
   m_Name: Settings Dialog
   m_TagString: Untagged
@@ -2294,6 +2295,18 @@ MonoBehaviour:
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   delegates: []
+--- !u!114 &11487670
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 149894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7e5c45b1dfc12c43ae390fac23980f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemPanel: {fileID: 22461306}
 --- !u!114 &11487742
 MonoBehaviour:
   m_ObjectHideFlags: 1
