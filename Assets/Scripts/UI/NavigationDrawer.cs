@@ -68,6 +68,11 @@ public class NavigationDrawer : MonoBehaviour {
 		LoadScene("level-browser");
 	}
 
+	public void TextureCreator() {
+		HideDrawer();
+		LoadScene("block-editor");
+	}
+
 	public void Quit() {
 		Application.Quit();
 	}
