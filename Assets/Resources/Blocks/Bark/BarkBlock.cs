@@ -5,5 +5,6 @@ public class BarkBlock : Block {
 	public BarkBlock() {
 		name = "Bark";
 		displayName = "Bark";
+		blockType = BlockType.Model;
 	}
 }

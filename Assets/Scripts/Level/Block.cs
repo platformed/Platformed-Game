@@ -12,9 +12,15 @@ public class Block {
 	protected Rect uv;
 	public int textureID;
 
+	byte rotation = 0;
+
 	//Base block constructor
 	public Block() {
 
+	}
+
+	public Block Copy() {
+		return (Block) MemberwiseClone();
 	}
 
 	/// <summary>
@@ -61,7 +67,7 @@ public class Block {
 
 			//Add the verticies, triangles, and uvs
 			data.AddTriangles(mesh.triangles, submesh);
-			data.AddVertices(mesh.vertices, mesh.normals, new Vector3(x, y - 0.5f, z), Quaternion.Euler(-90, 0, 0));
+			data.AddVertices(mesh.vertices, mesh.normals, new Vector3(x, y - 0.5f, z), Quaternion.Euler(-90, 90 * rotation, 0));
 			data.AddUVs(mesh.uv);
 
 			return data;
@@ -188,6 +194,18 @@ public class Block {
 		} else {
 			return false;
 		}
+	}
+
+	/// <summary>
+	/// Rotates the block in 90 degree increments on the y axis
+	/// </summary>
+	/// <param name="amount">The amount of 90 degree increments to rotate the block</param>
+	public void Rotate(byte amount) {
+		//Add the rotation
+		rotation += amount;
+
+		//Loop the rotation around 4
+		rotation %= 4;
 	}
 }
 
