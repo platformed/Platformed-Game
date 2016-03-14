@@ -6,9 +6,12 @@ using UnityEngine;
 /// </summary>
 public class Cursor : MonoBehaviour {
 	Vector3 offset = new Vector3(0.5f, 0.5f, 0.5f);
-	float smooth = 30f;
+	float smoothPos = 30f;
+	float smoothRot = 20f;
 	public World world;
+
 	public static Block block;
+	byte rotation;
 
 	new MeshRenderer renderer;
 	MeshFilter filter;
@@ -33,7 +36,9 @@ public class Cursor : MonoBehaviour {
 			pos = new Vector3(Mathf.Floor(hit.x), Mathf.Floor(hit.y), Mathf.Floor(hit.z)) + offset;
 
 			if (Input.GetMouseButton(0)) {
+				block.SetRotation(rotation);
 				world.SetBlock((int) hit.x, (int) hit.y, (int) hit.z, block.Copy());
+				block.SetRotation(0);
 			}
 
 			if (Input.GetMouseButton(1)) {
@@ -41,12 +46,13 @@ public class Cursor : MonoBehaviour {
 			}
 		}
 
-		transform.position = Vector3.Lerp(transform.position, pos, Time.deltaTime * smooth);
+		transform.position = Vector3.Lerp(transform.position, pos, Time.deltaTime * smoothPos);
+		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 90 * rotation, 0), Time.deltaTime * smoothRot);
 		clampPos();
 	}
 
 	public void Rotate() {
-		block.Rotate(1);
+		rotation++;
 	}
 
 	void RenderCursor() {

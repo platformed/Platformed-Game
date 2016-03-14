@@ -189,7 +189,7 @@ public class Block {
 		rect.width -= (2f / TextureManager.atlasWidth);
 		rect.height -= (2f / TextureManager.atlasHeight);*/
 
-		/*uvs[0] = new Vector2(rect.x + rect.width, rect.y);					//1, 0
+		/*uvs[0] = new Vector2(rect.x + rect.width, rect.y);				//1, 0
 		uvs[1] = new Vector2(rect.x + rect.width, rect.y + rect.height);	//1, 1
 		uvs[2] = new Vector2(rect.x, rect.y + rect.height);					//0, 1
 		uvs[3] = new Vector2(rect.x, rect.y);								//0, 0
@@ -209,12 +209,12 @@ public class Block {
 	}
 
 	/// <summary>
-	/// Rotates the block in 90 degree increments on the y axis
+	/// Sets thg the block's rotation by 90 degree increments on the y axis
 	/// </summary>
-	/// <param name="amount">The amount of 90 degree increments to rotate the block</param>
-	public void Rotate(byte amount) {
+	/// <param name="rot">The value to rotate to</param>
+	public void SetRotation(byte rot) {
 		//Add the rotation
-		rotation += amount;
+		rotation = rot;
 
 		//Loop the rotation around 4
 		rotation %= 4;
