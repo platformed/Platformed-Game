@@ -23,7 +23,7 @@ public class Cursor : MonoBehaviour {
 		RenderCursor();
 
 		if (Input.GetKeyDown(KeyCode.R)) {
-			block.Rotate(1);
+			Rotate();
 		}
 
 		Vector3 pos = transform.position;
@@ -43,6 +43,10 @@ public class Cursor : MonoBehaviour {
 
 		transform.position = Vector3.Lerp(transform.position, pos, Time.deltaTime * smooth);
 		clampPos();
+	}
+
+	public void Rotate() {
+		block.Rotate(1);
 	}
 
 	void RenderCursor() {

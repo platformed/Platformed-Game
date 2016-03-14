@@ -20,10 +20,15 @@ public class BlockManager : MonoBehaviour {
 	void AddBlocks() {
 		AddBlock(new AirBlock());
 		AddBlock(new BricksBlock());
-		AddBlock(new BarkBlock());
-		AddBlock(new WoodBlock());
-		AddBlock(new LeavesBlock());
-		AddBlock(new GrassBlock());
+		AddBlock(new CrateBlock());
+		AddBlock(new DirtWallBlock());
+		AddBlock(new GrassFloorBlock());
+		AddBlock(new StoneFloorBlock());
+		AddBlock(new TempleFloor());
+		//AddBlock(new BarkBlock());
+		//AddBlock(new WoodBlock());
+		//AddBlock(new LeavesBlock());
+		//AddBlock(new GrassBlock());
 	}
 
 	/// <summary>

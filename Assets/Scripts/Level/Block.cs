@@ -154,7 +154,19 @@ public class Block {
 	}
 	
 	public virtual Vector2[] FaceUVs(Direction direction) {
-		return new Vector2[] { new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1), new Vector2(0, 0) };
+		//Rotate the top and bottom face of the block
+		if(direction == Direction.Up || direction == Direction.Down) {
+			Vector2[] uvs = new Vector2[] { new Vector2(1, 1), new Vector2(1, 0), new Vector2(0, 0), new Vector2(0, 1) };
+
+			Vector2[] rotatedUvs = new Vector2[4];
+            for (int i = 0; i < 4; i++) {
+				rotatedUvs[i] = uvs[(i + 4 - rotation) % 4];
+			}
+
+			return rotatedUvs;
+		}
+
+		return new Vector2[] { new Vector2(1, 1), new Vector2(1, 0), new Vector2(0, 0), new Vector2(0, 1) };
 
 		/*
 		I'm currently using a texture atlas for the textures,
