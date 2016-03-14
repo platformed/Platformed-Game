@@ -56,10 +56,6 @@ public class ToolbarManager : MonoBehaviour {
 		//setTool(1);
 	}
 
-	public void rotateBlock() {
-
-	}
-
 	public void blockProperties() {
 
 	}

@@ -5,8 +5,6 @@ using UnityEngine;
 /// A cursor that shows where you are placing blocks
 /// </summary>
 public class Cursor : MonoBehaviour {
-	Vector3 rotation = Vector3.zero;
-
 	Vector3 offset = new Vector3(0.5f, 0.5f, 0.5f);
 	float smooth = 30f;
 	public World world;
@@ -25,7 +23,7 @@ public class Cursor : MonoBehaviour {
 		RenderCursor();
 
 		if (Input.GetKeyDown(KeyCode.R)) {
-			
+			Rotate();
 		}
 
 		Vector3 pos = transform.position;
@@ -35,7 +33,7 @@ public class Cursor : MonoBehaviour {
 			pos = new Vector3(Mathf.Floor(hit.x), Mathf.Floor(hit.y), Mathf.Floor(hit.z)) + offset;
 
 			if (Input.GetMouseButton(0)) {
-				world.SetBlock((int) hit.x, (int) hit.y, (int) hit.z, block);
+				world.SetBlock((int) hit.x, (int) hit.y, (int) hit.z, block.Copy());
 			}
 
 			if (Input.GetMouseButton(1)) {
@@ -44,8 +42,11 @@ public class Cursor : MonoBehaviour {
 		}
 
 		transform.position = Vector3.Lerp(transform.position, pos, Time.deltaTime * smooth);
-		transform.rotation = Quaternion.Euler(Vector3.Lerp(transform.rotation.eulerAngles, rotation, Time.deltaTime * smooth));
 		clampPos();
+	}
+
+	public void Rotate() {
+		block.Rotate(1);
 	}
 
 	void RenderCursor() {

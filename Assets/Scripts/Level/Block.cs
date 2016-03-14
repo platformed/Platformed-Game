@@ -12,9 +12,15 @@ public class Block {
 	protected Rect uv;
 	public int textureID;
 
+	byte rotation = 0;
+
 	//Base block constructor
 	public Block() {
 
+	}
+
+	public Block Copy() {
+		return (Block) MemberwiseClone();
 	}
 
 	/// <summary>
@@ -61,7 +67,7 @@ public class Block {
 
 			//Add the verticies, triangles, and uvs
 			data.AddTriangles(mesh.triangles, submesh);
-			data.AddVertices(mesh.vertices, mesh.normals, new Vector3(x, y - 0.5f, z), Quaternion.Euler(-90, 0, 0));
+			data.AddVertices(mesh.vertices, mesh.normals, new Vector3(x, y - 0.5f, z), Quaternion.Euler(-90, 90 * rotation, 0));
 			data.AddUVs(mesh.uv);
 
 			return data;
@@ -148,7 +154,19 @@ public class Block {
 	}
 	
 	public virtual Vector2[] FaceUVs(Direction direction) {
-		return new Vector2[] { new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1), new Vector2(0, 0) };
+		//Rotate the top and bottom face of the block
+		if(direction == Direction.Up || direction == Direction.Down) {
+			Vector2[] uvs = new Vector2[] { new Vector2(1, 1), new Vector2(1, 0), new Vector2(0, 0), new Vector2(0, 1) };
+
+			Vector2[] rotatedUvs = new Vector2[4];
+            for (int i = 0; i < 4; i++) {
+				rotatedUvs[i] = uvs[(i + 4 - rotation) % 4];
+			}
+
+			return rotatedUvs;
+		}
+
+		return new Vector2[] { new Vector2(1, 1), new Vector2(1, 0), new Vector2(0, 0), new Vector2(0, 1) };
 
 		/*
 		I'm currently using a texture atlas for the textures,
@@ -188,6 +206,18 @@ public class Block {
 		} else {
 			return false;
 		}
+	}
+
+	/// <summary>
+	/// Rotates the block in 90 degree increments on the y axis
+	/// </summary>
+	/// <param name="amount">The amount of 90 degree increments to rotate the block</param>
+	public void Rotate(byte amount) {
+		//Add the rotation
+		rotation += amount;
+
+		//Loop the rotation around 4
+		rotation %= 4;
 	}
 }
 
