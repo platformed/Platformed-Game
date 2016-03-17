@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class Select : MonoBehaviour {
+	public World world;
 	Vector3 pos1;
 	Vector3 pos2;
 	const float offset = 0.01f;
@@ -16,11 +17,16 @@ public class Select : MonoBehaviour {
 			}
 		}
 
+		if (Input.GetKeyDown(KeyCode.C) && UIManager.canInteract()) {
+			Cursor.block = Copy();
+			UIManager.tool = Tool.BLOCK;
+		}
+
 		Render();
 	}
 
 	void Render() {
-		transform.position = new Vector3((pos1.x + pos2.x) / 2, (pos1.y + pos2.y) / 2, (pos1.z + pos2.z) / 2);
+		transform.position = new Vector3((pos1.x + pos2.x) / 2 + 0.5f, (pos1.y + pos2.y) / 2 + 0.5f, (pos1.z + pos2.z) / 2 + 0.5f);
 
 		float x = pos2.x - pos1.x;
 		float y = pos2.y - pos1.y;
@@ -49,6 +55,52 @@ public class Select : MonoBehaviour {
 	}
 
 	Vector3 Round(Vector3 v) {
-		return new Vector3((int)v.x + 0.5f, (int)v.y + 0.5f, (int)v.z + 0.5f);
+		return new Vector3((int)v.x, (int)v.y, (int)v.z);
+	}
+
+	Block[,,] Copy() {
+		Block[,,] blocks;
+
+		Vector3 p1;
+		Vector3 p2;
+
+		if (pos1.x < pos2.x) {
+			p1.x = pos1.x;
+			p2.x = pos2.x;
+		} else {
+			p1.x = pos2.x;
+			p2.x = pos1.x;
+		}
+
+		if (pos1.y < pos2.y) {
+			p1.y = pos1.y;
+			p2.y = pos2.y;
+		} else {
+			p1.y = pos2.y;
+			p2.y = pos1.y;
+		}
+
+		if (pos1.z < pos2.z) {
+			p1.z = pos1.z;
+			p2.z = pos2.z;
+		} else {
+			p1.z = pos2.z;
+			p2.z = pos1.z;
+		}
+		
+		p2 += Vector3.one;
+
+		blocks = new Block[(int) (p2.x - p1.x), (int) (p2.y - p1.y), (int) (p2.z - p1.z)];
+
+		for (int x = (int)p1.x; x < (int)p2.x; x++) {
+			for (int y = (int)p1.y; y < (int)p2.y; y++) {
+				for (int z = (int)p1.z; z < (int)p2.z; z++) {
+					blocks[(int) (x - p1.x), (int) (y - p1.y), (int) (z - p1.z)] = world.GetBlock(x, y, z).Copy();
+				}
+			}
+		}
+
+		//Debug.Log("Copied block array of " + new Vector3((int)(p2.x - p1.x), (int)(p2.y - p1.y), (int)(p2.z - p1.z)).ToString());
+		return blocks;
 	}
 }

@@ -102,7 +102,7 @@ public class UIManager : MonoBehaviour {
 
 	public static void setToolBlock(string name) {
 		tool = Tool.BLOCK;
-		Cursor.block = BlockManager.GetBlock(name);
+		Cursor.block = new Block[,,] { { { BlockManager.GetBlock(name) } } };
 	}
 
 	//Returns weather the user can interact with the level
