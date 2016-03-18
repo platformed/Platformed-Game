@@ -18,6 +18,7 @@ public class BlockManager : MonoBehaviour {
 	}
 
 	void AddBlocks() {
+		blocks.Clear();
 		AddBlock(new AirBlock());
 		AddBlock(new BricksBlock());
 		AddBlock(new CrateBlock());
