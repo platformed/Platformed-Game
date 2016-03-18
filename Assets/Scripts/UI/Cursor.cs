@@ -6,13 +6,12 @@ using UnityEngine;
 /// A cursor that shows where you are placing blocks
 /// </summary>
 public class Cursor : MonoBehaviour {
-	Vector3 offset = new Vector3(0.5f, 0.5f, 0.5f);
 	float smoothPos = 30f;
-	float smoothRot = 20f;
+	float smoothRot = 1f;
 	public World world;
 
 	public static Block[,,] block;
-	byte rotation;
+	public static Vector3 offset = Vector3.zero;
 
 	new MeshRenderer renderer;
 	MeshFilter filter;
@@ -26,8 +25,6 @@ public class Cursor : MonoBehaviour {
 	}
 
 	void Update() {
-		RenderCursor();
-
 		if (Input.GetKeyDown(KeyCode.R)) {
 			Rotate();
 		}
@@ -36,17 +33,14 @@ public class Cursor : MonoBehaviour {
 
 		if (UIManager.tool == Tool.BLOCK && UIManager.canInteract()) {
 			Vector3 hit = UIManager.raycast();
-			pos = new Vector3(Mathf.Floor(hit.x), Mathf.Floor(hit.y), Mathf.Floor(hit.z)) + offset;
+			pos = new Vector3(Mathf.Floor(hit.x), Mathf.Floor(hit.y), Mathf.Floor(hit.z)) + new Vector3(0.5f, 0.5f, 0.5f);
 
 			if (Input.GetMouseButton(0)) {
-				//block.SetRotation(rotation);
-				//world.SetBlock((int)hit.x, (int)hit.y, (int)hit.z, block[0, 0, 0].Copy());
-				//block.SetRotation(0);
 				for (int x = 0; x < block.GetLength(0); x++) {
 					for (int y = 0; y < block.GetLength(1); y++) {
 						for (int z = 0; z < block.GetLength(2); z++) {
 							if (block[x, y, z].GetName() != "Air") {
-								world.SetBlock((int)hit.x + x, (int)hit.y + y, (int)hit.z + z, block[x, y, z].Copy());
+								world.SetBlock((int)(hit.x + x - offset.x), (int)(hit.y + y - offset.y), (int)(hit.z + z - offset.z), block[x, y, z].Copy());
 							}
 						}
 					}
@@ -59,32 +53,34 @@ public class Cursor : MonoBehaviour {
 		}
 
 		transform.position = Vector3.Lerp(transform.position, pos, Time.deltaTime * smoothPos);
-		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 90 * rotation, 0), Time.deltaTime * smoothRot);
-		clampPos();
+		//transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, 0), Time.deltaTime * smoothRot);
+
+		RenderCursor();
+
+		CheckVisibility();
 	}
 
 	public void Rotate() {
 		Block[,,] rotatedBlocks = new Block[block.GetLength(2), block.GetLength(1), block.GetLength(0)];
 
-		//Transpose
 		for (int x = 0; x < block.GetLength(0); x++) {
 			for (int y = 0; y < block.GetLength(1); y++) {
 				for (int z = 0; z < block.GetLength(2); z++) {
 					rotatedBlocks[z, y, x] = block[block.GetLength(0) - x - 1, y, z];
+					rotatedBlocks[z, y, x].Rotate(1);
 				}
 			}
 		}
 
-		
-
-		//Flip
-		/*for (int x = 0; x < rotatedBlocks.GetLength(0); x++) {
-			for (int y = 0; y < rotatedBlocks.GetLength(1); y++) {
-				Array.Reverse(rotatedBlocks);
-			}
-		}*/
-
 		block = rotatedBlocks;
+
+		//offset = new Vector3(offset.z, offset.y,offset.x);
+		//transform.Rotate(0, -90, 0);
+	}
+
+	public void Copy(Block[,,] blocks, Vector3 offset) {
+		block = blocks;
+		Cursor.offset = offset;
 	}
 
 	void RenderCursor() {
@@ -104,7 +100,7 @@ public class Cursor : MonoBehaviour {
 							submesh = blockTypes.Count - 1;
 						}
 
-						data = block[x, y, z].BlockData(null, x, y, z, data, submesh, true);
+						data = block[x, y, z].BlockData(null, (int)(x - offset.x), (int)(y - offset.y), (int)(z - offset.z), data, submesh, true);
 					}
 				}
 			}
@@ -134,10 +130,14 @@ public class Cursor : MonoBehaviour {
 		renderer.materials = materials;
 	}
 
-	void clampPos() {
+	void CheckVisibility() {
 		float size = UIManager.worldSize;
 
 		renderer.enabled = true;
+
+		if(UIManager.tool != Tool.BLOCK) {
+			renderer.enabled = false;
+		}
 
 		if (transform.position.x < 0) {
 			renderer.enabled = false;

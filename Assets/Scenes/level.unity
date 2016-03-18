@@ -142,6 +142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   world: {fileID: 29766814}
+  cursor: {fileID: 1308866128}
 --- !u!33 &10135439
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1826,7 +1827,7 @@ GameObject:
   - 222: {fileID: 960325772}
   - 114: {fileID: 960325771}
   m_Layer: 5
-  m_Name: Theme Selector Shadow
+  m_Name: Category Selector Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2128,7 +2129,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Theme
+  m_Text: Category
 --- !u!222 &1013169920
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3917,7 +3918,7 @@ GameObject:
   - 114: {fileID: 1955574038}
   - 114: {fileID: 1955574037}
   m_Layer: 5
-  m_Name: ThemeSelector
+  m_Name: Category Selector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

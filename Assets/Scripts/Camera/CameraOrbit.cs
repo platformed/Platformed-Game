@@ -58,7 +58,7 @@ public class CameraOrbit : MonoBehaviour {
 		}
 
 		//Clamp rotation
-		y = Mathf.Clamp(y, -90f, 90f);
+		y = Mathf.Clamp(y, -89.9f, 89.9f);
 
 		//Smooth rotation
 		smoothX = Mathf.Lerp(smoothX, x, Time.deltaTime * 20);

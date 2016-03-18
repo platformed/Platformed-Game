@@ -209,12 +209,12 @@ public class Block {
 	}
 
 	/// <summary>
-	/// Sets thg the block's rotation by 90 degree increments on the y axis
+	/// Changes the block's rotation by 90 degree increments on the y axis
 	/// </summary>
-	/// <param name="rot">The value to rotate to</param>
-	public void SetRotation(byte rot) {
+	/// <param name="rot">The amount to rotate</param>
+	public void Rotate(byte rot) {
 		//Add the rotation
-		rotation = rot;
+		rotation += rot;
 
 		//Loop the rotation around 4
 		rotation %= 4;
