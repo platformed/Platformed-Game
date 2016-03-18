@@ -160,8 +160,9 @@ public class UIManager : MonoBehaviour {
 
 	//Puts the game into the loading screen to load a level
 	public static void loadScene(string s) {
-		scene = s;
-		SceneManager.LoadScene("loading-screen");
+		//scene = s;
+		//SceneManager.LoadScene("loading-screen");
+		SceneManager.LoadSceneAsync(s);
 	}
 }
 

@@ -7,20 +7,20 @@ using UnityEngine;
 /// </summary>
 public class Cursor : MonoBehaviour {
 	float smoothPos = 30f;
-	float smoothRot = 1f;
+	//float smoothRot = 1f;
 	public World world;
 
 	public static Block[,,] block;
 	public static Vector3 offset = Vector3.zero;
 
-	new MeshRenderer renderer;
+	MeshRenderer meshRenderer;
 	MeshFilter filter;
 
 	List<string> blockTypes = new List<string>();
 
 	void Start() {
 		block = new Block[,,] { { { new BricksBlock() } } };
-		renderer = GetComponent<MeshRenderer>();
+		meshRenderer = GetComponent<MeshRenderer>();
 		filter = GetComponent<MeshFilter>();
 	}
 
@@ -35,7 +35,7 @@ public class Cursor : MonoBehaviour {
 			Vector3 hit = UIManager.raycast();
 			pos = new Vector3(Mathf.Floor(hit.x), Mathf.Floor(hit.y), Mathf.Floor(hit.z)) + new Vector3(0.5f, 0.5f, 0.5f);
 
-			if (Input.GetMouseButton(0)) {
+			if ((Input.GetMouseButton(0) && block.GetLength(0) == 1 && block.GetLength(1) == 1 && block.GetLength(2) == 1) || Input.GetMouseButtonDown(0)) {
 				for (int x = 0; x < block.GetLength(0); x++) {
 					for (int y = 0; y < block.GetLength(1); y++) {
 						for (int z = 0; z < block.GetLength(2); z++) {
@@ -127,37 +127,33 @@ public class Cursor : MonoBehaviour {
 		for (int i = 0; i < materials.Length; i++) {
 			materials[i] = Resources.Load("Blocks/" + blockTypes[i] + "/" + blockTypes[i] + "Material") as Material;
 		}
-		renderer.materials = materials;
+		meshRenderer.materials = materials;
 	}
 
 	void CheckVisibility() {
 		float size = UIManager.worldSize;
 
-		renderer.enabled = true;
+		meshRenderer.enabled = true;
 
 		if(UIManager.tool != Tool.BLOCK) {
-			renderer.enabled = false;
+			meshRenderer.enabled = false;
 		}
 
 		if (transform.position.x < 0) {
-			renderer.enabled = false;
-			//transform.position = new Vector3(0.5f, transform.position.y, transform.position.z);
+			meshRenderer.enabled = false;
 		}
 		if (transform.position.x > size) {
-			renderer.enabled = false;
-			//transform.position = new Vector3(size, transform.position.y, transform.position.z);
+			meshRenderer.enabled = false;
 		}
 
 		if (transform.position.z < 0) {
-			renderer.enabled = false;
-			//transform.position = new Vector3(transform.position.x, transform.position.y, 0.5f);
+			meshRenderer.enabled = false;
 		}
 		if (transform.position.z > size) {
-			renderer.enabled = false;
-			//transform.position = new Vector3(transform.position.x, transform.position.y, size);
+			meshRenderer.enabled = false;
 		}
 		if (!UIManager.canInteract()) {
-			renderer.enabled = false;
+			meshRenderer.enabled = false;
 		}
 	}
 }

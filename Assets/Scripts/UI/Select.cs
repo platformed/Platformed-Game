@@ -20,7 +20,6 @@ public class Select : MonoBehaviour {
 
 		if (Input.GetKeyDown(KeyCode.C) && UIManager.canInteract()) {
 			Copy();
-			UIManager.tool = Tool.BLOCK;
 		}
 
 		Render();
@@ -59,7 +58,7 @@ public class Select : MonoBehaviour {
 		return new Vector3((int)v.x, (int)v.y, (int)v.z);
 	}
 
-	void Copy() {
+	public void Copy() {
 		Block[,,] blocks;
 
 		Vector3 p1;
@@ -104,5 +103,7 @@ public class Select : MonoBehaviour {
 		//Debug.Log("Copied block array of " + new Vector3((int)(p2.x - p1.x), (int)(p2.y - p1.y), (int)(p2.z - p1.z)).ToString());
 		Vector3 offset = UIManager.raycast();
 		cursor.Copy(blocks, new Vector3(Mathf.Floor(offset.x) - p1.x, Mathf.Floor(offset.y) - p1.y, Mathf.Floor(offset.z) - p1.z));
-    }
+
+		UIManager.tool = Tool.BLOCK;
+	}
 }

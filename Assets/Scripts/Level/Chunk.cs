@@ -13,7 +13,7 @@ using System;
 public class Chunk : MonoBehaviour {
 	MeshFilter filter;
 	MeshCollider coll;
-	new MeshRenderer renderer;
+	MeshRenderer meshRenderer;
 
 	Block[ , , ] blocks = new Block[chunkSize, chunkSize, chunkSize];
 	public static int chunkSize = 10;
@@ -29,7 +29,7 @@ public class Chunk : MonoBehaviour {
 	void Start () {
 		filter = GetComponent<MeshFilter>();
 		coll = GetComponent<MeshCollider>();
-		renderer = GetComponent<MeshRenderer>();
+		meshRenderer = GetComponent<MeshRenderer>();
 	}
 	
 	void Update () {
@@ -137,7 +137,7 @@ public class Chunk : MonoBehaviour {
 		for (int i = 0; i < materials.Length; i++) {
 			materials[i] = Resources.Load("Blocks/" + blockTypes[i] + "/" + blockTypes[i] + "Material") as Material;
 		}
-		renderer.materials = materials;
+		meshRenderer.materials = materials;
 
 		//Visualize normals
 		/*for (int i = 0; i < filter.mesh.vertexCount; i++) {
