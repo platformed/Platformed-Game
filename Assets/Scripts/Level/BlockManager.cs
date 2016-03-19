@@ -21,11 +21,12 @@ public class BlockManager : MonoBehaviour {
 		blocks.Clear();
 		AddBlock(new AirBlock());
 		AddBlock(new BricksBlock());
+		AddBlock(new GrayBricksBlock());
 		AddBlock(new CrateBlock());
 		AddBlock(new DirtWallBlock());
 		AddBlock(new GrassFloorBlock());
 		AddBlock(new StoneFloorBlock());
-		AddBlock(new TempleFloor());
+		AddBlock(new TileFloorBlock());
 		//AddBlock(new BarkBlock());
 		//AddBlock(new WoodBlock());
 		//AddBlock(new LeavesBlock());
