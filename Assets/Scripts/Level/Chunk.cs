@@ -103,7 +103,7 @@ public class Chunk : MonoBehaviour {
 							submesh = blockTypes.Count - 1;
 						}
 
-						data = blocks[x, y, z].BlockData(this, x, y, z, data, submesh, false);
+						data = blocks[x, y, z].BlockData(x, y, z, data, submesh, blocks);
 					}
 				}
 			}

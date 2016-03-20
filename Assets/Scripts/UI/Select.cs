@@ -7,6 +7,11 @@ public class Select : MonoBehaviour {
 	Vector3 pos1;
 	Vector3 pos2;
 	const float offset = 0.01f;
+	MeshRenderer meshRenderer;
+
+	void Start() {
+		meshRenderer = GetComponent<MeshRenderer>();
+	}
 
 	void Update() {
 		if (UIManager.tool == Tool.SELECT && UIManager.canInteract()) {
@@ -52,6 +57,12 @@ public class Select : MonoBehaviour {
 		}
 
 		transform.localScale = new Vector3(x, y, z);
+
+		if(UIManager.tool == Tool.SELECT) {
+			meshRenderer.enabled = true;
+		} else {
+			meshRenderer.enabled = false;
+		}
 	}
 
 	Vector3 Round(Vector3 v) {

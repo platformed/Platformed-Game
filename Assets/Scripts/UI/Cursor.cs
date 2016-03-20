@@ -7,16 +7,19 @@ using UnityEngine;
 /// </summary>
 public class Cursor : MonoBehaviour {
 	float smoothPos = 30f;
-	//float smoothRot = 1f;
+	float smoothRot = 20f;
 	public World world;
 
-	public static Block[,,] block;
+	static Block[,,] block;
 	public static Vector3 offset = Vector3.zero;
 
 	MeshRenderer meshRenderer;
 	MeshFilter filter;
 
 	List<string> blockTypes = new List<string>();
+
+	//If the cursor should be updated at the end of the frame
+	static bool update = true;
 
 	void Start() {
 		block = new Block[,,] { { { new BricksBlock() } } };
@@ -53,16 +56,24 @@ public class Cursor : MonoBehaviour {
 		}
 
 		transform.position = Vector3.Lerp(transform.position, pos, Time.deltaTime * smoothPos);
-		//transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, 0), Time.deltaTime * smoothRot);
+		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, 0), Time.deltaTime * smoothRot);
 
-		RenderCursor();
+		if (update) {
+			RenderCursor();
+		}
 
 		CheckVisibility();
+	}
+
+	public static void SetBlock(Block[,,] b) {
+		block = b;
+		update = true;
 	}
 
 	public void Rotate() {
 		Block[,,] rotatedBlocks = new Block[block.GetLength(2), block.GetLength(1), block.GetLength(0)];
 
+		//Rotate
 		for (int x = 0; x < block.GetLength(0); x++) {
 			for (int y = 0; y < block.GetLength(1); y++) {
 				for (int z = 0; z < block.GetLength(2); z++) {
@@ -72,15 +83,20 @@ public class Cursor : MonoBehaviour {
 			}
 		}
 
+		//Fix offset
+		offset = new Vector3(offset.z, offset.y, block.GetLength(0) - offset.x - 1);
+		transform.Rotate(0, -90, 0);
+
 		block = rotatedBlocks;
 
-		//offset = new Vector3(offset.z, offset.y,offset.x);
-		//transform.Rotate(0, -90, 0);
+		update = true;
 	}
 
 	public void Copy(Block[,,] blocks, Vector3 offset) {
 		block = blocks;
 		Cursor.offset = offset;
+
+		update = true;
 	}
 
 	void RenderCursor() {
@@ -100,11 +116,12 @@ public class Cursor : MonoBehaviour {
 							submesh = blockTypes.Count - 1;
 						}
 
-						data = block[x, y, z].BlockData(null, (int)(x - offset.x), (int)(y - offset.y), (int)(z - offset.z), data, submesh, true);
+						data = block[x, y, z].BlockData(x, y, z, data, submesh, block);
 					}
 				}
 			}
 		}
+		data.Offset(-offset);
 
 		//Clear mesh
 		filter.mesh.Clear();
@@ -135,7 +152,7 @@ public class Cursor : MonoBehaviour {
 
 		meshRenderer.enabled = true;
 
-		if(UIManager.tool != Tool.BLOCK) {
+		if (UIManager.tool != Tool.BLOCK) {
 			meshRenderer.enabled = false;
 		}
 

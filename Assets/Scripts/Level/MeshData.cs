@@ -86,4 +86,14 @@ public class MeshData {
 	public void AddUVs(Vector2[] u) {
 		uvs.AddRange(u);
 	}
+
+	/// <summary>
+	/// Offsets the mesh by an amount
+	/// </summary>
+	/// <param name="offset">Amount to offset by</param>
+	public void Offset(Vector3 offset) {
+		for (int i = 0; i < vertices.Count; i++) {
+			vertices[i] += offset;
+		}
+	}
 }
