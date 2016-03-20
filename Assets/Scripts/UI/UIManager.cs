@@ -11,7 +11,7 @@ public class UIManager : MonoBehaviour {
 	public static Gamemode gamemode = Gamemode.DESIGN;
 	public static string scene;
 	public static GameObject tooltip;
-	
+
 	public static int worldSize = 100;
 
 	public static int lives = 3;
@@ -102,19 +102,24 @@ public class UIManager : MonoBehaviour {
 
 	public static void setToolBlock(string name) {
 		tool = Tool.BLOCK;
-		Cursor.block = BlockManager.GetBlock(name);
+		Cursor.SetBlock(new Block[,,] { { { BlockManager.GetBlock(name) } } });
+		Cursor.offset = Vector3.zero;
 	}
 
 	//Returns weather the user can interact with the level
 	public static bool canInteract() {
-		if (isDragging)
+		if (isDragging) {
 			return false;
-		if (Input.mousePosition.y > Screen.height - 64 || Input.mousePosition.x > Screen.width - 200)
+		}
+		if (Input.mousePosition.y > Screen.height - 64 || Input.mousePosition.x > Screen.width - 200) {
 			return false;
-		if (mouseOverWindow)
+		}
+		if (mouseOverWindow) {
 			return false;
-		if (navDrawerEnabled)
+		}
+		if (navDrawerEnabled) {
 			return false;
+		}
 		return true;
 	}
 
@@ -159,8 +164,9 @@ public class UIManager : MonoBehaviour {
 
 	//Puts the game into the loading screen to load a level
 	public static void loadScene(string s) {
-		scene = s;
-		SceneManager.LoadScene("loading-screen");
+		//scene = s;
+		//SceneManager.LoadScene("loading-screen");
+		SceneManager.LoadSceneAsync(s);
 	}
 }
 

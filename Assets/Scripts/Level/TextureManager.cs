@@ -2,7 +2,6 @@
 using System.Collections;
 using System.IO;
 using System.Collections.Generic;
-using UnityEditor;
 
 /*
 I'm currently using a texture atlas for the textures,

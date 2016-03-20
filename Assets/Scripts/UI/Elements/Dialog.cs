@@ -13,6 +13,7 @@ public class Dialog : MonoBehaviour {
 	}
 
 	public void CloseDialog() {
+		UIManager.pointerExit();
 		Destroy(gameObject);
 	}
 

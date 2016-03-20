@@ -1,30 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
 /// A cursor that shows where you are placing blocks
 /// </summary>
 public class Cursor : MonoBehaviour {
-	Vector3 offset = new Vector3(0.5f, 0.5f, 0.5f);
 	float smoothPos = 30f;
 	float smoothRot = 20f;
 	public World world;
 
-	public static Block block;
-	byte rotation;
+	static Block[,,] block;
+	public static Vector3 offset = Vector3.zero;
 
-	new MeshRenderer renderer;
+	MeshRenderer meshRenderer;
 	MeshFilter filter;
 
+	List<string> blockTypes = new List<string>();
+
+	//If the cursor should be updated at the end of the frame
+	static bool update = true;
+
 	void Start() {
-		block = new BricksBlock();
-		renderer = GetComponent<MeshRenderer>();
+		block = new Block[,,] { { { new BricksBlock() } } };
+		meshRenderer = GetComponent<MeshRenderer>();
 		filter = GetComponent<MeshFilter>();
 	}
 
 	void Update() {
-		RenderCursor();
-
 		if (Input.GetKeyDown(KeyCode.R)) {
 			Rotate();
 		}
@@ -33,12 +36,18 @@ public class Cursor : MonoBehaviour {
 
 		if (UIManager.tool == Tool.BLOCK && UIManager.canInteract()) {
 			Vector3 hit = UIManager.raycast();
-			pos = new Vector3(Mathf.Floor(hit.x), Mathf.Floor(hit.y), Mathf.Floor(hit.z)) + offset;
+			pos = new Vector3(Mathf.Floor(hit.x), Mathf.Floor(hit.y), Mathf.Floor(hit.z)) + new Vector3(0.5f, 0.5f, 0.5f);
 
-			if (Input.GetMouseButton(0)) {
-				block.SetRotation(rotation);
-				world.SetBlock((int) hit.x, (int) hit.y, (int) hit.z, block.Copy());
-				block.SetRotation(0);
+			if ((Input.GetMouseButton(0) && block.GetLength(0) == 1 && block.GetLength(1) == 1 && block.GetLength(2) == 1) || Input.GetMouseButtonDown(0)) {
+				for (int x = 0; x < block.GetLength(0); x++) {
+					for (int y = 0; y < block.GetLength(1); y++) {
+						for (int z = 0; z < block.GetLength(2); z++) {
+							if (block[x, y, z].GetName() != "Air") {
+								world.SetBlock((int)(hit.x + x - offset.x), (int)(hit.y + y - offset.y), (int)(hit.z + z - offset.z), block[x, y, z].Copy());
+							}
+						}
+					}
+				}
 			}
 
 			if (Input.GetMouseButton(1)) {
@@ -47,51 +56,121 @@ public class Cursor : MonoBehaviour {
 		}
 
 		transform.position = Vector3.Lerp(transform.position, pos, Time.deltaTime * smoothPos);
-		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 90 * rotation, 0), Time.deltaTime * smoothRot);
-		clampPos();
+		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, 0), Time.deltaTime * smoothRot);
+
+		if (update) {
+			RenderCursor();
+		}
+
+		CheckVisibility();
+	}
+
+	public static void SetBlock(Block[,,] b) {
+		block = b;
+		update = true;
 	}
 
 	public void Rotate() {
-		rotation++;
+		Block[,,] rotatedBlocks = new Block[block.GetLength(2), block.GetLength(1), block.GetLength(0)];
+
+		//Rotate
+		for (int x = 0; x < block.GetLength(0); x++) {
+			for (int y = 0; y < block.GetLength(1); y++) {
+				for (int z = 0; z < block.GetLength(2); z++) {
+					rotatedBlocks[z, y, x] = block[block.GetLength(0) - x - 1, y, z];
+					rotatedBlocks[z, y, x].Rotate(1);
+				}
+			}
+		}
+
+		//Fix offset
+		offset = new Vector3(offset.z, offset.y, block.GetLength(0) - offset.x - 1);
+		transform.Rotate(0, -90, 0);
+
+		block = rotatedBlocks;
+
+		update = true;
+	}
+
+	public void Copy(Block[,,] blocks, Vector3 offset) {
+		block = blocks;
+		Cursor.offset = offset;
+
+		update = true;
 	}
 
 	void RenderCursor() {
 		MeshData data = new MeshData();
-		block.BlockData(null, 0, 0, 0, data, 0, true);
 
+		blockTypes.Clear();
+		for (int x = 0; x < block.GetLength(0); x++) {
+			for (int y = 0; y < block.GetLength(1); y++) {
+				for (int z = 0; z < block.GetLength(2); z++) {
+					if (block[x, y, z].GetName() != "Air") {
+						//Try to find if the block type already exists in chunk
+						int submesh = blockTypes.IndexOf(block[x, y, z].GetName());
+
+						//If there are no blocks with its type, add it
+						if (submesh == -1) {
+							blockTypes.Add(block[x, y, z].GetName());
+							submesh = blockTypes.Count - 1;
+						}
+
+						data = block[x, y, z].BlockData(x, y, z, data, submesh, block);
+					}
+				}
+			}
+		}
+		data.Offset(-offset);
+
+		//Clear mesh
 		filter.mesh.Clear();
+
+		//Verticies
 		filter.mesh.vertices = data.vertices.ToArray();
-		filter.mesh.triangles = data.triangles[0].ToArray();
+
+		//Submeshes
+		filter.mesh.subMeshCount = data.triangles.Count;
+		for (int i = 0; i < data.triangles.Count; i++) {
+			filter.mesh.SetTriangles(data.triangles[i], i);
+		}
+
+		//UVs and normals
 		filter.mesh.uv = data.uvs.ToArray();
 		filter.mesh.normals = data.normals.ToArray();
 
-		renderer.material = Resources.Load("Blocks/" + block.GetName() + "/" + block.GetName() + "Material") as Material;
+		//Materials
+		Material[] materials = new Material[filter.mesh.subMeshCount];
+		for (int i = 0; i < materials.Length; i++) {
+			materials[i] = Resources.Load("Blocks/" + blockTypes[i] + "/" + blockTypes[i] + "Material") as Material;
+		}
+		meshRenderer.materials = materials;
 	}
 
-	void clampPos() {
+	void CheckVisibility() {
 		float size = UIManager.worldSize;
 
-		renderer.enabled = true;
+		meshRenderer.enabled = true;
+
+		if (UIManager.tool != Tool.BLOCK) {
+			meshRenderer.enabled = false;
+		}
 
 		if (transform.position.x < 0) {
-			renderer.enabled = false;
-			//transform.position = new Vector3(0.5f, transform.position.y, transform.position.z);
+			meshRenderer.enabled = false;
 		}
 		if (transform.position.x > size) {
-			renderer.enabled = false;
-			//transform.position = new Vector3(size, transform.position.y, transform.position.z);
+			meshRenderer.enabled = false;
 		}
 
 		if (transform.position.z < 0) {
-			renderer.enabled = false;
-			//transform.position = new Vector3(transform.position.x, transform.position.y, 0.5f);
+			meshRenderer.enabled = false;
 		}
 		if (transform.position.z > size) {
-			renderer.enabled = false;
-			//transform.position = new Vector3(transform.position.x, transform.position.y, size);
+			meshRenderer.enabled = false;
 		}
 		if (!UIManager.canInteract()) {
-			renderer.enabled = false;
+			meshRenderer.enabled = false;
 		}
 	}
 }
