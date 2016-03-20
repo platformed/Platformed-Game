@@ -60,6 +60,7 @@ public class Cursor : MonoBehaviour {
 
 		if (update) {
 			RenderCursor();
+			update = false;
 		}
 
 		CheckVisibility();
