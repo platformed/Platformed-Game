@@ -22,6 +22,8 @@ public class BlockManager : MonoBehaviour {
 		AddBlock(new AirBlock());
 		AddBlock(new BricksBlock());
 		AddBlock(new GrayBricksBlock());
+		AddBlock(new PillarBlock());
+		AddBlock(new CarvedStoneBlock());
 		AddBlock(new CrateBlock());
 		AddBlock(new DirtWallBlock());
 		AddBlock(new GrassFloorBlock());

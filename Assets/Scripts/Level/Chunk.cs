@@ -15,7 +15,7 @@ public class Chunk : MonoBehaviour {
 	MeshCollider coll;
 	MeshRenderer meshRenderer;
 
-	Block[ , , ] blocks = new Block[chunkSize, chunkSize, chunkSize];
+	Block[,,] blocks = new Block[chunkSize, chunkSize, chunkSize];
 	public static int chunkSize = 10;
 
 	public World world;
@@ -25,14 +25,14 @@ public class Chunk : MonoBehaviour {
 	public bool update = true;
 
 	List<string> blockTypes = new List<string>();
-	
-	void Start () {
+
+	void Start() {
 		filter = GetComponent<MeshFilter>();
 		coll = GetComponent<MeshCollider>();
 		meshRenderer = GetComponent<MeshRenderer>();
 	}
-	
-	void Update () {
+
+	void Update() {
 		if (update) {
 			update = false;
 			UpdateChunk();
@@ -62,7 +62,7 @@ public class Chunk : MonoBehaviour {
 	/// <param name="z">Z position of the block</param>
 	/// <returns>The block object</returns>
 	public Block GetBlock(int x, int y, int z) {
-		if(InRange(x) && InRange(y) && InRange(z))
+		if (InRange(x) && InRange(y) && InRange(z))
 			return blocks[x, y, z];
 
 		return new AirBlock();
