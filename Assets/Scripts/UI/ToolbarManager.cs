@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class ToolbarManager : MonoBehaviour {
-	public GameObject selectBox;
+	public Select selectBox;
 	public World world;
 
 	public void setTool(int t) {
@@ -58,6 +58,10 @@ public class ToolbarManager : MonoBehaviour {
 
 	public void blockProperties() {
 
+	}
+
+	public void toggleGrid() {
+		GridRenderer.ToggleGrid();
 	}
 
 	public void playLevel() {
