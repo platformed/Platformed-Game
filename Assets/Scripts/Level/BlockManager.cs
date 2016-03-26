@@ -6,29 +6,31 @@ using System;
 
 public class BlockManager : MonoBehaviour {
 	static List<Block> blocks = new List<Block>();
+	static List<BlockCategory> blockCategories = new List<BlockCategory>();
+	static List<GameObject> blockButtons = new List<GameObject>();
 	public GameObject blockButton;
 	public Transform blockLibrary;
 
-	void Awake() {
-		AddBlocks();
-	}
-
 	void Start() {
-		AddBlockButtons();
+		AddBlocks();
+		UpdateCategory(CategorySelector.category);
 	}
 
 	void AddBlocks() {
 		blocks.Clear();
-		AddBlock(new AirBlock());
-		AddBlock(new BricksBlock());
-		AddBlock(new GrayBricksBlock());
-		AddBlock(new PillarBlock());
-		AddBlock(new CarvedStoneBlock());
-		AddBlock(new CrateBlock());
-		AddBlock(new DirtWallBlock());
-		AddBlock(new GrassFloorBlock());
-		AddBlock(new StoneFloorBlock());
-		AddBlock(new TileFloorBlock());
+		blockCategories.Clear();
+		blockButtons.Clear();
+
+		AddBlock(new AirBlock(), BlockCategory.Block);
+		AddBlock(new BricksBlock(), BlockCategory.Block);
+		AddBlock(new GrayBricksBlock(), BlockCategory.Block);
+		AddBlock(new PillarBlock(), BlockCategory.Block);
+		AddBlock(new CarvedStoneBlock(), BlockCategory.Block);
+		AddBlock(new CrateBlock(), BlockCategory.Block);
+		AddBlock(new DirtWallBlock(), BlockCategory.Block);
+		AddBlock(new GrassFloorBlock(), BlockCategory.Floor);
+		AddBlock(new StoneFloorBlock(), BlockCategory.Floor);
+		AddBlock(new TileFloorBlock(), BlockCategory.Floor);
 		//AddBlock(new BarkBlock());
 		//AddBlock(new WoodBlock());
 		//AddBlock(new LeavesBlock());
@@ -38,29 +40,42 @@ public class BlockManager : MonoBehaviour {
 	/// <summary>
 	/// Adds the block buttons to the block library
 	/// </summary>
-	void AddBlockButtons() {
-		foreach (Block block in blocks) {
-			//Ignore air
-			if (block.GetName() != "Air") {
-				//Instatiate object
-				GameObject button = Instantiate(blockButton) as GameObject;
-				button.transform.SetParent(blockLibrary);
-				button.name = "BlockButton" + block.GetName();
+	void AddBlockButton(Block block, BlockCategory category) {
+		//Ignore air
+		if (block.GetName() != "Air") {
+			//Instatiate object
+			GameObject button = Instantiate(blockButton) as GameObject;
+			button.transform.SetParent(blockLibrary);
+			button.name = block.GetDisplayName() + " Button";
 
-				//Set button onClick
-				Button b = button.GetComponent<Button>();
-				string n = block.GetName();
-				b.onClick.AddListener(() => UIManager.setToolBlock(n));
+			//Set button onClick
+			Button b = button.GetComponent<Button>();
+			string n = block.GetName();
+			b.onClick.AddListener(() => UIManager.setToolBlock(n));
 
-				//Set text of button
-				Text name = button.GetComponentInChildren<Text>();
-				name.text = block.GetDisplayName();
-			}
+			//Set text of button
+			Text name = button.GetComponentInChildren<Text>();
+			name.text = block.GetDisplayName();
+
+			//Add to list
+			blockCategories.Add(category);
+			blockButtons.Add(button);
 		}
 	}
 
-	void AddBlock(Block block) {
+	void AddBlock(Block block, BlockCategory category) {
 		blocks.Add(block);
+		AddBlockButton(block, category);
+	}
+
+	public static void UpdateCategory(BlockCategory category) {
+		for (int i = 0; i < blockButtons.Count; i++) {
+			if(blockCategories[i] == category) {
+				blockButtons[i].SetActive(true);
+			} else {
+				blockButtons[i].SetActive(false);
+			}
+		}
 	}
 
 	public static List<Block> GetBlocks() {
