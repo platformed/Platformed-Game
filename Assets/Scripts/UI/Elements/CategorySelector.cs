@@ -7,31 +7,58 @@ public class CategorySelector : MonoBehaviour {
 	public static BlockCategory category = BlockCategory.Block;
 	public static bool isVisible = false;
 
-	public Text categoryText;
-	public GameObject menu;
+	public Image icon;
+	public RectTransform mask;
+	public RectTransform menu;
+	public RectTransform shadow;
 	public GameObject overlay;
+
+	float maskHeight = 52f;
+	float menuY = 0f;
+	Color iconColor = new Color(1f, 1f, 1f, 97f / 255f);
 
 	void Start() {
 
 	}
 
 	void Update() {
-		categoryText.text = GetCategoryName(category);
+		mask.sizeDelta = new Vector2(mask.sizeDelta.x, Mathf.Lerp(mask.sizeDelta.y, maskHeight, Time.deltaTime * 10f));
+		menu.localPosition = new Vector2(menu.localPosition.x, Mathf.Lerp(menu.localPosition.y, menuY, Time.deltaTime * 10f));
+		icon.color = Color.Lerp(icon.color, iconColor, Time.deltaTime * 20f);
+
+		shadow.anchoredPosition = new Vector2(shadow.anchoredPosition.x, -64f - mask.sizeDelta.y);
 	}
 
 	public void ShowMenu() {
-		menu.SetActive(true);
+		maskHeight = 312f;
+
+		menu.localPosition = new Vector2(menu.localPosition.x, 52f * (int) category);
+		menuY = 0f;
+
+		iconColor = Color.clear;
+
 		overlay.SetActive(true);
 		isVisible = true;
 	}
 
 	public void HideMenu() {
-		menu.SetActive(false);
+		maskHeight = 52f;
+
+		menu.localPosition = new Vector2(menu.localPosition.x, 0);
+		menuY = 52f * (int)category;
+
+		iconColor = new Color(1f, 1f, 1f, 97f / 255f);
+
 		overlay.SetActive(false);
 		isVisible = false;
 	}
 
 	public void SelectCategory(int i) {
+		if (!isVisible) {
+			ShowMenu();
+			return;
+		}
+
 		switch (i) {
 			case 0:
 				category = BlockCategory.Block;
@@ -57,7 +84,7 @@ public class CategorySelector : MonoBehaviour {
 		HideMenu();
 	}
 
-	string GetCategoryName(BlockCategory c) {
+	/*string GetCategoryName(BlockCategory c) {
 		switch (c) {
 			case BlockCategory.Block:
 				return "Blocks";
@@ -74,7 +101,7 @@ public class CategorySelector : MonoBehaviour {
 		}
 
 		return null;
-	}
+	}*/
 }
 
 public enum BlockCategory {
