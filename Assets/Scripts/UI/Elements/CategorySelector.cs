@@ -31,7 +31,7 @@ public class CategorySelector : MonoBehaviour {
 
 	public void ShowMenu() {
 		maskHeight = 312f;
-
+		
 		menu.localPosition = new Vector2(menu.localPosition.x, 52f * (int) category);
 		menuY = 0f;
 
@@ -43,7 +43,7 @@ public class CategorySelector : MonoBehaviour {
 
 	public void HideMenu() {
 		maskHeight = 52f;
-
+		
 		menu.localPosition = new Vector2(menu.localPosition.x, 0);
 		menuY = 52f * (int)category;
 
