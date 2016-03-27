@@ -120,6 +120,9 @@ public class UIManager : MonoBehaviour {
 		if (navDrawerEnabled) {
 			return false;
 		}
+		if (CategorySelector.isVisible) {
+			return false;
+		}
 		return true;
 	}
 
