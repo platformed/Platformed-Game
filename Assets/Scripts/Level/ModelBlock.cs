@@ -3,6 +3,8 @@ using System.Collections;
 
 public class ModelBlock : Block {
 	public override MeshData BlockData(int x, int y, int z, MeshData data, int submesh, Block[,,] blocks) {
+		data.useRenderDataForCol = true;
+
 		Mesh mesh = GetCustomModel();
 
 		//Add the verticies, triangles, and uvs
