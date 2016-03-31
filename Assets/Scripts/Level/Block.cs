@@ -8,11 +8,9 @@ using System;
 public class Block {
 	protected string name;
 	protected string displayName;
-	protected BlockType blockType = BlockType.Block;
-	protected Rect uv;
 	public int textureID;
 
-	byte rotation = 0;
+	protected byte rotation = 0;
 
 	//Base block constructor
 	public Block() {
@@ -20,7 +18,7 @@ public class Block {
 	}
 
 	public Block Copy() {
-		return (Block) MemberwiseClone();
+		return (Block)MemberwiseClone();
 	}
 
 	/// <summary>
@@ -44,7 +42,7 @@ public class Block {
 	/// </summary>
 	/// <returns>Mesh</returns>
 	public Mesh GetCustomModel() {
-		return (Mesh) Resources.Load("Blocks/" + GetName() + "/" + GetName() + "Model", typeof(Mesh));
+		return (Mesh)Resources.Load("Blocks/" + GetName() + "/" + GetName() + "Model", typeof(Mesh));
 	}
 
 	/// <summary>
@@ -60,39 +58,16 @@ public class Block {
 	public virtual MeshData BlockData(int x, int y, int z, MeshData data, int submesh, Block[,,] blocks) {
 		data.useRenderDataForCol = true;
 
-		//Use custom model if it exists
-		if (blockType == BlockType.Model) {
-			Mesh mesh = GetCustomModel();
-
-			//Add the verticies, triangles, and uvs
-			data.AddTriangles(mesh.triangles, submesh);
-			data.AddVertices(mesh.vertices, mesh.normals, new Vector3(x, y - 0.5f, z), Quaternion.Euler(-90, 90 * rotation, 0));
-			data.AddUVs(mesh.uv);
-
-			return data;
-		}
-
 		Vector3[] v = new Vector3[8];
 
-		if (blockType == BlockType.Block) {
-			v[0] = new Vector3(-0.5f, -0.5f, -0.5f);
-			v[1] = new Vector3(-0.5f, -0.5f, 0.5f);
-			v[2] = new Vector3(-0.5f, 0.5f, -0.5f);
-			v[3] = new Vector3(-0.5f, 0.5f, 0.5f);
-			v[4] = new Vector3(0.5f, -0.5f, -0.5f);
-			v[5] = new Vector3(0.5f, -0.5f, 0.5f);
-			v[6] = new Vector3(0.5f, 0.5f, -0.5f);
-			v[7] = new Vector3(0.5f, 0.5f, 0.5f);
-		} else {
-			v[0] = new Vector3(-0.5f, -0.5f, -0.5f);
-			v[1] = new Vector3(-0.5f, -0.5f, 0.5f);
-			v[2] = new Vector3(-0.5f, -0.4f, -0.5f);
-			v[3] = new Vector3(-0.5f, -0.4f, 0.5f);
-			v[4] = new Vector3(0.5f, -0.5f, -0.5f);
-			v[5] = new Vector3(0.5f, -0.5f, 0.5f);
-			v[6] = new Vector3(0.5f, -0.4f, -0.5f);
-			v[7] = new Vector3(0.5f, -0.4f, 0.5f);
-		}
+		v[0] = new Vector3(-0.5f, -0.5f, -0.5f);
+		v[1] = new Vector3(-0.5f, -0.5f, 0.5f);
+		v[2] = new Vector3(-0.5f, 0.5f, -0.5f);
+		v[3] = new Vector3(-0.5f, 0.5f, 0.5f);
+		v[4] = new Vector3(0.5f, -0.5f, -0.5f);
+		v[5] = new Vector3(0.5f, -0.5f, 0.5f);
+		v[6] = new Vector3(0.5f, 0.5f, -0.5f);
+		v[7] = new Vector3(0.5f, 0.5f, 0.5f);
 
 		//Add cube verticies
 		if (CheckSolid(blocks, x, y + 1, z, Direction.Down)) {
@@ -122,7 +97,7 @@ public class Block {
 			data.AddUVs(FaceUVs(Direction.North));
 		}
 
-		 if (CheckSolid(blocks, x, y, z - 1, Direction.North)) {
+		if (CheckSolid(blocks, x, y, z - 1, Direction.North)) {
 			data.AddVertex(v[0] + new Vector3(x, y, z), Vector3.back);
 			data.AddVertex(v[2] + new Vector3(x, y, z), Vector3.back);
 			data.AddVertex(v[6] + new Vector3(x, y, z), Vector3.back);
@@ -152,7 +127,16 @@ public class Block {
 		return data;
 	}
 
-	bool CheckSolid(Block[,,] blocks, int x, int y, int z, Direction direction) {
+	/// <summary>
+	/// Checks if a blocks face is solid in a ceratian direction from a block array
+	/// </summary>
+	/// <param name="blocks">Block array to check from</param>
+	/// <param name="x">X position of block</param>
+	/// <param name="y">Y position of block</param>
+	/// <param name="z">Z position of block</param>
+	/// <param name="direction">Direction to check</param>
+	/// <returns>True if the block is not solid</returns>
+	protected virtual bool CheckSolid(Block[,,] blocks, int x, int y, int z, Direction direction) {
 		if (x < 0 || x > blocks.GetLength(0) - 1) {
 			return true;
 		}
@@ -163,16 +147,16 @@ public class Block {
 			return true;
 		}
 
-		return !blocks[x, y, z].IsSolid(direction);
+		return blocks[x, y, z].GetSolidity(direction) != BlockSolidity.Block;
 	}
-	
+
 	public virtual Vector2[] FaceUVs(Direction direction) {
 		//Rotate the top and bottom face of the block
-		if(direction == Direction.Up || direction == Direction.Down) {
+		if (direction == Direction.Up || direction == Direction.Down) {
 			Vector2[] uvs = new Vector2[] { new Vector2(1, 1), new Vector2(1, 0), new Vector2(0, 0), new Vector2(0, 1) };
 
 			Vector2[] rotatedUvs = new Vector2[4];
-            for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < 4; i++) {
 				rotatedUvs[i] = uvs[(i + 4 - rotation) % 4];
 			}
 
@@ -213,12 +197,8 @@ public class Block {
 	/// <summary>
 	/// Gets the solidity of a blocks face
 	/// </summary>
-	public virtual bool IsSolid(Direction direction) {
-		if (blockType == BlockType.Block) {
-			return true;
-		} else {
-			return false;
-		}
+	public virtual BlockSolidity GetSolidity(Direction direction) {
+		return BlockSolidity.Block;
 	}
 
 	/// <summary>
@@ -243,8 +223,8 @@ public enum Direction {
 	Down
 }
 
-public enum BlockType {
+public enum BlockSolidity {
 	Block,
 	Floor,
-	Model
+	None
 }

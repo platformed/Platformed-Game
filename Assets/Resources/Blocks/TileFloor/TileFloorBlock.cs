@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TileFloorBlock : Block {
+public class TileFloorBlock : FloorBlock {
 	public TileFloorBlock() {
 		name = "TileFloor";
 		displayName = "Tile Floor";
-		blockType = BlockType.Floor;
 	}
 }

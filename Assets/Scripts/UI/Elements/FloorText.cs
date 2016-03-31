@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class Floor : MonoBehaviour {
+public class FloorText : MonoBehaviour {
 	public Text text;
 
 	void Update () {
