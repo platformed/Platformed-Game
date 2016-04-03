@@ -4,7 +4,7 @@ using System.Collections;
 public class CameraOrbit : MonoBehaviour {
 	public Transform target;
 
-	float distance = 8f;
+	float distance = 6f;
 
 	float xSpeed = 30f;
 	float ySpeed = 20f;

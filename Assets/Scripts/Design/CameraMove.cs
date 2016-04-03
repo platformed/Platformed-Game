@@ -4,9 +4,9 @@ using System.Collections;
 public class CameraMove : MonoBehaviour {
 	public World world;
 	public static float smooth = 16f;
-	float speed = -0.3f;
-	float normalSpeed = -0.3f;
-	float shiftSpeed = -0.75f;
+	float speed;
+	float normalSpeed = 0.2f;
+	float shiftSpeed = 0.4f;
 	float panSpeed = 0.05f;
 
 	public static int floor = UIManager.worldSize / 2;
@@ -56,8 +56,8 @@ public class CameraMove : MonoBehaviour {
 			Vector3 point = UIManager.designCam.transform.position;
 			point.y = transform.position.y;
 			transform.LookAt(point);
-			float h = Input.GetAxis("Horizontal") * speed;
-			float v = Input.GetAxis("Vertical") * speed;
+			float h = Input.GetAxis("Horizontal") * -speed;
+			float v = Input.GetAxis("Vertical") * -speed;
 			transform.Translate(new Vector3(h, 0f, v));
 		}
 

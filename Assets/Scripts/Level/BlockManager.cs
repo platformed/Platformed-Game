@@ -21,6 +21,7 @@ public class BlockManager : MonoBehaviour {
 		blockCategories.Clear();
 		blockButtons.Clear();
 
+		//Blocks
 		AddBlock(new AirBlock(), BlockCategory.Block);
 		AddBlock(new BricksBlock(), BlockCategory.Block);
 		AddBlock(new GrayBricksBlock(), BlockCategory.Block);
@@ -28,9 +29,16 @@ public class BlockManager : MonoBehaviour {
 		AddBlock(new CarvedStoneBlock(), BlockCategory.Block);
 		AddBlock(new CrateBlock(), BlockCategory.Block);
 		AddBlock(new DirtWallBlock(), BlockCategory.Block);
+
+		//Floors
 		AddBlock(new GrassFloorBlock(), BlockCategory.Floor);
 		AddBlock(new StoneFloorBlock(), BlockCategory.Floor);
 		AddBlock(new TileFloorBlock(), BlockCategory.Floor);
+
+		//Props
+		AddBlock(new BoulderBlock(), BlockCategory.Prop);
+
+		//Unused
 		//AddBlock(new BarkBlock());
 		//AddBlock(new WoodBlock());
 		//AddBlock(new LeavesBlock());
@@ -83,6 +91,6 @@ public class BlockManager : MonoBehaviour {
 	}
 
 	public static Block GetBlock(string name) {
-		return blocks.Find(x => x.GetName() == name);
+		return blocks.Find(x => x.GetName() == name).Copy();
 	}
 }
