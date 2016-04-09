@@ -39,60 +39,64 @@ public class UIManager : MonoBehaviour {
 	}
 
 	void Start() {
-		//Get camera
-		designCam = GameObject.Find("Design Camera").GetComponent<Camera>();
-		playCam = GameObject.Find("Play Camera").GetComponent<Camera>();
+		if (VRManager.vrMode == VRMode.Disabled) {
+			//Get camera
+			designCam = GameObject.Find("Design Camera").GetComponent<Camera>();
+			playCam = GameObject.Find("Play Camera").GetComponent<Camera>();
 
-		//Get World
-		world = GameObject.Find("World");
+			//Get World
+			world = GameObject.Find("World");
 
-		//Get tooltip
-		tooltip = Resources.Load("UI/Toolbar/Tooltip") as GameObject;
+			//Get tooltip
+			tooltip = Resources.Load("UI/Toolbar/Tooltip") as GameObject;
+		}
 	}
 
 	void Update() {
-		if (gamemode == Gamemode.DESIGN) {
-			UnityEngine.Cursor.lockState = CursorLockMode.None;
-			UnityEngine.Cursor.visible = true;
+		if (VRManager.vrMode == VRMode.Disabled) {
+			if (gamemode == Gamemode.DESIGN) {
+				UnityEngine.Cursor.lockState = CursorLockMode.None;
+				UnityEngine.Cursor.visible = true;
 
-			designCanvas.SetActive(true);
-			playCanvas.SetActive(false);
+				designCanvas.SetActive(true);
+				playCanvas.SetActive(false);
 
-			//TODO: FIX THIS
-			//designCamera.GetComponent<AudioListener>().enabled = true;
-			//playCamera.GetComponent<AudioListener>().enabled = false;
+				//TODO: FIX THIS
+				//designCamera.GetComponent<AudioListener>().enabled = true;
+				//playCamera.GetComponent<AudioListener>().enabled = false;
 
-			designCam.gameObject.SetActive(true);
-			playCam.gameObject.SetActive(false);
-			target.SetActive(true);
+				designCam.gameObject.SetActive(true);
+				playCam.gameObject.SetActive(false);
+				target.SetActive(true);
 
-			grid.SetActive(true);
+				grid.SetActive(true);
 
-			cursor.SetActive(true);
-			selectBox.SetActive(true);
-		}
-		if (gamemode == Gamemode.PLAY) {
-			UnityEngine.Cursor.lockState = CursorLockMode.Locked;
-			UnityEngine.Cursor.visible = false;
+				cursor.SetActive(true);
+				selectBox.SetActive(true);
+			}
+			if (gamemode == Gamemode.PLAY) {
+				UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+				UnityEngine.Cursor.visible = false;
 
-			designCanvas.SetActive(false);
-			playCanvas.SetActive(true);
+				designCanvas.SetActive(false);
+				playCanvas.SetActive(true);
 
-			//designCamera.GetComponent<AudioListener>().enabled = false;
-			//playCamera.GetComponent<AudioListener>().enabled = true;
+				//designCamera.GetComponent<AudioListener>().enabled = false;
+				//playCamera.GetComponent<AudioListener>().enabled = true;
 
-			designCam.gameObject.SetActive(false);
-			playCam.gameObject.SetActive(true);
-			target.SetActive(false);
+				designCam.gameObject.SetActive(false);
+				playCam.gameObject.SetActive(true);
+				target.SetActive(false);
 
-			grid.SetActive(false);
+				grid.SetActive(false);
 
-			cursor.SetActive(false);
-			selectBox.SetActive(false);
+				cursor.SetActive(false);
+				selectBox.SetActive(false);
 
-			//Press ESC to go back to design mode
-			if (Input.GetKey(KeyCode.Escape)) {
-				gamemode = Gamemode.DESIGN;
+				//Press ESC to go back to design mode
+				if (Input.GetKey(KeyCode.Escape)) {
+					gamemode = Gamemode.DESIGN;
+				}
 			}
 		}
 	}
