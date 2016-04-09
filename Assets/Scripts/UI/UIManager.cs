@@ -40,8 +40,8 @@ public class UIManager : MonoBehaviour {
 
 	void Start() {
 		//Get camera
-		designCam = GameObject.Find("DesignCamera").GetComponent<Camera>();
-		playCam = GameObject.Find("PlayCamera").GetComponent<Camera>();
+		designCam = GameObject.Find("Design Camera").GetComponent<Camera>();
+		playCam = GameObject.Find("Play Camera").GetComponent<Camera>();
 
 		//Get World
 		world = GameObject.Find("World");
