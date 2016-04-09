@@ -40,6 +40,22 @@ public class BlockIconManager : MonoBehaviour {
 		MeshData data = new MeshData();
 		block.BlockData(0, 0, 0, data, 0, new Block[,,] { { { block } } });
 
+		//Scale
+		float maxDistance = 0f;
+		foreach(Vector3 v in data.vertices) {
+			if (Mathf.Abs(v.x) > maxDistance) {
+				maxDistance = v.x;
+			}
+			if (Mathf.Abs(v.y) > maxDistance) {
+				maxDistance = v.y;
+			}
+			if (Mathf.Abs(v.z) > maxDistance) {
+				maxDistance = v.z;
+			}
+		}
+		float scale = 1f / maxDistance;
+		transform.localScale = new Vector3(scale, scale, scale);
+
 		//Clear mesh
 		filter.mesh.Clear();
 

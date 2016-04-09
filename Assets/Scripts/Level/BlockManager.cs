@@ -39,6 +39,7 @@ public class BlockManager : MonoBehaviour {
 
 		//Props
 		AddBlock(new BoulderBlock(), BlockCategory.Prop);
+		AddBlock(new BrickStairsBlock(), BlockCategory.Prop);
 
 		//Unused
 		//AddBlock(new BarkBlock());
