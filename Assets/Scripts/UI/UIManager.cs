@@ -102,8 +102,8 @@ public class UIManager : MonoBehaviour {
 
 	public static void setToolBlock(string name) {
 		tool = Tool.BLOCK;
-		Cursor.SetBlock(new Block[,,] { { { BlockManager.GetBlock(name) } } });
-		Cursor.offset = Vector3.zero;
+		BlockCursor.SetBlock(new Block[,,] { { { BlockManager.GetBlock(name) } } });
+		BlockCursor.offset = Vector3.zero;
 	}
 
 	//Returns weather the user can interact with the level
