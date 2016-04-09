@@ -11,6 +11,8 @@ public class BlockManager : MonoBehaviour {
 	public GameObject blockButton;
 	public Transform blockLibrary;
 
+	public BlockIconManager blockIconManager;
+
 	void Start() {
 		AddBlocks();
 		UpdateCategory(CategorySelector.category);
@@ -37,6 +39,7 @@ public class BlockManager : MonoBehaviour {
 
 		//Props
 		AddBlock(new BoulderBlock(), BlockCategory.Prop);
+		AddBlock(new BrickStairsBlock(), BlockCategory.Prop);
 
 		//Unused
 		//AddBlock(new BarkBlock());
@@ -62,8 +65,9 @@ public class BlockManager : MonoBehaviour {
 			b.onClick.AddListener(() => UIManager.setToolBlock(n));
 
 			//Set text of button
-			Text name = button.GetComponentInChildren<Text>();
-			name.text = block.GetDisplayName();
+			Image icon = button.transform.GetChild(0).GetComponent<Image>();
+			Texture2D texture = Resources.Load("Block Icons/" + block.GetName()) as Texture2D;
+            icon.overrideSprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
 
 			//Add to list
 			blockCategories.Add(category);
