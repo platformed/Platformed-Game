@@ -85,6 +85,9 @@ public class FloorBlock : Block {
 			return true;
 		}
 
+		if (direction == Direction.Down) {
+			return true;
+		}
 		return !(blocks[x, y, z].GetSolidity(direction) == BlockSolidity.Block || blocks[x, y, z].GetSolidity(direction) == BlockSolidity.Floor);
 	}
 
