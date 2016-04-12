@@ -7,6 +7,10 @@ public class VRCursor : MonoBehaviour {
 	//float smoothRot = 20f;
 	public World world;
 	public Transform controllerTransform;
+	public Canvas menuCanvas;
+	public Collider menuCollider;
+	public MeshRenderer lineRenderer;
+	public Transform lineTransform;
 
 	public SteamVR_TrackedObject trackedObject;
 	SteamVR_Controller.Device controller;
@@ -39,6 +43,17 @@ public class VRCursor : MonoBehaviour {
 			}
 		}
 
+		RaycastHit hit;
+		if (menuCollider.Raycast(new Ray(controllerTransform.position, controllerTransform.forward), out hit, 100f)) {
+			if (menuCanvas.gameObject.activeInHierarchy) {
+				lineRenderer.enabled = true;
+				lineTransform.localScale = new Vector3(lineTransform.localScale.x, hit.distance / 32f, lineTransform.localScale.z);
+				lineTransform.localPosition = new Vector3(0, 0, hit.distance / 32f);
+			}
+		} else {
+			lineRenderer.enabled = false;
+		}
+
 		Vector3 pos = controllerTransform.position;
 
 		pos = new Vector3(Mathf.Floor(pos.x), Mathf.Floor(pos.y), Mathf.Floor(pos.z)) + new Vector3(0.5f, 0.5f, 0.5f);
@@ -66,8 +81,6 @@ public class VRCursor : MonoBehaviour {
 			RenderCursor();
 			update = false;
 		}
-
-		CheckVisibility();
 	}
 
 	public static void SetBlock(Block[,,] b) {
@@ -127,32 +140,5 @@ public class VRCursor : MonoBehaviour {
 			materials[i] = Resources.Load("Blocks/" + blockTypes[i] + "/" + blockTypes[i] + "Material") as Material;
 		}
 		meshRenderer.materials = materials;
-	}
-
-	void CheckVisibility() {
-		float size = UIManager.worldSize;
-
-		meshRenderer.enabled = true;
-
-		if (UIManager.tool != Tool.BLOCK) {
-			meshRenderer.enabled = false;
-		}
-
-		if (transform.position.x < 0) {
-			meshRenderer.enabled = false;
-		}
-		if (transform.position.x > size) {
-			meshRenderer.enabled = false;
-		}
-
-		if (transform.position.z < 0) {
-			meshRenderer.enabled = false;
-		}
-		if (transform.position.z > size) {
-			meshRenderer.enabled = false;
-		}
-		if (!UIManager.canInteract()) {
-			meshRenderer.enabled = false;
-		}
 	}
 }

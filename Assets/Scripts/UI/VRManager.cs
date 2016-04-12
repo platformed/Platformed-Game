@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class VRManager : MonoBehaviour {
-	public static VRMode vrMode = VRMode.RoomScale;
+	public static VRMode vrMode;// = VRMode.RoomScale;
 
 	public GameObject cameraRig;
 	public GameObject vrCursor;

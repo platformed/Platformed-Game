@@ -10,6 +10,7 @@ public class BlockManager : MonoBehaviour {
 	static List<GameObject> blockButtons = new List<GameObject>();
 	public GameObject blockButton;
 	public Transform blockLibrary;
+	public Transform vrBlockLibrary;
 
 	public BlockIconManager blockIconManager;
 
@@ -27,7 +28,6 @@ public class BlockManager : MonoBehaviour {
 		AddBlock(new AirBlock(), BlockCategory.Block);
 		AddBlock(new BricksBlock(), BlockCategory.Block);
 		AddBlock(new GrayBricksBlock(), BlockCategory.Block);
-		AddBlock(new PillarBlock(), BlockCategory.Block);
 		AddBlock(new CarvedStoneBlock(), BlockCategory.Block);
 		AddBlock(new CrateBlock(), BlockCategory.Block);
 		AddBlock(new DirtWallBlock(), BlockCategory.Block);
@@ -42,6 +42,7 @@ public class BlockManager : MonoBehaviour {
 		AddBlock(new BrickStairsBlock(), BlockCategory.Prop);
 
 		//Unused
+		//AddBlock(new PillarBlock(), BlockCategory.Block);
 		//AddBlock(new BarkBlock());
 		//AddBlock(new WoodBlock());
 		//AddBlock(new LeavesBlock());
@@ -51,12 +52,14 @@ public class BlockManager : MonoBehaviour {
 	/// <summary>
 	/// Adds the block buttons to the block library
 	/// </summary>
-	void AddBlockButton(Block block, BlockCategory category) {
+	void AddBlockButton(Block block, BlockCategory category, Transform parent, Vector3 scale) {
 		//Ignore air
 		if (block.GetName() != "Air") {
 			//Instatiate object
 			GameObject button = Instantiate(blockButton) as GameObject;
-			button.transform.SetParent(blockLibrary);
+			button.transform.position = Vector3.zero;
+			button.transform.localScale = scale;
+			button.transform.SetParent(parent);
 			button.name = block.GetDisplayName() + " Button";
 
 			//Set button onClick
@@ -77,7 +80,8 @@ public class BlockManager : MonoBehaviour {
 
 	void AddBlock(Block block, BlockCategory category) {
 		blocks.Add(block);
-		AddBlockButton(block, category);
+		AddBlockButton(block, category, blockLibrary, Vector3.one);
+		AddBlockButton(block, category, vrBlockLibrary, new Vector3(1f / 100f, 1f / 100f, 1f / 100f));
 	}
 
 	public static void UpdateCategory(BlockCategory category) {
