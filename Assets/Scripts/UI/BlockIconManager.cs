@@ -7,6 +7,7 @@ public class BlockIconManager : MonoBehaviour {
 #if UNITY_EDITOR
 	public Camera iconCamera;
 	public RenderTexture iconTexture;
+	public Transform parent;
 
 	MeshFilter filter;
 	MeshRenderer meshRenderer;
@@ -40,21 +41,10 @@ public class BlockIconManager : MonoBehaviour {
 		MeshData data = new MeshData();
 		block.BlockData(0, 0, 0, data, 0, new Block[,,] { { { block } } });
 
+		data.Rotate(Quaternion.Euler(0, -90, 0));
+
 		//Scale
-		float maxDistance = 0f;
-		foreach(Vector3 v in data.vertices) {
-			if (Mathf.Abs(v.x) > maxDistance) {
-				maxDistance = v.x;
-			}
-			if (Mathf.Abs(v.y) > maxDistance) {
-				maxDistance = v.y;
-			}
-			if (Mathf.Abs(v.z) > maxDistance) {
-				maxDistance = v.z;
-			}
-		}
-		float scale = 1f / maxDistance;
-		transform.localScale = new Vector3(scale, scale, scale);
+		ScaleBlock(block, data);
 
 		//Clear mesh
 		filter.mesh.Clear();
@@ -71,9 +61,60 @@ public class BlockIconManager : MonoBehaviour {
 		//UVs and normals
 		filter.mesh.uv = data.uvs.ToArray();
 		filter.mesh.normals = data.normals.ToArray();
-		
+
 		//Material
 		meshRenderer.material = Resources.Load("Blocks/" + block.GetName() + "/" + block.GetName() + "Material") as Material;
+	}
+
+	void ScaleBlock(Block block, MeshData data) {
+		//Position so it's in the center
+		float minX = float.MaxValue;
+		float maxX = float.MinValue;
+
+		float minY = float.MaxValue;
+		float maxY = float.MinValue;
+
+		float minZ = float.MaxValue;
+		float maxZ = float.MinValue;
+
+		foreach (Vector3 v in data.vertices) {
+			if (v.x < minX) {
+				minX = v.x;
+			} else if (v.x > maxX) {
+				maxX = v.x;
+			}
+
+			if (v.y < minY) {
+				minY = v.y;
+			} else if (v.y > maxY) {
+				maxY = v.y;
+			}
+
+			if (v.z < minZ) {
+				minZ = v.z;
+			} else if (v.z > maxZ) {
+				maxZ = v.z;
+			}
+		}
+
+		transform.position = new Vector3((minX + maxX) / -2f, (minY + maxY) / -2f, (minZ + maxZ) / -2f);
+
+		//Find scale
+		float maxDistance = float.MinValue;
+		if (maxX + transform.position.x > maxDistance) {
+			maxDistance = maxX + transform.position.x;
+		}
+		if (maxY + transform.position.y > maxDistance) {
+			maxDistance = maxY + transform.position.y;
+		}
+		if (maxZ + transform.position.y > maxDistance) {
+			maxDistance = maxZ + transform.position.z;
+		}
+
+		float scale = 1f / maxDistance;
+
+		//Scale the parent so the position isn't affected
+		parent.localScale = new Vector3(scale, scale, scale);
 	}
 
 	void RenderIcon(Block block) {
