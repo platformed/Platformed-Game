@@ -96,12 +96,12 @@ public class CameraOrbit : MonoBehaviour {
 		//Adjust for scrollwheel
 		distance -= Input.GetAxis("Mouse ScrollWheel") * 5;
 
+		//Clamp distance
+		distance = Mathf.Clamp(distance, 2f, 30f);
+
 		//Smooth distance
 		smoothDistance = Mathf.Lerp(smoothDistance, distance, Time.deltaTime * 20);
-
-		//Clamp distance
-		smoothDistance = Mathf.Clamp(smoothDistance, 2f, 30f);
-
+		
 		//BROKEN, adjust for hitting blocks
 		//RaycastHit hit;
 		//if (Physics.Linecast(transform.position, target.position, out hit)) 
