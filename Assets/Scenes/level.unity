@@ -1012,7 +1012,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 127680, guid: f7b0af81fe5e26e4caf8f05eea37bbf5, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f7b0af81fe5e26e4caf8f05eea37bbf5, type: 2}
@@ -1080,7 +1080,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 127680, guid: f7b0af81fe5e26e4caf8f05eea37bbf5, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22406234, guid: f7b0af81fe5e26e4caf8f05eea37bbf5, type: 2}
       propertyPath: m_RootOrder
@@ -1123,7 +1123,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22401672, guid: f7b0af81fe5e26e4caf8f05eea37bbf5, type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 752
+      value: 464
       objectReference: {fileID: 0}
     - target: {fileID: 22401672, guid: f7b0af81fe5e26e4caf8f05eea37bbf5, type: 2}
       propertyPath: m_AnchoredPosition.y
@@ -2864,7 +2864,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 45.6
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -3396,6 +3396,10 @@ Prefab:
     - target: {fileID: 11435368, guid: f7b0af81fe5e26e4caf8f05eea37bbf5, type: 2}
       propertyPath: tooltipText
       value: Rotate block
+      objectReference: {fileID: 0}
+    - target: {fileID: 127680, guid: f7b0af81fe5e26e4caf8f05eea37bbf5, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f7b0af81fe5e26e4caf8f05eea37bbf5, type: 2}
@@ -3938,7 +3942,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22401672, guid: f7b0af81fe5e26e4caf8f05eea37bbf5, type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 824
+      value: 536
       objectReference: {fileID: 0}
     - target: {fileID: 22401672, guid: f7b0af81fe5e26e4caf8f05eea37bbf5, type: 2}
       propertyPath: m_AnchoredPosition.y
@@ -4254,6 +4258,10 @@ Prefab:
     - target: {fileID: 11435368, guid: f7b0af81fe5e26e4caf8f05eea37bbf5, type: 2}
       propertyPath: tooltipText
       value: Copy
+      objectReference: {fileID: 0}
+    - target: {fileID: 127680, guid: f7b0af81fe5e26e4caf8f05eea37bbf5, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f7b0af81fe5e26e4caf8f05eea37bbf5, type: 2}

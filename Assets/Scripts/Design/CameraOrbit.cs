@@ -104,7 +104,7 @@ public class CameraOrbit : MonoBehaviour {
 
 		//BROKEN, adjust for hitting blocks
 		//RaycastHit hit;
-		//if (Physics.Linecast (target.position, transform.position, out hit)) 
+		//if (Physics.Linecast(transform.position, target.position, out hit)) 
 		//{
 		//	distance -=  hit.distance;
 		//}
