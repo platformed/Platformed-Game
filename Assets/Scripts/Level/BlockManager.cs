@@ -9,6 +9,7 @@ public class BlockManager : MonoBehaviour {
 	static List<BlockCategory> blockCategories = new List<BlockCategory>();
 	static List<GameObject> blockButtons = new List<GameObject>();
 	public GameObject blockButton;
+	public GameObject vrBlockButton;
 	public Transform blockLibrary;
 	public Transform vrBlockLibrary;
 
@@ -52,14 +53,12 @@ public class BlockManager : MonoBehaviour {
 	/// <summary>
 	/// Adds the block buttons to the block library
 	/// </summary>
-	void AddBlockButton(Block block, BlockCategory category, Transform parent, Vector3 scale) {
+	void AddBlockButton(Block block, BlockCategory category) {
 		//Ignore air
 		if (block.GetName() != "Air") {
 			//Instatiate object
 			GameObject button = Instantiate(blockButton) as GameObject;
-			button.transform.position = Vector3.zero;
-			button.transform.localScale = scale;
-			button.transform.SetParent(parent);
+			button.transform.SetParent(blockLibrary);
 			button.name = block.GetDisplayName() + " Button";
 
 			//Set button onClick
@@ -67,7 +66,7 @@ public class BlockManager : MonoBehaviour {
 			string n = block.GetName();
 			b.onClick.AddListener(() => UIManager.setToolBlock(n));
 
-			//Set text of button
+			//Set icon
 			Image icon = button.transform.GetChild(0).GetComponent<Image>();
 			Texture2D texture = Resources.Load("Block Icons/" + block.GetName()) as Texture2D;
             icon.overrideSprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
@@ -78,10 +77,34 @@ public class BlockManager : MonoBehaviour {
 		}
 	}
 
+	void AddVRBlockButton(Block block, BlockCategory category) {
+		//Ignore air
+		if (block.GetName() != "Air") {
+			//Instatiate object
+			GameObject button = Instantiate(vrBlockButton) as GameObject;
+			button.transform.SetParent(vrBlockLibrary);
+			button.transform.localScale = Vector3.one;//new Vector3(1f / 100f, 1f / 100f, 1f / 100f);
+			button.name = block.GetDisplayName() + " Button";
+
+			//Set button onClick
+			VRBlockButton b = button.GetComponent<VRBlockButton>();
+			b.block = block;
+
+			//Set icon
+			Image icon = button.transform.GetChild(0).GetComponent<Image>();
+			Texture2D texture = Resources.Load("Block Icons/" + block.GetName()) as Texture2D;
+			icon.overrideSprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+
+			//Add to list
+			blockCategories.Add(category);
+			blockButtons.Add(button);
+		}
+	}
+
 	void AddBlock(Block block, BlockCategory category) {
 		blocks.Add(block);
-		AddBlockButton(block, category, blockLibrary, Vector3.one);
-		AddBlockButton(block, category, vrBlockLibrary, new Vector3(1f / 100f, 1f / 100f, 1f / 100f));
+		AddBlockButton(block, category);
+		AddVRBlockButton(block, category);
 	}
 
 	public static void UpdateCategory(BlockCategory category) {

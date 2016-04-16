@@ -5,6 +5,7 @@ public class VRMenu : MonoBehaviour {
 	public Transform cameraRig;
 	public Transform canvas;
 	Vector3 previousPos;
+	Vector3 test = Vector3.zero;
 
 	public SteamVR_TrackedObject trackedObject;
 	SteamVR_Controller.Device controller;
@@ -28,6 +29,14 @@ public class VRMenu : MonoBehaviour {
 		if (controller.GetPress(gripButton)) {
 			Vector3 deltaPos = transform.position - previousPos;
 			cameraRig.position -= deltaPos;
+
+			/*if (Vector3.Distance(transform.position, test) > 0.01f) {
+				Debug.Log("triggered pulse " + transform.position.ToString() + " " + test.ToString());
+				controller.TriggerHapticPulse(1000);
+				test = transform.position;
+			} else {
+				Debug.Log(Vector3.Distance(transform.position, test));
+			}*/
 		}
 
 		if (controller.GetPressDown(triggerButton)) {

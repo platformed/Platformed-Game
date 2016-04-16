@@ -43,35 +43,44 @@ public class VRCursor : MonoBehaviour {
 			}
 		}
 
+		Vector3 pos = controllerTransform.position;
+
+		pos = new Vector3(Mathf.Floor(pos.x), Mathf.Floor(pos.y), Mathf.Floor(pos.z)) + new Vector3(0.5f, 0.5f, 0.5f);
+
 		RaycastHit hit;
 		if (menuCollider.Raycast(new Ray(controllerTransform.position, controllerTransform.forward), out hit, 100f)) {
 			if (menuCanvas.gameObject.activeInHierarchy) {
 				lineRenderer.enabled = true;
 				lineTransform.localScale = new Vector3(lineTransform.localScale.x, hit.distance / 32f, lineTransform.localScale.z);
 				lineTransform.localPosition = new Vector3(0, 0, hit.distance / 32f);
+
+				RaycastHit buttonHit;
+				if (Physics.Raycast(new Ray(controllerTransform.position, controllerTransform.forward), out buttonHit, 100f) && controller.GetPressDown(triggerButton)) {
+					VRBlockButton button = buttonHit.transform.GetComponent<VRBlockButton>();
+					if (button != null) {
+						button.Click();
+						Debug.Log("clicked");
+					}
+				}
 			}
 		} else {
 			lineRenderer.enabled = false;
-		}
 
-		Vector3 pos = controllerTransform.position;
-
-		pos = new Vector3(Mathf.Floor(pos.x), Mathf.Floor(pos.y), Mathf.Floor(pos.z)) + new Vector3(0.5f, 0.5f, 0.5f);
-
-		if (controller.GetPress(triggerButton)) {
-			for (int x = 0; x < block.GetLength(0); x++) {
-				for (int y = 0; y < block.GetLength(1); y++) {
-					for (int z = 0; z < block.GetLength(2); z++) {
-						if (block[x, y, z].GetName() != "Air") {
-							world.SetBlock((int)(pos.x + x), (int)(pos.y + y), (int)(pos.z + z), block[x, y, z].Copy());
+			if (controller.GetPress(triggerButton)) {
+				for (int x = 0; x < block.GetLength(0); x++) {
+					for (int y = 0; y < block.GetLength(1); y++) {
+						for (int z = 0; z < block.GetLength(2); z++) {
+							if (block[x, y, z].GetName() != "Air") {
+								world.SetBlock((int)(pos.x + x), (int)(pos.y + y), (int)(pos.z + z), block[x, y, z].Copy());
+							}
 						}
 					}
 				}
 			}
-		}
 
-		if (controller.GetPress(gripButton)) {
-			world.SetBlock((int)pos.x, (int)pos.y, (int)pos.z, new AirBlock());
+			if (controller.GetPress(gripButton)) {
+				world.SetBlock((int)pos.x, (int)pos.y, (int)pos.z, new AirBlock());
+			}
 		}
 
 		transform.position = Vector3.Lerp(transform.position, pos, Time.deltaTime * smoothPos);

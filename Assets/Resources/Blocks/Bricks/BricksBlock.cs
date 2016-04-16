@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BricksBlock : ModelBlock {
+public class BricksBlock : Block {
 	public BricksBlock() {
 		name = "Bricks";
 		displayName = "Bricks";
