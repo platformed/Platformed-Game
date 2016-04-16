@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Select : MonoBehaviour {
 	public World world;
-	public Cursor cursor;
+	public BlockCursor cursor;
 	Vector3 pos1;
 	Vector3 pos2;
 	const float offset = 0.01f;

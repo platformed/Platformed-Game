@@ -53,7 +53,7 @@ public class ToolbarManager : MonoBehaviour {
 
 	public void copy() {
 		selectBox.GetComponent<Select>().Copy();
-		Cursor.offset = Vector3.zero;
+		BlockCursor.offset = Vector3.zero;
 	}
 
 	public void blockProperties() {
