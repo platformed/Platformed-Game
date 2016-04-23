@@ -4,10 +4,10 @@ using System.Collections;
 public class CameraOrbit : MonoBehaviour {
 	public Transform target;
 
-	float distance = 6f;
+	float distance = 8f;
 
-	float xSpeed = 30f;
-	float ySpeed = 20f;
+	float xSpeed = 20f;//30f;
+	float ySpeed = 15f;//20f;
 
 	//private Rigidbody rigidbody;
 

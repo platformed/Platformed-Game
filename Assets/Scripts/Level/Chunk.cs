@@ -8,7 +8,7 @@ using System;
 [RequireComponent(typeof(MeshCollider))]
 
 /// <summary>
-/// Represents a 10 by 10 area in the level
+/// Represents a 10 by 10 by 10 area in the level
 /// </summary>
 public class Chunk : MonoBehaviour {
 	MeshFilter filter;
@@ -16,7 +16,7 @@ public class Chunk : MonoBehaviour {
 	MeshRenderer meshRenderer;
 
 	Block[,,] blocks = new Block[chunkSize, chunkSize, chunkSize];
-	public static int chunkSize = 10;
+	public static readonly int chunkSize = 10;
 
 	public World world;
 	public WorldPos pos;

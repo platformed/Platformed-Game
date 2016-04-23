@@ -5,7 +5,7 @@ public class VRMenu : MonoBehaviour {
 	public Transform cameraRig;
 	public Transform canvas;
 	Vector3 previousPos;
-	Vector3 test = Vector3.zero;
+	//Vector3 test = Vector3.zero;
 
 	public SteamVR_TrackedObject trackedObject;
 	SteamVR_Controller.Device controller;

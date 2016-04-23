@@ -6,7 +6,7 @@ using UnityEngine;
 /// A cursor that shows where you are placing blocks
 /// </summary>
 public class BlockCursor : MonoBehaviour {
-	float smoothPos = 30f;
+	float smoothPos = 18f;
 	float smoothRot = 20f;
 	public World world;
 
@@ -23,6 +23,7 @@ public class BlockCursor : MonoBehaviour {
 
 	void Start() {
 		block = new Block[,,] { { { new BricksBlock() } } };
+
 		meshRenderer = GetComponent<MeshRenderer>();
 		filter = GetComponent<MeshFilter>();
 	}

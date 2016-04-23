@@ -11,6 +11,7 @@ public class Select : MonoBehaviour {
 
 	void Start() {
 		meshRenderer = GetComponent<MeshRenderer>();
+		meshRenderer.material.renderQueue = 3001;
 	}
 
 	void Update() {

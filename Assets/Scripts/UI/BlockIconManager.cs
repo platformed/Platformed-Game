@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.IO;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 public class BlockIconManager : MonoBehaviour {
 #if UNITY_EDITOR
