@@ -8,7 +8,7 @@ public class UIManager : MonoBehaviour {
 	public Transform blockLibrary;
 	public static GameObject world;
 	public static bool isDragging = false;
-	public static Gamemode gamemode = Gamemode.DESIGN;
+	public static Gamemode gamemode = Gamemode.Design;
 	public static string scene;
 	public static GameObject tooltip;
 
@@ -54,7 +54,7 @@ public class UIManager : MonoBehaviour {
 
 	void Update() {
 		if (VRManager.vrMode == VRMode.Disabled) {
-			if (gamemode == Gamemode.DESIGN) {
+			if (gamemode == Gamemode.Design) {
 				UnityEngine.Cursor.lockState = CursorLockMode.None;
 				UnityEngine.Cursor.visible = true;
 
@@ -74,7 +74,7 @@ public class UIManager : MonoBehaviour {
 				cursor.SetActive(true);
 				selectBox.SetActive(true);
 			}
-			if (gamemode == Gamemode.PLAY) {
+			if (gamemode == Gamemode.Play) {
 				UnityEngine.Cursor.lockState = CursorLockMode.Locked;
 				UnityEngine.Cursor.visible = false;
 
@@ -95,7 +95,7 @@ public class UIManager : MonoBehaviour {
 
 				//Press ESC to go back to design mode
 				if (Input.GetKey(KeyCode.Escape)) {
-					gamemode = Gamemode.DESIGN;
+					gamemode = Gamemode.Design;
 				}
 			}
 		}
@@ -188,6 +188,6 @@ public enum Tool {
 }
 
 public enum Gamemode {
-	PLAY,
-	DESIGN
+	Play,
+	Design
 }

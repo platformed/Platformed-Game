@@ -42,6 +42,9 @@ public class BlockManager : MonoBehaviour {
 		AddBlock(new BoulderBlock(), BlockCategory.Prop);
 		AddBlock(new BrickStairsBlock(), BlockCategory.Prop);
 
+		//Collectables
+		AddBlock(new GemBlock(), BlockCategory.Collectable);
+
 		//Unused
 		//AddBlock(new PillarBlock(), BlockCategory.Block);
 		//AddBlock(new BarkBlock());

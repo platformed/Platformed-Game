@@ -68,8 +68,27 @@ public class Chunk : MonoBehaviour {
 		return new AirBlock();
 	}
 
+	/// <summary>
+	/// Sets a block in the chunk
+	/// </summary>
+	/// <param name="x">X position of the block</param>
+	/// <param name="y">Y position of the block</param>
+	/// <param name="z">Z position of the block</param>
+	/// <param name="block">The block to set</param>
 	public void SetBlock(int x, int y, int z, Block block) {
 		if (InRange(x) && InRange(y) && InRange(z)) {
+			//Destroy old block if it is spawnable
+			if (blocks[x, y, z] is SpawnableBlock) {
+				SpawnableBlock b = (SpawnableBlock)blocks[x, y, z];
+				b.DestroyBlock();
+			}
+
+			//Instantiate new block if it is spawnable
+			if (block is SpawnableBlock) {
+				SpawnableBlock b = (SpawnableBlock)block;
+				b.InstantiateBlock(new Vector3(x + pos.x, y + pos.y, z + pos.z) + new Vector3(0.5f, 0f, 0.5f));
+			}
+
 			blocks[x, y, z] = block;
 		} else {
 			world.SetBlock(pos.x + x, pos.y + y, pos.z + z, block);
@@ -93,7 +112,7 @@ public class Chunk : MonoBehaviour {
 		for (int x = 0; x < chunkSize; x++) {
 			for (int y = 0; y < chunkSize; y++) {
 				for (int z = 0; z < chunkSize; z++) {
-					if (blocks[x, y, z].GetName() != "Air") {
+					if (!(blocks[x, y, z] is AirBlock || blocks[x, y, z] is SpawnableBlock)) {
 						//Try to find if the block type already exists in chunk
 						int submesh = blockTypes.IndexOf(blocks[x, y, z].GetName());
 
@@ -113,7 +132,7 @@ public class Chunk : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Sends the mesh information to the mesh and collision components
+	/// Sends the mesh information to the mesh and mesh collider components
 	/// </summary>
 	void RenderMesh(MeshData data) {
 		//Update mesh
