@@ -3,7 +3,6 @@ using System.Collections;
 
 public class SpawnableController : MonoBehaviour {
 	SpawnableBlock block;
-	Gamemode previousGamemode;
 
 	public void SetBlock(SpawnableBlock b) {
 		block = b;
@@ -11,14 +10,8 @@ public class SpawnableController : MonoBehaviour {
 	
 	void Update () {
 		if (block != null) {
-			if(UIManager.gamemode != previousGamemode) {
-				if (UIManager.gamemode == Gamemode.Design) {
-					block.InactiveStart();
-				} else {
-					block.Start();
-				}
-			}
-			previousGamemode = UIManager.gamemode;
+			//TODO: Call Reset
+			//TODO: Call OnPlayerCollision
 
 			if (UIManager.gamemode == Gamemode.Design) {
 				block.InactiveUpdate();

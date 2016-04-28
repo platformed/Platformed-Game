@@ -44,6 +44,23 @@ public class BlockIconManager : MonoBehaviour {
 		block.BlockData(0, 0, 0, data, 0, new Block[,,] { { { block } } });
 
 		data.Rotate(Quaternion.Euler(0, -90, 0));
+		
+		//Instantiate if it is a spawnable block
+		if (block is SpawnableBlock) {
+			SpawnableBlock b = (SpawnableBlock)block;
+			b.InstantiateBlock(transform, Vector3.zero);
+
+			//Add verticies to meshdata for scaling
+			MeshFilter[] meshs = b.GetPrefab().GetComponentsInChildren<MeshFilter>();
+			foreach(MeshFilter m in meshs) {
+				data.AddVertices(m.sharedMesh.vertices, m.sharedMesh.normals, m.transform.localPosition, m.transform.rotation);
+			}
+
+			//Set layer
+			foreach (Transform child in transform) {
+				child.gameObject.layer = 8;
+			}
+		}
 
 		//Scale
 		ScaleBlock(block, data);
@@ -129,6 +146,12 @@ public class BlockIconManager : MonoBehaviour {
 		icon.Apply();
 
 		File.WriteAllBytes(Application.dataPath + "/Resources/Block Icons/" + block.GetName() + ".png", icon.EncodeToPNG());
+
+		//Destroy spawnable block when done
+		if (block is SpawnableBlock) {
+			SpawnableBlock b = (SpawnableBlock)block;
+			b.DestroyBlock();
+		}
 	}
 #endif
 }
