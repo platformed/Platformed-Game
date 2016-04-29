@@ -16,6 +16,8 @@ public class BlockCursor : MonoBehaviour {
 	MeshRenderer meshRenderer;
 	MeshFilter filter;
 
+	static Transform parent;
+
 	List<string> blockTypes = new List<string>();
 
 	//If the cursor should be updated at the end of the frame
@@ -26,6 +28,8 @@ public class BlockCursor : MonoBehaviour {
 
 		meshRenderer = GetComponent<MeshRenderer>();
 		filter = GetComponent<MeshFilter>();
+
+		parent = transform;
 	}
 
 	void Update() {
@@ -67,8 +71,33 @@ public class BlockCursor : MonoBehaviour {
 		CheckVisibility();
 	}
 
-	public static void SetBlock(Block[,,] b) {
-		block = b;
+	public static void SetBlock(Block[,,] newBlock) {
+		for (int x = 0; x < block.GetLength(0); x++) {
+			for (int y = 0; y < block.GetLength(1); y++) {
+				for (int z = 0; z < block.GetLength(2); z++) {
+					//Destroy old block if it is spawnable
+					if (block[x, y, z] is SpawnableBlock) {
+						SpawnableBlock b = (SpawnableBlock)block[x, y, z];
+						b.DestroyBlock();
+					}
+				}
+			}
+		}
+
+		block = newBlock;
+
+		for (int x = 0; x < block.GetLength(0); x++) {
+			for (int y = 0; y < block.GetLength(1); y++) {
+				for (int z = 0; z < block.GetLength(2); z++) {
+					//Instantiate new block if it is spawnable
+					if (newBlock[x, y, z] is SpawnableBlock) {
+						SpawnableBlock b = (SpawnableBlock)newBlock[x, y, z];
+						b.InstantiateBlock(parent, new Vector3(x, y, z) + new Vector3(0f, -0.5f, 0f));
+					}
+				}
+			}
+		}
+
 		update = true;
 	}
 

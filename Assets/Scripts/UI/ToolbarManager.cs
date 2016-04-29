@@ -65,7 +65,7 @@ public class ToolbarManager : MonoBehaviour {
 	}
 
 	public void playLevel() {
-		UIManager.gamemode = Gamemode.PLAY;
+		UIManager.gamemode = Gamemode.Play;
 	}
 
 	public void uploadLevel() {
