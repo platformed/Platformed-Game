@@ -98,7 +98,7 @@ Material:
       data:
         first:
           name: _Cutoff
-        second: 0.049
+        second: 0.099
       data:
         first:
           name: PixelSnap
