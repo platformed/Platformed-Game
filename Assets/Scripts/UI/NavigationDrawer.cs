@@ -35,7 +35,9 @@ public class NavigationDrawer : MonoBehaviour {
 		shadowValue = 0.5f;
 		rightShadow.SetActive(true);
 
-		shadow.GetComponent<CanvasGroup>().blocksRaycasts = true;
+		if (shadow != null) {
+			shadow.GetComponent<CanvasGroup>().blocksRaycasts = true;
+		}
 		UIManager.NavDrawerEnabled(true);
 	}
 
@@ -44,7 +46,9 @@ public class NavigationDrawer : MonoBehaviour {
 		shadowValue = 0f;
 		rightShadow.SetActive(false);
 
-		shadow.GetComponent<CanvasGroup>().blocksRaycasts = false;
+		if (shadow != null) {
+			shadow.GetComponent<CanvasGroup>().blocksRaycasts = false;
+		}
 		UIManager.NavDrawerEnabled(false);
 	}
 

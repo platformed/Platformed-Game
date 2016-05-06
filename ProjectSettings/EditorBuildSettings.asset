@@ -10,6 +10,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/level.unity
   - enabled: 1
-    path: Assets/Scenes/loading-screen.unity
-  - enabled: 1
     path: Assets/Scenes/level-browser.unity
+  - enabled: 0
+    path: Assets/Scenes/loading-screen.unity

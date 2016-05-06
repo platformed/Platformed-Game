@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class ToolbarManager : MonoBehaviour {
-	public GameObject selectBox;
+	public Select selectBox;
 	public World world;
 
 	public void setTool(int t) {
@@ -52,20 +52,20 @@ public class ToolbarManager : MonoBehaviour {
 	}
 
 	public void copy() {
-		//selectBox.GetComponent<SelectBox>().copy();
-		//setTool(1);
-	}
-
-	public void rotateBlock() {
-
+		selectBox.GetComponent<Select>().Copy();
+		BlockCursor.offset = Vector3.zero;
 	}
 
 	public void blockProperties() {
 
 	}
 
+	public void toggleGrid() {
+		GridRenderer.ToggleGrid();
+	}
+
 	public void playLevel() {
-		UIManager.gamemode = Gamemode.PLAY;
+		UIManager.gamemode = Gamemode.Play;
 	}
 
 	public void uploadLevel() {

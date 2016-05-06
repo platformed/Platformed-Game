@@ -86,4 +86,34 @@ public class MeshData {
 	public void AddUVs(Vector2[] u) {
 		uvs.AddRange(u);
 	}
+
+	/// <summary>
+	/// Offsets the mesh by an amount
+	/// </summary>
+	/// <param name="offset">Amount to offset</param>
+	public void Offset(Vector3 offset) {
+		for (int i = 0; i < vertices.Count; i++) {
+			vertices[i] += offset;
+		}
+	}
+
+	/// <summary>
+	/// Rotates the mesh around the origin by an amount
+	/// </summary>
+	/// <param name="rotation">Amount to rotate</param>
+	public void Rotate(Quaternion rotation) {
+		for (int i = 0; i < vertices.Count; i++) {
+			vertices[i] = rotation * vertices[i];
+		}
+	}
+
+	/// <summary>
+	/// Scales the mesh around the origin by an amount
+	/// </summary>
+	/// <param name="scale">Amount to scale</param>
+	public void Scale(float scale) {
+		for (int i = 0; i < vertices.Count; i++) {
+			vertices[i] *= scale;
+		}
+	}
 }

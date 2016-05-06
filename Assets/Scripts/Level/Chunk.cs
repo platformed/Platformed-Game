@@ -8,15 +8,15 @@ using System;
 [RequireComponent(typeof(MeshCollider))]
 
 /// <summary>
-/// Represents a 10 by 10 area in the level
+/// Represents a 10 by 10 by 10 area in the level
 /// </summary>
 public class Chunk : MonoBehaviour {
 	MeshFilter filter;
 	MeshCollider coll;
-	new MeshRenderer renderer;
+	MeshRenderer meshRenderer;
 
-	Block[ , , ] blocks = new Block[chunkSize, chunkSize, chunkSize];
-	public static int chunkSize = 10;
+	Block[,,] blocks = new Block[chunkSize, chunkSize, chunkSize];
+	public static readonly int chunkSize = 10;
 
 	public World world;
 	public WorldPos pos;
@@ -25,14 +25,14 @@ public class Chunk : MonoBehaviour {
 	public bool update = true;
 
 	List<string> blockTypes = new List<string>();
-	
-	void Start () {
+
+	void Start() {
 		filter = GetComponent<MeshFilter>();
 		coll = GetComponent<MeshCollider>();
-		renderer = GetComponent<MeshRenderer>();
+		meshRenderer = GetComponent<MeshRenderer>();
 	}
-	
-	void Update () {
+
+	void Update() {
 		if (update) {
 			update = false;
 			UpdateChunk();
@@ -62,14 +62,33 @@ public class Chunk : MonoBehaviour {
 	/// <param name="z">Z position of the block</param>
 	/// <returns>The block object</returns>
 	public Block GetBlock(int x, int y, int z) {
-		if(InRange(x) && InRange(y) && InRange(z))
+		if (InRange(x) && InRange(y) && InRange(z))
 			return blocks[x, y, z];
 
 		return new AirBlock();
 	}
 
+	/// <summary>
+	/// Sets a block in the chunk
+	/// </summary>
+	/// <param name="x">X position of the block</param>
+	/// <param name="y">Y position of the block</param>
+	/// <param name="z">Z position of the block</param>
+	/// <param name="block">The block to set</param>
 	public void SetBlock(int x, int y, int z, Block block) {
 		if (InRange(x) && InRange(y) && InRange(z)) {
+			//Destroy old block if it is spawnable
+			if (blocks[x, y, z] is SpawnableBlock) {
+				SpawnableBlock b = (SpawnableBlock)blocks[x, y, z];
+				b.DestroyBlock();
+			}
+
+			//Instantiate new block if it is spawnable
+			if (block is SpawnableBlock) {
+				SpawnableBlock b = (SpawnableBlock)block;
+				b.InstantiateBlock(world.transform, new Vector3(x + pos.x, y + pos.y, z + pos.z) + new Vector3(0.5f, 0f, 0.5f));
+			}
+
 			blocks[x, y, z] = block;
 		} else {
 			world.SetBlock(pos.x + x, pos.y + y, pos.z + z, block);
@@ -93,7 +112,7 @@ public class Chunk : MonoBehaviour {
 		for (int x = 0; x < chunkSize; x++) {
 			for (int y = 0; y < chunkSize; y++) {
 				for (int z = 0; z < chunkSize; z++) {
-					if (blocks[x, y, z].GetName() != "Air") {
+					if (!(blocks[x, y, z] is AirBlock || blocks[x, y, z] is SpawnableBlock)) {
 						//Try to find if the block type already exists in chunk
 						int submesh = blockTypes.IndexOf(blocks[x, y, z].GetName());
 
@@ -103,7 +122,7 @@ public class Chunk : MonoBehaviour {
 							submesh = blockTypes.Count - 1;
 						}
 
-						data = blocks[x, y, z].BlockData(this, x, y, z, data, submesh, false);
+						data = blocks[x, y, z].BlockData(x, y, z, data, submesh, blocks);
 					}
 				}
 			}
@@ -113,7 +132,7 @@ public class Chunk : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Sends the mesh information to the mesh and collision components
+	/// Sends the mesh information to the mesh and mesh collider components
 	/// </summary>
 	void RenderMesh(MeshData data) {
 		//Update mesh
@@ -137,7 +156,7 @@ public class Chunk : MonoBehaviour {
 		for (int i = 0; i < materials.Length; i++) {
 			materials[i] = Resources.Load("Blocks/" + blockTypes[i] + "/" + blockTypes[i] + "Material") as Material;
 		}
-		renderer.materials = materials;
+		meshRenderer.materials = materials;
 
 		//Visualize normals
 		/*for (int i = 0; i < filter.mesh.vertexCount; i++) {

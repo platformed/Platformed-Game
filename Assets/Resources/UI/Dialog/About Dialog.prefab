@@ -328,13 +328,13 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Welcome to the Platformed Alpha!\n\nPlatformed is a game in development
-    where you can play other peoples levels and create your own. In the game you can
-    place different types of blocks and enemies into a level, then save it and publish
-    it to the community hub. You can also play other peoples levels via downloading
-    them. This project is being made by the platformed development team.\r\n\nMaterial
-    icons by Google licenced under CC BY 4.0\n\r\nCopyright \xA9 2016 Platformed Development
-    Team. All rights reserved."
+  m_Text: "Welcome to Platformed!\n\nPlatformed is a game in development where you
+    can play other peoples levels and create your own. In the game you can place different
+    types of blocks and enemies into a level, then save it and publish it to the community
+    hub. You can also play other peoples levels via downloading them. This project
+    is being made by the platformed development team.\r\n\nMaterial icons by Google
+    licenced under CC BY 4.0\n\r\nCopyright \xA9 2016 Platformed Development Team.
+    All rights reserved."
 --- !u!114 &11429398
 MonoBehaviour:
   m_ObjectHideFlags: 1

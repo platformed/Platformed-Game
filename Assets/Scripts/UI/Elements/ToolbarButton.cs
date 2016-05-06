@@ -28,12 +28,12 @@ public class ToolbarButton : MonoBehaviour {
 		if (isHovering) {
 			hoverTime += Time.deltaTime;
 		}
-		if(hoverTime > 0f && tooltip == null && tooltipText != "") {
+		/*if(hoverTime > 0f && tooltip == null && tooltipText != "") {
 			tooltip = Instantiate(UIManager.tooltip, transform.position - new Vector3(0, 32, 0), Quaternion.identity) as GameObject;
 			tooltip.GetComponentInChildren<Text>().text = tooltipText;
 			tooltip.transform.SetParent(transform);
 			tooltip.name = "Tooltip";
-		}
+		}*/
 	}
 
 	public void hover() {
