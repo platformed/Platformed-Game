@@ -28,30 +28,31 @@ public class BlockManager : MonoBehaviour {
 		//Blocks
 		AddBlock(new AirBlock(), BlockCategory.Block);
 		AddBlock(new BricksBlock(), BlockCategory.Block);
-		AddBlock(new GrayBricksBlock(), BlockCategory.Block);
 		AddBlock(new CarvedStoneBlock(), BlockCategory.Block);
 		AddBlock(new CrateBlock(), BlockCategory.Block);
-		AddBlock(new DirtWallBlock(), BlockCategory.Block);
 
 		//Floors
-		AddBlock(new GrassFloorBlock(), BlockCategory.Floor);
-		AddBlock(new StoneFloorBlock(), BlockCategory.Floor);
-		AddBlock(new TileFloorBlock(), BlockCategory.Floor);
+		AddBlock(new GrassBlock(), BlockCategory.Floor);
 
 		//Props
-		AddBlock(new BoulderBlock(), BlockCategory.Prop);
-		AddBlock(new BrickStairsBlock(), BlockCategory.Prop);
 		AddBlock(new TorchBlock(), BlockCategory.Prop);
 
 		//Collectables
 		AddBlock(new GemBlock(), BlockCategory.Collectable);
 
 		//Unused
-		//AddBlock(new PillarBlock(), BlockCategory.Block);
-		//AddBlock(new BarkBlock());
-		//AddBlock(new WoodBlock());
-		//AddBlock(new LeavesBlock());
-		//AddBlock(new GrassBlock());
+		/*
+		AddBlock(new BoulderBlock(), BlockCategory.Prop);
+		AddBlock(new GrayBricksBlock(), BlockCategory.Block);
+		AddBlock(new PillarBlock(), BlockCategory.Block);
+		AddBlock(new BarkBlock());
+		AddBlock(new WoodBlock());
+		AddBlock(new LeavesBlock());
+		AddBlock(new StoneFloorBlock(), BlockCategory.Floor);
+		AddBlock(new TileFloorBlock(), BlockCategory.Floor);
+		AddBlock(new BrickStairsBlock(), BlockCategory.Prop);
+		AddBlock(new DirtWallBlock(), BlockCategory.Block);
+		*/
 	}
 
 	/// <summary>

@@ -37,7 +37,8 @@ public class CameraMove : MonoBehaviour {
 			if (Input.GetKeyDown(KeyCode.E)) {
 				floor += floorSpeed;
 			}
-			clampFloor();
+
+			ClampFloor();
 
 			//Adjust for pan tool
 			if (UIManager.tool == Tool.PAN && !(Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) && UIManager.canInteract()) {
@@ -64,10 +65,10 @@ public class CameraMove : MonoBehaviour {
 		//Smooth transition using lerp
 		transform.position = new Vector3(transform.position.x, Mathf.Lerp(transform.position.y, floor, Time.deltaTime * smooth), transform.position.z);
 
-		clampPos();
+		ClampPos();
 	}
 
-	void clampPos() {
+	void ClampPos() {
 		int size = UIManager.worldSize;
 
 		if (transform.position.x < 0) {
@@ -85,7 +86,7 @@ public class CameraMove : MonoBehaviour {
 		}
 	}
 
-	void clampFloor() {
+	void ClampFloor() {
 		if (floor < 0) {
 			floor = 0;
 		}
