@@ -200,6 +200,19 @@ public class Block {
 	public virtual BlockSolidity GetSolidity(Direction direction) {
 		return BlockSolidity.Block;
 	}
+	
+	/// <summary>
+	/// Add a collider to the chunk
+	/// </summary>
+	/// <param name="parent">Chunk to add to</param>
+	/// <param name="pos">Center of collider</param>
+	/// <returns>Collider for block</returns>
+	public virtual Collider GetCollider(GameObject parent, Vector3 pos) {
+		BoxCollider box = parent.AddComponent<BoxCollider>();
+		box.center = pos;
+		box.size = Vector3.one;
+		return box;
+	}
 
 	/// <summary>
 	/// Changes the block's rotation by 90 degree increments on the y axis

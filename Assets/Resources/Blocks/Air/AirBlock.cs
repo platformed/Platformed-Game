@@ -14,4 +14,8 @@ public class AirBlock : Block {
 	public override BlockSolidity GetSolidity(Direction direction) {
 		return BlockSolidity.None;
 	}
+
+	public override Collider GetCollider(GameObject parent, Vector3 pos) {
+		return null;
+	}
 }

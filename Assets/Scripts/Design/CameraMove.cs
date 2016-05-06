@@ -41,7 +41,7 @@ public class CameraMove : MonoBehaviour {
 			ClampFloor();
 
 			//Adjust for pan tool
-			if (UIManager.tool == Tool.PAN && !(Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) && UIManager.canInteract()) {
+			if (UIManager.tool == Tool.Pan && !(Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) && UIManager.canInteract()) {
 				if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) {
 					lastPos = Input.mousePosition;
 				}

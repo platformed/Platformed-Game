@@ -100,4 +100,11 @@ public class FloorBlock : Block {
 			return BlockSolidity.Floor;
 		}
 	}
+
+	public override Collider GetCollider(GameObject parent, Vector3 pos) {
+		BoxCollider box = parent.AddComponent<BoxCollider>();
+		box.center = pos + new Vector3(0f, -0.45f, 0f);
+		box.size = new Vector3(1f, 0.1f, 1f);
+		return box;
+	}
 }

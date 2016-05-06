@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour {
-	public static Tool tool = Tool.BLOCK;
+	public static Tool tool = Tool.Block;
 	public Transform blockLibrary;
 	public static GameObject world;
 	public static bool isDragging = false;
@@ -105,7 +105,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public static void setToolBlock(string name) {
-		tool = Tool.BLOCK;
+		tool = Tool.Block;
 		BlockCursor.SetBlock(new Block[,,] { { { BlockManager.GetBlock(name) } } });
 		BlockCursor.offset = Vector3.zero;
 
@@ -180,11 +180,12 @@ public class UIManager : MonoBehaviour {
 }
 
 public enum Tool {
-	SELECT,
-	BLOCK,
-	PAN,
-	ORBIT,
-	ZOOM
+	Select,
+	Properties,
+	Block,
+	Pan,
+	Orbit,
+	Zoom
 }
 
 public enum Gamemode {

@@ -51,7 +51,7 @@ public class CameraOrbit : MonoBehaviour {
 		//Get inputs
 		if ((Input.GetMouseButton(2)) ||
 		   (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) && (Input.GetMouseButton(0) || Input.GetMouseButton(1)) ||
-		   (UIManager.tool == Tool.ORBIT && (Input.GetMouseButton(0) || Input.GetMouseButton(1)) && UIManager.canInteract())) {
+		   (UIManager.tool == Tool.Orbit && (Input.GetMouseButton(0) || Input.GetMouseButton(1)) && UIManager.canInteract())) {
 
 			x += Input.GetAxis("Mouse X") * xSpeed * 0.1f;
 			y -= Input.GetAxis("Mouse Y") * ySpeed * 0.1f;
@@ -81,7 +81,7 @@ public class CameraOrbit : MonoBehaviour {
 	/// </summary>
 	void Zoom() {
 		//Adjust for zoom tool
-		if (UIManager.tool == Tool.ZOOM && UIManager.canInteract()) {
+		if (UIManager.tool == Tool.Zoom && UIManager.canInteract()) {
 			if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) {
 				lastPos = Input.mousePosition.y;
 			}

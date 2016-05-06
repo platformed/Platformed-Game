@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Select : MonoBehaviour {
+public class SelectTool : MonoBehaviour {
 	public World world;
 	public BlockCursor cursor;
 	Vector3 pos1;
@@ -15,7 +15,7 @@ public class Select : MonoBehaviour {
 	}
 
 	void Update() {
-		if (UIManager.tool == Tool.SELECT && UIManager.canInteract()) {
+		if (UIManager.tool == Tool.Select && UIManager.canInteract()) {
 			if (Input.GetMouseButtonDown(0)) {
 				pos1 = Round(UIManager.raycast());
 			}
@@ -59,7 +59,7 @@ public class Select : MonoBehaviour {
 
 		transform.localScale = new Vector3(x, y, z);
 
-		if(UIManager.tool == Tool.SELECT) {
+		if(UIManager.tool == Tool.Select) {
 			meshRenderer.enabled = true;
 		} else {
 			meshRenderer.enabled = false;
@@ -116,6 +116,6 @@ public class Select : MonoBehaviour {
 		Vector3 offset = UIManager.raycast();
 		cursor.Copy(blocks, new Vector3(Mathf.Floor(offset.x) - p1.x, Mathf.Floor(offset.y) - p1.y, Mathf.Floor(offset.z) - p1.z));
 
-		UIManager.tool = Tool.BLOCK;
+		UIManager.tool = Tool.Block;
 	}
 }

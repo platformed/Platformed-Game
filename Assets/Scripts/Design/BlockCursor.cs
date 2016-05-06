@@ -39,7 +39,7 @@ public class BlockCursor : MonoBehaviour {
 
 		Vector3 pos = transform.position;
 
-		if (UIManager.tool == Tool.BLOCK && UIManager.canInteract()) {
+		if (UIManager.tool == Tool.Block && UIManager.canInteract()) {
 			Vector3 hit = UIManager.raycast();
 			pos = new Vector3(Mathf.Floor(hit.x), Mathf.Floor(hit.y), Mathf.Floor(hit.z)) + new Vector3(0.5f, 0.5f, 0.5f);
 
@@ -183,7 +183,7 @@ public class BlockCursor : MonoBehaviour {
 
 		meshRenderer.enabled = true;
 
-		if (UIManager.tool != Tool.BLOCK) {
+		if (UIManager.tool != Tool.Block) {
 			meshRenderer.enabled = false;
 		}
 
