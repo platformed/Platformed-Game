@@ -55,8 +55,8 @@ public class UIManager : MonoBehaviour {
 	void Update() {
 		if (VRManager.vrMode == VRMode.Disabled) {
 			if (gamemode == Gamemode.Design) {
-				UnityEngine.Cursor.lockState = CursorLockMode.None;
-				UnityEngine.Cursor.visible = true;
+				Cursor.lockState = CursorLockMode.None;
+				Cursor.visible = true;
 
 				designCanvas.SetActive(true);
 				playCanvas.SetActive(false);
@@ -75,8 +75,8 @@ public class UIManager : MonoBehaviour {
 				selectBox.SetActive(true);
 			}
 			if (gamemode == Gamemode.Play) {
-				UnityEngine.Cursor.lockState = CursorLockMode.Locked;
-				UnityEngine.Cursor.visible = false;
+				Cursor.lockState = CursorLockMode.Locked;
+				Cursor.visible = false;
 
 				designCanvas.SetActive(false);
 				playCanvas.SetActive(true);
@@ -155,7 +155,6 @@ public class UIManager : MonoBehaviour {
 
 		Vector3 hit;
 		Ray ray = designCam.ScreenPointToRay(Input.mousePosition);
-		ray.direction = ray.direction * 1000;
 		float distance;
 		if (plane.Raycast(ray, out distance)) {
 			hit = ray.GetPoint(distance);

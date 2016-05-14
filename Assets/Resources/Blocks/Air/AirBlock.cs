@@ -15,6 +15,14 @@ public class AirBlock : Block {
 		return BlockSolidity.None;
 	}
 
+	public override void InstantiateBlock(Transform parent, Vector3 pos, int x, int y, int z, Block[,,] blocks) {
+		return;
+	}
+
+	public override void DestroyBlock() {
+		return;
+	}
+
 	public override Collider GetCollider(GameObject parent, Vector3 pos) {
 		return null;
 	}

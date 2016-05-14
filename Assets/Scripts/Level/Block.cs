@@ -6,6 +6,8 @@ using System;
 /// Represents a block in the game
 /// </summary>
 public class Block {
+	GameObject gameObject;
+
 	protected string name;
 	protected string displayName;
 	public int textureID;
@@ -212,6 +214,29 @@ public class Block {
 		box.center = pos;
 		box.size = Vector3.one;
 		return box;
+	}
+
+	public virtual void InstantiateBlock(Transform parent, Vector3 pos, int x, int y, int z, Block[,,] blocks) {
+		gameObject = new GameObject();
+		gameObject.transform.SetParent(parent);
+		gameObject.transform.position = pos;
+
+		MeshData data = BlockData(x, y, z, new MeshData(), 0, blocks);
+		data.Offset(-new Vector3(x, y, z));
+		MeshFilter filter = gameObject.AddComponent<MeshFilter>();
+		filter.mesh.Clear();
+		filter.mesh.vertices = data.vertices.ToArray();
+		filter.mesh.triangles = data.triangles[0].ToArray();
+		filter.mesh.uv = data.uvs.ToArray();
+		filter.mesh.normals = data.normals.ToArray();
+
+		gameObject.AddComponent<MeshRenderer>().material = Resources.Load("Blocks/" + name + "/" + name + "Material") as Material;
+
+		GetCollider(gameObject, Vector3.zero);
+	}
+
+	public virtual void DestroyBlock() {
+		UnityEngine.Object.Destroy(gameObject);
 	}
 
 	/// <summary>

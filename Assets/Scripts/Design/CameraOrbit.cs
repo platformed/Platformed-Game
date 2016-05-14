@@ -37,10 +37,12 @@ public class CameraOrbit : MonoBehaviour {
 	}
 
 	void LateUpdate() {
-		if (target) {
-			Zoom();
-			Rotation();
-			ViewportRect();
+		if (UIManager.canInteract()) {
+			if (target) {
+				Zoom();
+				Rotation();
+				ViewportRect();
+			}
 		}
 	}
 

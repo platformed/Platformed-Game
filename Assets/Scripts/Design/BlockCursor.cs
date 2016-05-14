@@ -92,7 +92,7 @@ public class BlockCursor : MonoBehaviour {
 					//Instantiate new block if it is spawnable
 					if (newBlock[x, y, z] is SpawnableBlock) {
 						SpawnableBlock b = (SpawnableBlock)newBlock[x, y, z];
-						b.InstantiateBlock(parent, new Vector3(x, y, z) + new Vector3(0f, -0.5f, 0f));
+						b.InstantiateBlock(parent, new Vector3(x, y, z) + new Vector3(0f, -0.5f, 0f), x, y, z, block);
 					}
 				}
 			}
@@ -153,6 +153,9 @@ public class BlockCursor : MonoBehaviour {
 			}
 		}
 		data.Offset(-offset);
+
+		//Expand to prevent z-fighting
+		data.Expand(0.001f);
 
 		//Clear mesh
 		filter.mesh.Clear();

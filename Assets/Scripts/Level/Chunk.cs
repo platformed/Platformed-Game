@@ -84,7 +84,7 @@ public class Chunk : MonoBehaviour {
 			//Instantiate new block if it is spawnable
 			if (block is SpawnableBlock) {
 				SpawnableBlock b = (SpawnableBlock)block;
-				b.InstantiateBlock(world.transform, new Vector3(x + pos.x, y + pos.y, z + pos.z) + new Vector3(0.5f, 0f, 0.5f));
+				b.InstantiateBlock(world.transform, new Vector3(x + pos.x, y + pos.y, z + pos.z) + new Vector3(0.5f, 0f, 0.5f), x, y, z, blocks);
 			}
 
 			blocks[x, y, z] = block;

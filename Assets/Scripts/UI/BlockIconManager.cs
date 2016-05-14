@@ -48,7 +48,7 @@ public class BlockIconManager : MonoBehaviour {
 		//Instantiate if it is a spawnable block
 		if (block is SpawnableBlock) {
 			SpawnableBlock b = (SpawnableBlock)block;
-			b.InstantiateBlock(transform, Vector3.zero);
+			b.InstantiateBlock(transform, Vector3.zero, 0, 0, 0, new Block[,,] { { { } } });
 
 			//Add verticies to meshdata for scaling
 			MeshFilter[] meshs = b.GetPrefab().GetComponentsInChildren<MeshFilter>();

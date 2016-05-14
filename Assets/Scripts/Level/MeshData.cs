@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 /// <summary>
 /// Stores vertices, triangles, and uvs of a mesh and collision mesh
@@ -114,6 +115,42 @@ public class MeshData {
 	public void Scale(float scale) {
 		for (int i = 0; i < vertices.Count; i++) {
 			vertices[i] *= scale;
+		}
+	}
+
+	/// <summary>
+	/// Expands a mesh by moving the verticies in the direction of the normal by the amount
+	/// </summary>
+	/// <param name="amount">Amount to expand</param>
+	public void Expand(float amount) {
+		//Keep track of what verticies have been expanded
+		bool[] expanded = new bool[vertices.Count];
+
+		for (int i = 0; i < vertices.Count; i++) {
+			//Only expand vertitices that have not been expanded
+			if (!expanded[i]) {
+				//Find duplicate vertices and store their indicies
+				List<int> indices = new List<int>();
+                for (int j = 0; j < vertices.Count; j++) {
+					if(vertices[i] == vertices[j]) {
+						indices.Add(j);
+					}
+				}
+
+				//Get the average normal of the duplicate verticies
+				Vector3 averageNormal = Vector3.zero;
+				foreach(int k in indices) {
+					averageNormal += normals[k];
+				}
+				averageNormal /= indices.Count;
+				averageNormal.Normalize();
+
+				//Expand by amount
+				foreach(int k in indices) {
+					vertices[k] += averageNormal * amount;
+					expanded[k] = true;
+				}
+			}
 		}
 	}
 }

@@ -6,7 +6,7 @@ public class CameraMove : MonoBehaviour {
 	public static float smooth = 16f;
 	float speed;
 	float normalSpeed = 0.2f;
-	float shiftSpeed = 0.4f;
+	float shiftSpeed = 0.6f;
 	float panSpeed = 0.05f;
 
 	public static int floor = UIManager.worldSize / 2;

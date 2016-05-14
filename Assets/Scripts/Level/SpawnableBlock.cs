@@ -14,6 +14,10 @@ public class SpawnableBlock : Block {
 		return BlockSolidity.None;
 	}
 
+	public override Collider GetCollider(GameObject parent, Vector3 pos) {
+		return null;
+	}
+
 	/// <summary>
 	/// Gets the prefab of this block
 	/// </summary>
@@ -27,7 +31,7 @@ public class SpawnableBlock : Block {
 	/// </summary>
 	/// <param name="parent">Parent of GameObject</param>
 	/// <param name="pos">Local position to spawn at</param>
-	public void InstantiateBlock(Transform parent, Vector3 pos) {
+	public override void InstantiateBlock(Transform parent, Vector3 pos, int x, int y, int z, Block[,,] blocks) {
 		blockPosition = pos;
 
 		gameObject = Object.Instantiate(GetPrefab(), blockPosition, Quaternion.Euler(-90, 0, 0)) as GameObject;
@@ -43,7 +47,7 @@ public class SpawnableBlock : Block {
 	/// <summary>
 	/// Destroys the GameObject for the block
 	/// </summary>
-	public void DestroyBlock() {
+	public override void DestroyBlock() {
 		Object.Destroy(gameObject);
 	}
 

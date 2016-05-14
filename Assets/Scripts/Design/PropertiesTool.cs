@@ -3,6 +3,7 @@ using System.Collections;
 
 public class PropertiesTool : MonoBehaviour {
 	public Camera designCam;
+	Block block;
 
 	void Start() {
 
@@ -13,7 +14,8 @@ public class PropertiesTool : MonoBehaviour {
 			if (Input.GetMouseButtonDown(0)) {
 				Block b = Raycast();
 				if (b != null) {
-					Debug.Log(b.GetDisplayName());
+					block = b;
+					Debug.Log(block.GetDisplayName());
 				}
 			}
 		}
@@ -22,7 +24,6 @@ public class PropertiesTool : MonoBehaviour {
 	Block Raycast() {
 		//Get ray
 		Ray ray = designCam.ScreenPointToRay(Input.mousePosition);
-		ray.direction *= 1000f;
 
 		//Raycast
 		RaycastHit hit;
