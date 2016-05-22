@@ -159,6 +159,13 @@ public class World : MonoBehaviour {
 				block.InstantiateBlock(transform, new Vector3(x, y, z) + new Vector3(0.5f, 0.5f, 0.5f), x, y, z, blocks);
 
 				blocks[x, y, z] = block;
+
+				blocks[x + 1, y, z].UpdateBlock(x + 1, y, z, blocks);
+				blocks[x - 1, y, z].UpdateBlock(x - 1, y, z, blocks);
+				blocks[x, y + 1, z].UpdateBlock(x, y + 1, z, blocks);
+				blocks[x, y - 1, z].UpdateBlock(x, y - 1, z, blocks);
+				blocks[x, y, z + 1].UpdateBlock(x, y, z + 1, blocks);
+				blocks[x, y, z - 1].UpdateBlock(x, y, z - 1, blocks);
 			}
 		}
 	}

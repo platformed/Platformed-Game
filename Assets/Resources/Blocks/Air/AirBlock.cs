@@ -3,8 +3,8 @@ using System.Collections;
 
 public class AirBlock : Block {
 	public AirBlock(){
-		name = "Air";
-		displayName = "Air";
+		Name = "Air";
+		DisplayName = "Air";
 	}
 
 	public override MeshData BlockData(int x, int y, int z, MeshData data, int submesh, Block[,,] blocks) {
@@ -20,6 +20,10 @@ public class AirBlock : Block {
 	}
 
 	public override void DestroyBlock() {
+		return;
+	}
+
+	public override void UpdateBlock(int x, int y, int z, Block[,,] blocks) {
 		return;
 	}
 

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class LeavesBlock : Block {
 	public LeavesBlock() {
-		name = "Leaves";
-		displayName = "Leaves";
+		Name = "Leaves";
+		DisplayName = "Leaves";
 	}
 }

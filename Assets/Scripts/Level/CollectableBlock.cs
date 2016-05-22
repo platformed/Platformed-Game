@@ -2,7 +2,8 @@
 using System.Collections;
 
 public class CollectableBlock : SpawnableBlock {
-	protected int points;
+	[Property("Points", "Amount of points rewarded when collected")]
+	public int Points { get; set; }
 
 	public override void Reset() {
 		transform.rotation = Quaternion.Euler(-90, 0, 0);

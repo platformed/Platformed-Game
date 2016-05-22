@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class BlockEditor : MonoBehaviour {
-	public static int textureSize = 2048;
+	public static int textureSize = 10;
 
 	List<BlockLayer> layers = new List<BlockLayer>();
 	public Material material;

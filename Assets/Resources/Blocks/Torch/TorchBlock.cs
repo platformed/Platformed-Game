@@ -3,7 +3,7 @@ using System.Collections;
 
 public class TorchBlock : SpawnableBlock {
 	public TorchBlock() {
-		name = "Torch";
-		displayName = "Torch";
+		Name = "Torch";
+		DisplayName = "Torch";
 	}
 }

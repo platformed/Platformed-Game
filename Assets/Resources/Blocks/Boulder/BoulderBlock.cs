@@ -3,7 +3,7 @@ using System.Collections;
 
 public class BoulderBlock : ModelBlock {
 	public BoulderBlock() {
-		name = "Boulder";
-		displayName = "Boulder";
+		Name = "Boulder";
+		DisplayName = "Boulder";
 	}
 }

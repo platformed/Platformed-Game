@@ -5713,15 +5713,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: 968c2c4e5cc6eeb45b892fc8dd7a37bc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 968c2c4e5cc6eeb45b892fc8dd7a37bc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 968c2c4e5cc6eeb45b892fc8dd7a37bc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 968c2c4e5cc6eeb45b892fc8dd7a37bc, type: 3}
       propertyPath: m_LocalRotation.x
@@ -7327,15 +7327,6 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1042898113}
---- !u!4 &1084379429 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 460198, guid: 4d293c8e162f3874b982baadd71153d2, type: 2}
-  m_PrefabInternal: {fileID: 1856856032}
---- !u!23 &1084379430 stripped
-MeshRenderer:
-  m_PrefabParentObject: {fileID: 2365784, guid: 4d293c8e162f3874b982baadd71153d2,
-    type: 2}
-  m_PrefabInternal: {fileID: 1856856032}
 --- !u!1 &1085648604
 GameObject:
   m_ObjectHideFlags: 0
@@ -7528,6 +7519,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbe640e7a829f62428195c56879610ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  windowCanvas: {fileID: 1757988642}
   designCam: {fileID: 1211566144}
 --- !u!1 &1096879512
 GameObject:
@@ -9627,11 +9619,6 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1346381999}
---- !u!65 &1351263335 stripped
-BoxCollider:
-  m_PrefabParentObject: {fileID: 6569988, guid: 4d293c8e162f3874b982baadd71153d2,
-    type: 2}
-  m_PrefabInternal: {fileID: 1856856032}
 --- !u!1 &1369445941
 GameObject:
   m_ObjectHideFlags: 0
@@ -16345,9 +16332,9 @@ MonoBehaviour:
   world: {fileID: 29766814}
   controllerTransform: {fileID: 1041152074}
   menuCanvas: {fileID: 994539316}
-  menuCollider: {fileID: 1351263335}
-  lineRenderer: {fileID: 1084379430}
-  lineTransform: {fileID: 1084379429}
+  menuCollider: {fileID: 0}
+  lineRenderer: {fileID: 0}
+  lineTransform: {fileID: 0}
   trackedObject: {fileID: 1041152073}
 --- !u!23 &2138090812
 MeshRenderer:
