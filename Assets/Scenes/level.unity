@@ -7521,6 +7521,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   windowCanvas: {fileID: 1757988642}
   designCam: {fileID: 1211566144}
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 1.4019628
+      outSlope: 1.4019628
+      tangentMode: 0
+    - time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!1 &1096879512
 GameObject:
   m_ObjectHideFlags: 0

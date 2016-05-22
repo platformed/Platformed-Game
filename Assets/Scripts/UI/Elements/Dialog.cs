@@ -118,13 +118,11 @@ public class Dialog : MonoBehaviour {
 	}
 
 	float GetWidth() {
-		RectTransform r = GetComponent<RectTransform>();
-		return r.rect.width;
+		return rectTransform.rect.width;
 	}
 
 	float GetHeight() {
-		RectTransform r = GetComponent<RectTransform>();
-		return r.rect.height;
+		return rectTransform.rect.height;
 	}
 
 	void FadeIn(float duration) {
