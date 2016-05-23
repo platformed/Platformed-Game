@@ -13,7 +13,7 @@ public class PropertiesTool : MonoBehaviour {
 
 	GameObject propertiesDialogPrefab;
 
-	const float animationDuration = 0.2f;
+	const float animationDuration = 10f;
 
 	void Start() {
 		propertiesDialogPrefab = Resources.Load("UI/Dialog/Properties Dialog") as GameObject;

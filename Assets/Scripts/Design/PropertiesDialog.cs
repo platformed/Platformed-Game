@@ -44,8 +44,8 @@ public class PropertiesDialog : MonoBehaviour {
 		Vector2 size = rectTransform.sizeDelta;
 
 		Vector2[] scalePoints = new Vector2[] {
-			new Vector2(0.8f, 0f),
-			new Vector2(0.9f, 0.1f),
+			new Vector2(1f, 0.1f),
+			new Vector2(1f, 0.2f),
 			new Vector2(1f, 0.9f),
 			new Vector2(1f, 1f)
 		};
