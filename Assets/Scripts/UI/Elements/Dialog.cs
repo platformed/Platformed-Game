@@ -13,6 +13,8 @@ public class Dialog : MonoBehaviour {
 	const float fadeDuration = 0.1f;
 	Vector3 mouseOffset;
 
+	bool closing = false;
+
 	void Start() {
 		rectTransform = GetComponent<RectTransform>();
 
@@ -55,6 +57,8 @@ public class Dialog : MonoBehaviour {
 	}
 
 	public void CloseDialog() {
+		closing = true;
+
 		UIManager.pointerExit();
 
 		FadeOut(fadeDuration);
@@ -73,14 +77,18 @@ public class Dialog : MonoBehaviour {
 		transform.SetAsLastSibling();
 
 		mouseOffset = transform.position - Input.mousePosition;
-		UIManager.isDragging = true;
+		if (!closing) {
+			UIManager.isDragging = true;
+		}
 
 		shadow.CrossFadeAlpha(0f, shadowFadeDuration, false);
 		shadowHover.CrossFadeAlpha(1f, shadowFadeDuration, false);
 	}
 
 	public void StopDrag() {
-		UIManager.isDragging = false;
+		if (!closing) {
+			UIManager.isDragging = false;
+		}
 
 		shadow.CrossFadeAlpha(1f, shadowFadeDuration, false);
 		shadowHover.CrossFadeAlpha(0f, shadowFadeDuration, false);
@@ -92,11 +100,15 @@ public class Dialog : MonoBehaviour {
 	}
 
 	public void PointerEnter() {
-		UIManager.pointerEnter();
+		if (!closing) {
+			UIManager.pointerEnter();
+		}
 	}
 
 	public void PointerExit() {
-		UIManager.pointerExit();
+		if (!closing) {
+			UIManager.pointerExit();
+		}
 	}
 
 	void ClampPos() {
@@ -137,5 +149,11 @@ public class Dialog : MonoBehaviour {
 		foreach (Graphic i in images) {
 			i.CrossFadeAlpha(0f, duration, false);
 		}
+	}
+
+	public void SetParent(Transform parent) {
+		shadow.transform.SetParent(parent);
+		shadowHover.transform.SetParent(parent);
+		transform.SetParent(parent);
 	}
 }

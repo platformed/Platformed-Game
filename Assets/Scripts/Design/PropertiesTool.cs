@@ -9,11 +9,13 @@ public class PropertiesTool : MonoBehaviour {
 	public Transform windowCanvas;
 	public Camera designCam;
 
-	public AnimationCurve animationCurve;
+	public AnimationCurve speedCurve;
+	public AnimationCurve circleCurve;
 
 	GameObject propertiesDialogPrefab;
 
-	const float animationDuration = 10f;
+	const float animationDuration = 0.6f;
+	const float circleDuration = 0.3f;
 
 	void Start() {
 		propertiesDialogPrefab = Resources.Load("UI/Dialog/Properties Dialog") as GameObject;
@@ -47,12 +49,14 @@ public class PropertiesTool : MonoBehaviour {
 
 					//Create dialog
 					GameObject go = Instantiate(propertiesDialogPrefab, Input.mousePosition, Quaternion.identity) as GameObject;
-                    PropertiesDialog propertiesDialog = go.GetComponent<PropertiesDialog>();
-					propertiesDialog.transform.SetParent(windowCanvas);
-					propertiesDialog.transform.SetAsLastSibling();
-					propertiesDialog.transform.name = block.GetDisplayName() + " Properties Dialog";
+					go.transform.SetParent(windowCanvas);
+					go.transform.SetAsLastSibling();
+					go.transform.name = block.GetDisplayName() + " Properties Dialog";
 
-					propertiesDialog.StartAnimation(Input.mousePosition, new Vector2(Screen.width * 0.75f, Screen.height * 0.5f), animationCurve, animationDuration);
+					PropertiesDialog propertiesDialog = go.GetComponentInChildren<PropertiesDialog>();
+
+					Vector2 endPos = new Vector2(Screen.width * 0.75f, Screen.height * 0.5f);
+                    propertiesDialog.StartAnimation(Input.mousePosition, endPos, speedCurve, circleCurve, animationDuration, circleDuration);
 
 					propertiesDialog.SetTitle(block.GetDisplayName());
 					propertiesDialog.SetProperties(blockProperties);

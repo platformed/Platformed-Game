@@ -6,14 +6,19 @@ using System.Collections.Generic;
 [RequireComponent(typeof(RectTransform))]
 public class PropertiesDialog : MonoBehaviour {
 	public Text title;
+	public RectTransform circleTransform;
 
 	Vector2[] points;
 	float duration;
-	AnimationCurve curve;
+	float circleDuration;
+	AnimationCurve speedCurve;
+	AnimationCurve circleCurve;
 
-	public void StartAnimation(Vector2 start, Vector2 end, AnimationCurve curve, float duration) {
+	public void StartAnimation(Vector2 start, Vector2 end, AnimationCurve speedCurve, AnimationCurve circleCurve, float duration, float circleDuration) {
+		this.speedCurve = speedCurve;
+		this.circleCurve = circleCurve;
 		this.duration = duration;
-		this.curve = curve;
+		this.circleDuration = circleDuration;
 
 		float xDistance = Mathf.Abs(start.x - end.x);
 		float yDistance = Mathf.Abs(start.y - end.y);
@@ -37,6 +42,7 @@ public class PropertiesDialog : MonoBehaviour {
 		}*/
 
 		StartCoroutine(Animate());
+		StartCoroutine(AnimateCircle());
 	}
 
 	IEnumerator Animate() {
@@ -51,14 +57,34 @@ public class PropertiesDialog : MonoBehaviour {
 		};
 
 		for (float i = 0; i < duration; i += Time.deltaTime) {
-			float distance = curve.Evaluate(i / duration);
+			float distance = speedCurve.Evaluate(i / duration);
 
-			rectTransform.position = BezierCurve2D.Evaluate(points, distance);
+			if (circleTransform != null) {
+				circleTransform.position = BezierCurve2D.Evaluate(points, distance);
+			} else {
+				transform.position = BezierCurve2D.Evaluate(points, distance);
+			}
 
 			Vector2 sizeMultiplyer = BezierCurve2D.Evaluate(scalePoints, distance);
             rectTransform.sizeDelta = new Vector2(size.x * sizeMultiplyer.x, size.y * sizeMultiplyer.y);
+
 			yield return null;
 		}
+	}
+
+	IEnumerator AnimateCircle() {
+		Vector2 size = circleTransform.sizeDelta;
+
+		for (float i = 0; i < circleDuration; i += Time.deltaTime) {
+			float distance = circleCurve.Evaluate(i / circleDuration);
+
+			circleTransform.sizeDelta = size * distance;
+
+			yield return null;
+		}
+
+		GetComponent<Dialog>().SetParent(transform.parent.parent);
+		Destroy(circleTransform.gameObject);
 	}
 
 	public void SetTitle(string title) {

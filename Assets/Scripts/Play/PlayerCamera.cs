@@ -5,58 +5,91 @@ public class PlayerCamera : MonoBehaviour {
 	public Transform target;
 
 	float distance = 3f;
-	float xSpeed = 30f;
-	float ySpeed = 18.75f;
 
-	float yMinLimit = -89.9f;
-	float yMaxLimit = 89.9f;
-
-	float distanceMin = 1f;
-	float distanceMax = 10f;
+	const float xSpeed = 1.5f;
+	const float ySpeed = 1.125f;
 
 	float x = 0.0f;
 	float y = 0.0f;
-	
-	void Start () {
+	const float smoothing = 40f;
 
+	float lastPos;
+
+	float smoothDistance;
+	float smoothX;
+	float smoothY;
+
+	const float minZoom = 1f;
+	const float maxZoom = 10f;
+	const float zoomSpeed = 5f;
+
+	const float distanceFromHit = 0.5f;
+
+	void Start() {
+		x = transform.eulerAngles.y;
+		y = transform.eulerAngles.x;
+
+		smoothDistance = distance;
+		smoothX = x;
+		smoothY = y;
 	}
 
-	void FixedUpdate() {
+	void LateUpdate() {
 		if (UIManager.gamemode == Gamemode.Play) {
-			x += Input.GetAxis("Mouse X") * xSpeed * 0.1f;
-			y -= Input.GetAxis("Mouse Y") * ySpeed * 0.1f;
-
-			y = clampAngle(y, yMinLimit, yMaxLimit);
-
-			Quaternion rotation = Quaternion.Euler(y, x, 0);
-
-			//Adjust for scrollwheel and clamp
-			distance = Mathf.Clamp(distance - Input.GetAxis("Mouse ScrollWheel") * 5, distanceMin, distanceMax);
-
-			/*RaycastHit hit;
-			if (Physics.Linecast (target.position, transform.position, out hit)) 
-			{
-				distance -=  hit.distance;
-			}*/
-
-			//Set position
-			Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
-			Vector3 position = rotation * negDistance + target.position;
-
-			//Acctualy set the rot and pos of the camera
-			transform.rotation = rotation;
-			transform.position = position;
+			Zoom();
+			Collisions();
+			Rotation();
 		}
 	}
 
+	/// <summary>
+	/// Sets the position and rotation of the camera around the target
+	/// </summary>
+	void Rotation() {
+		//Get inputs
+		x += Input.GetAxis("Mouse X") * xSpeed;
+		y -= Input.GetAxis("Mouse Y") * ySpeed;
 
-	public static float clampAngle(float angle, float min, float max) {
-		if (angle < -360F) {
-			angle += 360F;
+		//Clamp rotation
+		y = Mathf.Clamp(y, -89.9f, 89.9f);
+
+		//Smooth rotation
+		smoothX = Mathf.Lerp(smoothX, x, Time.deltaTime * smoothing);
+		smoothY = Mathf.Lerp(smoothY, y, Time.deltaTime * smoothing);
+
+		//Set rotation
+		Quaternion rotation = Quaternion.Euler(smoothY, smoothX, 0);
+
+		//Set position
+		Vector3 negDistance = new Vector3(0f, 0f, -smoothDistance);
+		Vector3 position = rotation * negDistance + target.position;
+
+		//Acctualy set the rot and pos of the camera
+		transform.rotation = rotation;
+		transform.position = position;
+	}
+
+	/// <summary>
+	/// Sets the zoom level of the camera
+	/// </summary>
+	void Zoom() {
+		//Adjust for scrollwheel
+		distance -= Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
+
+		//Clamp distance
+		distance = Mathf.Clamp(distance, minZoom, maxZoom);
+
+		//Smooth distance
+		smoothDistance = Mathf.Lerp(smoothDistance, distance, Time.deltaTime * 20);
+	}
+
+	/// <summary>
+	/// Stops the camera from seeing inside the level
+	/// </summary>
+	void Collisions() {
+		RaycastHit hit;
+		if(Physics.Raycast(target.position, -transform.forward, out hit, smoothDistance + distanceFromHit)) {
+			smoothDistance = hit.distance - distanceFromHit;
 		}
-		if (angle > 360F) {
-			angle -= 360F;
-		}
-		return Mathf.Clamp(angle, min, max);
 	}
 }
