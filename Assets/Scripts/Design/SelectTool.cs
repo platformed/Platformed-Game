@@ -15,16 +15,16 @@ public class SelectTool : MonoBehaviour {
 	}
 
 	void Update() {
-		if (UIManager.tool == Tool.Select && UIManager.canInteract()) {
+		if (UIManager.tool == Tool.Select && UIManager.CanInteract()) {
 			if (Input.GetMouseButtonDown(0)) {
-				pos1 = Round(UIManager.raycast());
+				pos1 = Round(UIManager.Raycast());
 			}
 			if (Input.GetMouseButton(0)) {
-				pos2 = Round(UIManager.raycast());
+				pos2 = Round(UIManager.Raycast());
 			}
 		}
 
-		if (Input.GetKeyDown(KeyCode.C) && UIManager.canInteract()) {
+		if (Input.GetKeyDown(KeyCode.C) && UIManager.CanInteract()) {
 			Copy();
 		}
 
@@ -113,7 +113,7 @@ public class SelectTool : MonoBehaviour {
 		}
 
 		//Debug.Log("Copied block array of " + new Vector3((int)(p2.x - p1.x), (int)(p2.y - p1.y), (int)(p2.z - p1.z)).ToString());
-		Vector3 offset = UIManager.raycast();
+		Vector3 offset = UIManager.Raycast();
 		cursor.Copy(blocks, new Vector3(Mathf.Floor(offset.x) - p1.x, Mathf.Floor(offset.y) - p1.y, Mathf.Floor(offset.z) - p1.z));
 
 		UIManager.tool = Tool.Block;

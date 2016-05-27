@@ -24,7 +24,7 @@ public class Player : MonoBehaviour {
 
 	// FixedUpdate is called once per physics frame
 	void FixedUpdate() {
-		if (UIManager.gamemode == Gamemode.Play) {
+		if (UIManager.Gamemode == Gamemode.Play) {
 			//Enables physics
 			rb.isKinematic = false;
 			

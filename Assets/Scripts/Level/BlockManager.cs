@@ -30,6 +30,7 @@ public class BlockManager : MonoBehaviour {
 		AddBlock(new BricksBlock(), BlockCategory.Block);
 		AddBlock(new CarvedStoneBlock(), BlockCategory.Block);
 		AddBlock(new CrateBlock(), BlockCategory.Block);
+		AddBlock(new DirtBlock(), BlockCategory.Block);
 
 		//Floors
 		AddBlock(new GrassBlock(), BlockCategory.Floor);
@@ -69,7 +70,7 @@ public class BlockManager : MonoBehaviour {
 			//Set button onClick
 			Button b = button.GetComponent<Button>();
 			string n = block.GetName();
-			b.onClick.AddListener(() => UIManager.setToolBlock(n));
+			b.onClick.AddListener(() => UIManager.SetToolBlock(n));
 
 			//Set icon
 			Image icon = button.transform.GetChild(0).GetComponent<Image>();

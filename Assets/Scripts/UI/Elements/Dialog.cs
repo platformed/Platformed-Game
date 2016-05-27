@@ -59,7 +59,7 @@ public class Dialog : MonoBehaviour {
 	public void CloseDialog() {
 		closing = true;
 
-		UIManager.pointerExit();
+		UIManager.instance.PointerExit();
 
 		FadeOut(fadeDuration);
 
@@ -101,13 +101,13 @@ public class Dialog : MonoBehaviour {
 
 	public void PointerEnter() {
 		if (!closing) {
-			UIManager.pointerEnter();
+			UIManager.instance.PointerEnter();
 		}
 	}
 
 	public void PointerExit() {
 		if (!closing) {
-			UIManager.pointerExit();
+			UIManager.instance.PointerExit();
 		}
 	}
 

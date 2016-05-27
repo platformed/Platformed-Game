@@ -53,7 +53,7 @@ public class NavigationDrawer : MonoBehaviour {
 	}
 
 	void LoadScene(string s) {
-		UIManager.loadScene(s);
+		UIManager.LoadScene(s);
 		//hideDrawer();
 	}
 

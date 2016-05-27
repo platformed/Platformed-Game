@@ -35,7 +35,7 @@ public class PlayerCamera : MonoBehaviour {
 	}
 
 	void LateUpdate() {
-		if (UIManager.gamemode == Gamemode.Play) {
+		if (UIManager.Gamemode == Gamemode.Play) {
 			Zoom();
 			Collisions();
 			Rotation();

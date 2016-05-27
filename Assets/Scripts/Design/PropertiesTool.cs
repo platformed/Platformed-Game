@@ -22,7 +22,7 @@ public class PropertiesTool : MonoBehaviour {
 	}
 
 	void Update() {
-		if (UIManager.canInteract() && UIManager.tool == Tool.Properties && UIManager.gamemode == Gamemode.Design) {
+		if (UIManager.CanInteract() && UIManager.tool == Tool.Properties && UIManager.Gamemode == Gamemode.Design) {
 			if (Input.GetMouseButtonDown(0)) {
 				Block block = Raycast();
 				if (block != null) {

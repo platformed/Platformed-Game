@@ -22,7 +22,7 @@ public class CameraMove : MonoBehaviour {
 
 	void LateUpdate() {
 		//Adjust floor level
-		if (UIManager.canInteract()) {
+		if (UIManager.CanInteract()) {
 			if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) {
 				speed = shiftSpeed;
 				floorSpeed = shiftFloorSpeed;
@@ -41,7 +41,7 @@ public class CameraMove : MonoBehaviour {
 			ClampFloor();
 
 			//Adjust for pan tool
-			if (UIManager.tool == Tool.Pan && !(Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) && UIManager.canInteract()) {
+			if (UIManager.tool == Tool.Pan && !(Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) && UIManager.CanInteract()) {
 				if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) {
 					lastPos = Input.mousePosition;
 				}
