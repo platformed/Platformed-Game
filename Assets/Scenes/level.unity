@@ -3284,12 +3284,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
-  m_Father: {fileID: 459880600}
-  m_RootOrder: 6
+  m_Father: {fileID: 1111266826}
+  m_RootOrder: 3
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -245.5}
-  m_SizeDelta: {x: 0, y: 491}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &443103695
 GameObject:
@@ -3673,7 +3673,6 @@ RectTransform:
   - {fileID: 457731023}
   - {fileID: 774137282}
   - {fileID: 1490354820}
-  - {fileID: 442474567}
   m_Father: {fileID: 1111266826}
   m_RootOrder: 2
   m_AnchorMin: {x: 0, y: 1}
@@ -7436,6 +7435,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockLibrary: {fileID: 1250969297}
+  designCam: {fileID: 0}
+  playCam: {fileID: 0}
   target: {fileID: 801111789}
   designCanvas: {fileID: 1111266822}
   playCanvas: {fileID: 317311033}
@@ -8185,6 +8186,7 @@ RectTransform:
   - {fileID: 1250969297}
   - {fileID: 1463420211}
   - {fileID: 459880600}
+  - {fileID: 442474567}
   - {fileID: 1480465733}
   - {fileID: 1757988642}
   m_Father: {fileID: 0}
@@ -8648,6 +8650,54 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 801111790}
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  viewportCurveDesign:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+    - time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  viewportCurvePlay:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!54 &1211566148
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -10851,7 +10901,7 @@ RectTransform:
   - {fileID: 414483728}
   - {fileID: 1517778116}
   m_Father: {fileID: 1111266826}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: -280, y: 0}
@@ -12674,7 +12724,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1111266826}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}

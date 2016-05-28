@@ -24,12 +24,12 @@ public class Player : MonoBehaviour {
 
 	// FixedUpdate is called once per physics frame
 	void FixedUpdate() {
-		if (UIManager.Gamemode == Gamemode.Play) {
+		if (UIManager.Gamemode == Gamemode.Play && UIManager.CanInteract()) {
 			//Enables physics
 			rb.isKinematic = false;
-			
-			transform.eulerAngles = new Vector3(transform.eulerAngles.x, UIManager.playCam.transform.eulerAngles.y, transform.eulerAngles.z);
-			
+
+			transform.eulerAngles = new Vector3(transform.eulerAngles.x, UIManager.instance.playCam.transform.eulerAngles.y, transform.eulerAngles.z);
+
 			//Calculate how fast it should be moving
 			Vector3 targetVelocity = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 			targetVelocity = transform.TransformDirection(targetVelocity);

@@ -14,6 +14,15 @@ public class PropertiesDialog : MonoBehaviour {
 	AnimationCurve speedCurve;
 	AnimationCurve circleCurve;
 
+	/// <summary>
+	/// Plays the opening animation for the dialog
+	/// </summary>
+	/// <param name="start">The starting point of the animation</param>
+	/// <param name="end">The ending point of the animation</param>
+	/// <param name="speedCurve">A curve to evaluate the distance along the animation</param>
+	/// <param name="circleCurve">A curve to evaluate the distance along the circle animation</param>
+	/// <param name="duration">The amount of time the animation takes to finish</param>
+	/// <param name="circleDuration">The amount of time the circle animation takes to finish</param>
 	public void StartAnimation(Vector2 start, Vector2 end, AnimationCurve speedCurve, AnimationCurve circleCurve, float duration, float circleDuration) {
 		this.speedCurve = speedCurve;
 		this.circleCurve = circleCurve;
@@ -60,12 +69,12 @@ public class PropertiesDialog : MonoBehaviour {
 			float distance = speedCurve.Evaluate(i / duration);
 
 			if (circleTransform != null) {
-				circleTransform.position = BezierCurve2D.Evaluate(points, distance);
+				circleTransform.position = BezierCurve.Evaluate2D(points, distance);
 			} else {
-				transform.position = BezierCurve2D.Evaluate(points, distance);
+				transform.position = BezierCurve.Evaluate2D(points, distance);
 			}
 
-			Vector2 sizeMultiplyer = BezierCurve2D.Evaluate(scalePoints, distance);
+			Vector2 sizeMultiplyer = BezierCurve.Evaluate2D(scalePoints, distance);
             rectTransform.sizeDelta = new Vector2(size.x * sizeMultiplyer.x, size.y * sizeMultiplyer.y);
 
 			yield return null;

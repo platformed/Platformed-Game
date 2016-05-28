@@ -21,14 +21,19 @@ public class UIManager : MonoBehaviour {
 	public static int score = 0;
 
 	//GameObjects that need to be enabled/disabled for play/design mode
-	public static Camera designCam;
-	public static Camera playCam;
+	public Camera designCam;
+	public Camera playCam;
 	public GameObject target;
 	public GameObject designCanvas;
 	public GameObject playCanvas;
 	public GameObject grid;
 	public GameObject cursor;
 	public GameObject selectBox;
+
+	/// <summary>
+	/// True if the UI is transitioning between gamemodes
+	/// </summary>
+	public bool IsTransitioning { get; private set; }
 
 	static bool mouseOverWindow = false;
 	static bool navDrawerEnabled = false;
@@ -39,6 +44,8 @@ public class UIManager : MonoBehaviour {
 
 	void Awake() {
 		Gamemode = Gamemode.Design;
+		IsTransitioning = false;
+
 		instance = this;
 	}
 
@@ -47,6 +54,7 @@ public class UIManager : MonoBehaviour {
 			//Get camera
 			designCam = GameObject.Find("Design Camera").GetComponent<Camera>();
 			playCam = GameObject.Find("Play Camera").GetComponent<Camera>();
+			playCam.gameObject.SetActive(false);
 
 			//Get World
 			world = GameObject.Find("World");
@@ -70,6 +78,8 @@ public class UIManager : MonoBehaviour {
 
 				designCam.gameObject.SetActive(true);
 				playCam.gameObject.SetActive(false);
+				designCanvas.SetActive(true);
+
 				target.SetActive(true);
 
 				grid.SetActive(true);
@@ -88,6 +98,8 @@ public class UIManager : MonoBehaviour {
 
 				designCam.gameObject.SetActive(false);
 				playCam.gameObject.SetActive(true);
+				designCanvas.SetActive(false);
+
 				target.SetActive(false);
 
 				grid.SetActive(false);
@@ -96,7 +108,7 @@ public class UIManager : MonoBehaviour {
 				selectBox.SetActive(false);
 
 				//Press ESC to go back to design mode
-				if (Input.GetKey(KeyCode.Escape)) {
+				if (Input.GetKey(KeyCode.Escape) && !IsTransitioning) {
 					SetGamemode(Gamemode.Design);
 				}
 			}
@@ -111,15 +123,50 @@ public class UIManager : MonoBehaviour {
 	/// </summary>
 	/// <param name="gamemode">The gamemode to set</param>
 	public void SetGamemode(Gamemode gamemode) {
-		Gamemode = gamemode;
+		if (Gamemode != gamemode) {
+			Gamemode = gamemode;
+			//StartTransition();
+		} else {
+			Gamemode = gamemode;
+		}
+	}
+
+	void StartTransition() {
+		IsTransitioning = true;
 
 		Animator anim = designCanvas.GetComponent<Animator>();
+
 		if (Gamemode == Gamemode.Play) {
-			designCanvas.SetActive(false);
-			//anim.Play("PlayModeTransition");
+			designCam.gameObject.SetActive(true);
+			playCam.gameObject.SetActive(false);
+
+			designCam.GetComponent<CameraOrbit>().StartAnimation(playCam.transform.position, playCam.transform.rotation, new Rect(0, 0, 1, 1));
+			
+			anim.Play("PlayModeTransition");
 		} else if (Gamemode == Gamemode.Design) {
-			designCanvas.SetActive(true);
-			//anim.Play("DesignModeTransition");
+			designCam.gameObject.SetActive(true);
+			playCam.gameObject.SetActive(false);
+
+			designCam.GetComponent<CameraOrbit>().Rotation();
+
+			Vector3 endPos = designCam.transform.position;
+			Quaternion endRot = designCam.transform.rotation;
+
+			designCam.transform.position = playCam.transform.position;
+			designCam.transform.rotation = playCam.transform.rotation;
+
+			designCam.GetComponent<CameraOrbit>().StartAnimation(endPos, endRot, designCam.GetComponent<CameraOrbit>().ViewportRect());
+			
+			anim.Play("DesignModeTransition");
+		}
+	}
+
+	public void StopTransition() {
+		IsTransitioning = false;
+
+		if (Gamemode == Gamemode.Play) {
+			designCam.gameObject.SetActive(false);
+			playCam.gameObject.SetActive(true);
 		}
 	}
 
@@ -151,6 +198,10 @@ public class UIManager : MonoBehaviour {
 		if (CategorySelector.isVisible) {
 			return false;
 		}
+		if (instance.IsTransitioning) {
+			return false;
+		}
+
 		return true;
 	}
 
@@ -176,7 +227,7 @@ public class UIManager : MonoBehaviour {
 		Plane plane = new Plane(Vector3.up, new Vector3(0, CameraMove.floor, 0));
 
 		Vector3 hit;
-		Ray ray = designCam.ScreenPointToRay(Input.mousePosition);
+		Ray ray = instance.designCam.ScreenPointToRay(Input.mousePosition);
 		float distance;
 		if (plane.Raycast(ray, out distance)) {
 			hit = ray.GetPoint(distance);
