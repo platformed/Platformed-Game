@@ -2,6 +2,9 @@
 using System.Collections;
 
 public class FloorBlock : Block {
+	const float p1 = 10f / 11f;
+	const float p2 = 1f / 11f;
+
 	public override MeshData BlockData(int x, int y, int z, MeshData data, int submesh, Block[,,] blocks) {
 		data.useRenderDataForCol = true;
 
@@ -99,5 +102,28 @@ public class FloorBlock : Block {
 		} else {
 			return BlockSolidity.Floor;
 		}
+	}
+
+	public override Vector2[] FaceUVs(Direction direction) {
+		//Rotate the top and bottom face of the block
+		if (direction == Direction.Up || direction == Direction.Down) {
+			Vector2[] uvs = new Vector2[] { new Vector2(p1, 1f), new Vector2(p1, p2), new Vector2(p2, p2), new Vector2(0f, p1) };
+
+			Vector2[] rotatedUvs = new Vector2[4];
+			for (int i = 0; i < 4; i++) {
+				rotatedUvs[i] = uvs[(i + 4 - rotation) % 4];
+			}
+
+			return rotatedUvs;
+		}
+
+		return new Vector2[] { new Vector2(p1, p2), new Vector2(p1, 0f), new Vector2(0f, 0f), new Vector2(0f, p2) };
+	}
+
+	public override Collider GetCollider(GameObject parent, Vector3 pos) {
+		BoxCollider box = parent.AddComponent<BoxCollider>();
+		box.center = pos + new Vector3(0f, -0.45f, 0f);
+		box.size = new Vector3(1f, 0.1f, 1f);
+		return box;
 	}
 }

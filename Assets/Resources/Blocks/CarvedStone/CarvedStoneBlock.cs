@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CarvedStoneBlock : Block {
 	public CarvedStoneBlock() {
-		name = "CarvedStone";
-		displayName = "Carved Stone";
+		Name = "CarvedStone";
+		DisplayName = "Carved Stone";
 	}
 }

@@ -5,17 +5,16 @@ using System;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
-[RequireComponent(typeof(MeshCollider))]
 
 /// <summary>
 /// Represents a 10 by 10 by 10 area in the level
 /// </summary>
 public class Chunk : MonoBehaviour {
 	MeshFilter filter;
-	MeshCollider coll;
 	MeshRenderer meshRenderer;
 
 	Block[,,] blocks = new Block[chunkSize, chunkSize, chunkSize];
+	Dictionary<Collider, Block> colliders = new Dictionary<Collider, Block>();
 	public static readonly int chunkSize = 10;
 
 	public World world;
@@ -28,7 +27,6 @@ public class Chunk : MonoBehaviour {
 
 	void Start() {
 		filter = GetComponent<MeshFilter>();
-		coll = GetComponent<MeshCollider>();
 		meshRenderer = GetComponent<MeshRenderer>();
 	}
 
@@ -86,7 +84,7 @@ public class Chunk : MonoBehaviour {
 			//Instantiate new block if it is spawnable
 			if (block is SpawnableBlock) {
 				SpawnableBlock b = (SpawnableBlock)block;
-				b.InstantiateBlock(world.transform, new Vector3(x + pos.x, y + pos.y, z + pos.z) + new Vector3(0.5f, 0f, 0.5f));
+				b.InstantiateBlock(world.transform, new Vector3(x + pos.x, y + pos.y, z + pos.z) + new Vector3(0.5f, 0f, 0.5f), x, y, z, blocks);
 			}
 
 			blocks[x, y, z] = block;
@@ -164,11 +162,32 @@ public class Chunk : MonoBehaviour {
 		}*/
 
 		//Update collision mesh
-		coll.sharedMesh = null;
+		/*coll.sharedMesh = null;
 		Mesh mesh = new Mesh();
 		mesh.vertices = data.colVerticies.ToArray();
 		mesh.triangles = data.colTriangles.ToArray();
 		mesh.RecalculateNormals();
-		coll.sharedMesh = mesh;
+		coll.sharedMesh = mesh;*/
+
+		//Generate colliders
+		Collider[] components = GetComponents<Collider>();
+		foreach (Collider c in components) {
+			Destroy(c);
+		}
+
+		for (int x = 0; x < chunkSize; x++) {
+			for (int y = 0; y < chunkSize; y++) {
+				for (int z = 0; z < chunkSize; z++) {
+					Collider c = blocks[x, y, z].GetCollider(gameObject, new Vector3(x, y, z));
+					if (c != null) {
+						colliders.Add(c, blocks[x, y, z]);
+					}
+				}
+			}
+		}
+	}
+
+	public Block GetBlockFromCollider(Collider coll) {
+		return colliders[coll];
 	}
 }

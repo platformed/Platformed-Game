@@ -53,7 +53,7 @@ public class NavigationDrawer : MonoBehaviour {
 	}
 
 	void LoadScene(string s) {
-		UIManager.loadScene(s);
+		UIManager.LoadScene(s);
 		//hideDrawer();
 	}
 
@@ -79,7 +79,7 @@ public class NavigationDrawer : MonoBehaviour {
 	public void Settings() {
 		if (settingsDialog == null) {
 			settingsDialog = Instantiate(settingsDialogPrefab, new Vector3(Screen.width / 2f, Screen.height / 2f), Quaternion.identity) as GameObject;
-			settingsDialog.transform.SetParent(transform.parent);
+			settingsDialog.transform.SetParent(windowCanvas);
 			settingsDialog.transform.SetAsLastSibling();
 		}
 	}
@@ -87,7 +87,7 @@ public class NavigationDrawer : MonoBehaviour {
 	public void About() {
 		if (aboutDialog == null) {
 			aboutDialog = Instantiate(aboutDialogPrefab, new Vector3(Screen.width / 2f, Screen.height / 2f), Quaternion.identity) as GameObject;
-			aboutDialog.transform.SetParent(transform.parent);
+			aboutDialog.transform.SetParent(windowCanvas);
 			aboutDialog.transform.SetAsLastSibling();
 		}
 	}

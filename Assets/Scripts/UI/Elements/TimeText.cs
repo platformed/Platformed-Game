@@ -10,6 +10,6 @@ public class TimeText : MonoBehaviour {
 	}
 
 	void Update() {
-		text.text = UIManager.getTime();
+		text.text = UIManager.GetTime();
 	}
 }

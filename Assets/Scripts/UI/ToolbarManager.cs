@@ -2,25 +2,28 @@
 using System.Collections;
 
 public class ToolbarManager : MonoBehaviour {
-	public Select selectBox;
+	public SelectTool selectBox;
 	public World world;
 
 	public void setTool(int t) {
 		switch (t) {
 			case 0:
-				UIManager.tool = Tool.SELECT;
+				UIManager.tool = Tool.Select;
 				break;
 			case 1:
-				UIManager.tool = Tool.BLOCK;
+				UIManager.tool = Tool.Block;
 				break;
 			case 2:
-				UIManager.tool = Tool.PAN;
+				UIManager.tool = Tool.Pan;
 				break;
 			case 3:
-				UIManager.tool = Tool.ORBIT;
+				UIManager.tool = Tool.Orbit;
 				break;
 			case 4:
-				UIManager.tool = Tool.ZOOM;
+				UIManager.tool = Tool.Zoom;
+				break;
+			case 5:
+				UIManager.tool = Tool.Properties;
 				break;
 		}
 	}
@@ -52,12 +55,8 @@ public class ToolbarManager : MonoBehaviour {
 	}
 
 	public void copy() {
-		selectBox.GetComponent<Select>().Copy();
+		selectBox.GetComponent<SelectTool>().Copy();
 		BlockCursor.offset = Vector3.zero;
-	}
-
-	public void blockProperties() {
-
 	}
 
 	public void toggleGrid() {
@@ -65,7 +64,7 @@ public class ToolbarManager : MonoBehaviour {
 	}
 
 	public void playLevel() {
-		UIManager.gamemode = Gamemode.Play;
+		UIManager.instance.SetGamemode(Gamemode.Play);
 	}
 
 	public void uploadLevel() {

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class MainMenuManager : MonoBehaviour {
 	public void designMode(){
-		UIManager.loadScene("level");
+		UIManager.LoadScene("level");
 	}
 
 	public void playMode(){

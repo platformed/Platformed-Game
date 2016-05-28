@@ -6,7 +6,7 @@ public class CameraMove : MonoBehaviour {
 	public static float smooth = 16f;
 	float speed;
 	float normalSpeed = 0.2f;
-	float shiftSpeed = 0.4f;
+	float shiftSpeed = 0.6f;
 	float panSpeed = 0.05f;
 
 	public static int floor = UIManager.worldSize / 2;
@@ -22,7 +22,7 @@ public class CameraMove : MonoBehaviour {
 
 	void LateUpdate() {
 		//Adjust floor level
-		if (UIManager.canInteract()) {
+		if (UIManager.CanInteract()) {
 			if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) {
 				speed = shiftSpeed;
 				floorSpeed = shiftFloorSpeed;
@@ -41,7 +41,7 @@ public class CameraMove : MonoBehaviour {
 			ClampFloor();
 
 			//Adjust for pan tool
-			if (UIManager.tool == Tool.PAN && !(Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) && UIManager.canInteract()) {
+			if (UIManager.tool == Tool.Pan && !(Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) && UIManager.CanInteract()) {
 				if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) {
 					lastPos = Input.mousePosition;
 				}
@@ -54,7 +54,7 @@ public class CameraMove : MonoBehaviour {
 			}
 
 			//Adjust for wasd
-			Vector3 point = UIManager.designCam.transform.position;
+			Vector3 point = UIManager.instance.designCam.transform.position;
 			point.y = transform.position.y;
 			transform.LookAt(point);
 			float h = Input.GetAxis("Horizontal") * -speed;

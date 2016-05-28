@@ -1,15 +1,16 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
-public class NewBehaviourScript : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-	
+public class SwitchSettingsItem : SettingsItem {
+	public SwitchSettingsItem(string label) : base(label) {
+		
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	public override void Draw(Transform parent) {
+		GameObject instace = Object.Instantiate(Resources.Load("UI/Settings/Switch") as GameObject);
+		instace.transform.SetParent(parent);
+
+		instace.GetComponentInChildren<Text>().text = GetLabel();
 	}
 }

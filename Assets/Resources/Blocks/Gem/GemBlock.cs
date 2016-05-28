@@ -3,8 +3,8 @@ using System.Collections;
 
 public class GemBlock : CollectableBlock {
 	public GemBlock() {
-		name = "Gem";
-		displayName = "Gem";
-		points = 100;
+		Name = "Gem";
+		DisplayName = "Gem";
+		Points = 100;
 	}
 }

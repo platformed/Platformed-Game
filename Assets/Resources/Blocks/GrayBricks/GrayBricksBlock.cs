@@ -3,7 +3,7 @@ using System.Collections;
 
 public class GrayBricksBlock : Block {
 	public GrayBricksBlock() {
-		name = "GrayBricks";
-		displayName = "Gray Bricks";
+		Name = "GrayBricks";
+		DisplayName = "Gray Bricks";
 	}
 }

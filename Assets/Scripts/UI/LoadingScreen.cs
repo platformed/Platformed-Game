@@ -7,7 +7,7 @@ public class LoadingScreen : MonoBehaviour {
 	public Text loadingText;
 
 	void Start() {
-		StartCoroutine(LoadLevel(UIManager.getScene()));
+		StartCoroutine(LoadLevel(UIManager.GetScene()));
 	}
 
 	IEnumerator LoadLevel(string level) {

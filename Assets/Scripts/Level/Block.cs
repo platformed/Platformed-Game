@@ -6,16 +6,13 @@ using System;
 /// Represents a block in the game
 /// </summary>
 public class Block {
-	protected string name;
-	protected string displayName;
+	GameObject gameObject;
+
+	protected string Name { get; set; }
+	protected string DisplayName { get; set; }
 	public int textureID;
 
 	protected byte rotation = 0;
-
-	//Base block constructor
-	public Block() {
-
-	}
 
 	public Block Copy() {
 		return (Block)MemberwiseClone();
@@ -26,7 +23,7 @@ public class Block {
 	/// </summary>
 	/// <returns>Name</returns>
 	public string GetName() {
-		return name;
+		return Name;
 	}
 
 	/// <summary>
@@ -34,7 +31,7 @@ public class Block {
 	/// </summary>
 	/// <returns>Name</returns>
 	public string GetDisplayName() {
-		return displayName;
+		return DisplayName;
 	}
 
 	/// <summary>
@@ -199,6 +196,54 @@ public class Block {
 	/// </summary>
 	public virtual BlockSolidity GetSolidity(Direction direction) {
 		return BlockSolidity.Block;
+	}
+	
+	/// <summary>
+	/// Add a collider to the chunk
+	/// </summary>
+	/// <param name="parent">Chunk to add to</param>
+	/// <param name="pos">Center of collider</param>
+	/// <returns>Collider for block</returns>
+	public virtual Collider GetCollider(GameObject parent, Vector3 pos) {
+		BoxCollider box = parent.AddComponent<BoxCollider>();
+		box.center = pos;
+		box.size = Vector3.one;
+		return box;
+	}
+
+	public virtual void InstantiateBlock(Transform parent, Vector3 pos, int x, int y, int z, Block[,,] blocks) {
+		gameObject = new GameObject();
+		gameObject.transform.SetParent(parent);
+		gameObject.transform.position = pos;
+
+		gameObject.AddComponent<MeshFilter>();
+		gameObject.AddComponent<MeshRenderer>().sharedMaterial = Resources.Load("Blocks/" + Name + "/" + Name + "Material") as Material;
+
+		UpdateBlock(x, y, z, blocks);
+
+		GetCollider(gameObject, Vector3.zero);
+	}
+
+	public virtual void DestroyBlock() {
+		UnityEngine.Object.Destroy(gameObject);
+	}
+
+	public virtual void UpdateBlock(int x, int y, int z, Block[,,] blocks) {
+		gameObject.GetComponent<MeshRenderer>().enabled = true;
+
+		MeshData data = BlockData(x, y, z, new MeshData(), 0, blocks);
+		data.Offset(-new Vector3(x, y, z));
+
+		MeshFilter filter = gameObject.GetComponent<MeshFilter>();
+		filter.mesh.Clear();
+		if (data.triangles.Count > 0) {
+			filter.mesh.vertices = data.vertices.ToArray();
+			filter.mesh.triangles = data.triangles[0].ToArray();
+			filter.mesh.uv = data.uvs.ToArray();
+			filter.mesh.normals = data.normals.ToArray();
+		} else {
+			gameObject.GetComponent<MeshRenderer>().enabled = false;
+		}
 	}
 
 	/// <summary>

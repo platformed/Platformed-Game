@@ -39,8 +39,8 @@ public class BlockCursor : MonoBehaviour {
 
 		Vector3 pos = transform.position;
 
-		if (UIManager.tool == Tool.BLOCK && UIManager.canInteract()) {
-			Vector3 hit = UIManager.raycast();
+		if (UIManager.tool == Tool.Block && UIManager.CanInteract()) {
+			Vector3 hit = UIManager.Raycast();
 			pos = new Vector3(Mathf.Floor(hit.x), Mathf.Floor(hit.y), Mathf.Floor(hit.z)) + new Vector3(0.5f, 0.5f, 0.5f);
 
 			if (Input.GetMouseButton(0)) {
@@ -92,7 +92,7 @@ public class BlockCursor : MonoBehaviour {
 					//Instantiate new block if it is spawnable
 					if (newBlock[x, y, z] is SpawnableBlock) {
 						SpawnableBlock b = (SpawnableBlock)newBlock[x, y, z];
-						b.InstantiateBlock(parent, new Vector3(x, y, z) + new Vector3(0f, -0.5f, 0f));
+						b.InstantiateBlock(parent, new Vector3(x, y, z) + new Vector3(0f, -0.5f, 0f), x, y, z, block);
 					}
 				}
 			}
@@ -154,6 +154,9 @@ public class BlockCursor : MonoBehaviour {
 		}
 		data.Offset(-offset);
 
+		//Expand to prevent z-fighting
+		data.Expand(0.001f);
+
 		//Clear mesh
 		filter.mesh.Clear();
 
@@ -183,7 +186,7 @@ public class BlockCursor : MonoBehaviour {
 
 		meshRenderer.enabled = true;
 
-		if (UIManager.tool != Tool.BLOCK) {
+		if (UIManager.tool != Tool.Block) {
 			meshRenderer.enabled = false;
 		}
 
@@ -200,7 +203,7 @@ public class BlockCursor : MonoBehaviour {
 		if (transform.position.z > size) {
 			meshRenderer.enabled = false;
 		}
-		if (!UIManager.canInteract()) {
+		if (!UIManager.CanInteract()) {
 			meshRenderer.enabled = false;
 		}
 	}

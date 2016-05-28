@@ -3,7 +3,7 @@ using System.Collections;
 
 public class TileFloorBlock : FloorBlock {
 	public TileFloorBlock() {
-		name = "TileFloor";
-		displayName = "Tile Floor";
+		Name = "TileFloor";
+		DisplayName = "Tile Floor";
 	}
 }
