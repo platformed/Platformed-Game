@@ -22,10 +22,19 @@ public class SelectTool : MonoBehaviour {
 			if (Input.GetMouseButton(0)) {
 				pos2 = Round(UIManager.Raycast());
 			}
-		}
 
-		if (Input.GetKeyDown(KeyCode.C) && UIManager.CanInteract()) {
-			Copy();
+			if (Input.GetKeyDown(KeyCode.C)) {
+				Copy();
+			}
+
+			if (Input.GetKeyDown(KeyCode.X)) {
+				Copy();
+				Delete();
+			}
+
+			if (Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.Backspace)) {
+				Delete();
+			}
 		}
 
 		Render();
@@ -70,6 +79,9 @@ public class SelectTool : MonoBehaviour {
 		return new Vector3((int)v.x, (int)v.y, (int)v.z);
 	}
 
+	/// <summary>
+	/// Copys the contents of the selection to the cursor
+	/// </summary>
 	public void Copy() {
 		Block[,,] blocks;
 
@@ -111,11 +123,52 @@ public class SelectTool : MonoBehaviour {
 				}
 			}
 		}
-
-		//Debug.Log("Copied block array of " + new Vector3((int)(p2.x - p1.x), (int)(p2.y - p1.y), (int)(p2.z - p1.z)).ToString());
+		
 		Vector3 offset = UIManager.Raycast();
 		cursor.Copy(blocks, new Vector3(Mathf.Floor(offset.x) - p1.x, Mathf.Floor(offset.y) - p1.y, Mathf.Floor(offset.z) - p1.z));
 
 		UIManager.tool = Tool.Block;
+	}
+
+	/// <summary>
+	/// Replaces the selection with air
+	/// </summary>
+	void Delete() {
+		Vector3 p1;
+		Vector3 p2;
+
+		if (pos1.x < pos2.x) {
+			p1.x = pos1.x;
+			p2.x = pos2.x;
+		} else {
+			p1.x = pos2.x;
+			p2.x = pos1.x;
+		}
+
+		if (pos1.y < pos2.y) {
+			p1.y = pos1.y;
+			p2.y = pos2.y;
+		} else {
+			p1.y = pos2.y;
+			p2.y = pos1.y;
+		}
+
+		if (pos1.z < pos2.z) {
+			p1.z = pos1.z;
+			p2.z = pos2.z;
+		} else {
+			p1.z = pos2.z;
+			p2.z = pos1.z;
+		}
+
+		p2 += Vector3.one;
+
+		for (int x = (int)p1.x; x < (int)p2.x; x++) {
+			for (int y = (int)p1.y; y < (int)p2.y; y++) {
+				for (int z = (int)p1.z; z < (int)p2.z; z++) {
+					world.SetBlock(x, y, z, new AirBlock());
+				}
+			}
+		}
 	}
 }
