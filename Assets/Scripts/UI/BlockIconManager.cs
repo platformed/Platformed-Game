@@ -146,12 +146,8 @@ public class BlockIconManager : MonoBehaviour {
 		icon.Apply();
 
 		File.WriteAllBytes(Application.dataPath + "/Resources/Block Icons/" + block.GetName() + ".png", icon.EncodeToPNG());
-
-		//Destroy spawnable block when done
-		if (block is SpawnableBlock) {
-			SpawnableBlock b = (SpawnableBlock)block;
-			b.DestroyBlock();
-		}
+		
+		block.DestroyBlock();
 	}
 #endif
 }

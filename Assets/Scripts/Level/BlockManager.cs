@@ -32,6 +32,9 @@ public class BlockManager : MonoBehaviour {
 		AddBlock(new CrateBlock(), BlockCategory.Block);
 		AddBlock(new DirtBlock(), BlockCategory.Block);
 
+		AddBlock(new ColorWhiteBlock(), BlockCategory.Block);
+		AddBlock(new ColorBlackBlock(), BlockCategory.Block);
+
 		//Floors
 		AddBlock(new GrassBlock(), BlockCategory.Floor);
 

@@ -47,7 +47,7 @@ public class CameraOrbit : MonoBehaviour {
 
 		Zoom();
 		Rotation();
-		ViewportRect();
+		UIManager.instance.designCam.rect = ViewportRect();
 	}
 
 	void LateUpdate() {
