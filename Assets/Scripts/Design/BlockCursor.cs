@@ -43,7 +43,8 @@ public class BlockCursor : MonoBehaviour {
 			Vector3 hit = UIManager.Raycast();
 			pos = new Vector3(Mathf.Floor(hit.x), Mathf.Floor(hit.y), Mathf.Floor(hit.z)) + new Vector3(0.5f, 0.5f, 0.5f);
 
-			if (Input.GetMouseButton(0)) {
+			bool singleBlock = block.GetLength(0) == 1 && block.GetLength(1) == 1 && block.GetLength(2) == 1;
+            if (singleBlock ? Input.GetMouseButton(0) : Input.GetMouseButtonDown(0)) {
 				for (int x = 0; x < block.GetLength(0); x++) {
 					for (int y = 0; y < block.GetLength(1); y++) {
 						for (int z = 0; z < block.GetLength(2); z++) {
