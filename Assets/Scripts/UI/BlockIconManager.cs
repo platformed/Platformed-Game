@@ -14,7 +14,7 @@ public class BlockIconManager : MonoBehaviour {
 	MeshFilter filter;
 	MeshRenderer meshRenderer;
 
-	bool rendered = false;
+	int i = 0;
 
 	void Start() {
 		filter = GetComponent<MeshFilter>();
@@ -22,37 +22,31 @@ public class BlockIconManager : MonoBehaviour {
 	}
 
 	void Update() {
-		if (!rendered) {
-			RenderBlockIcons();
-			rendered = true;
-		}
-	}
-
-	public void RenderBlockIcons() {
-		foreach (Block b in BlockManager.GetBlocks()) {
+		if (i < BlockManager.GetBlocks().Count) {
+			Block b = BlockManager.GetBlocks()[i];
 			if (b.GetName() != "Air") {
 				RenderBlock(b);
 				RenderIcon(b);
 			}
+			i++;
+		} else if (i == BlockManager.GetBlocks().Count) {
+			AssetDatabase.Refresh();
 		}
-
-		AssetDatabase.Refresh();
 	}
 
 	void RenderBlock(Block block) {
 		MeshData data = new MeshData();
 		block.BlockData(0, 0, 0, data, 0, new Block[,,] { { { block } } });
-
-		data.Rotate(Quaternion.Euler(0, -90, 0));
 		
 		//Instantiate if it is a spawnable block
 		if (block is SpawnableBlock) {
 			SpawnableBlock b = (SpawnableBlock)block;
 			b.InstantiateBlock(transform, Vector3.zero, 0, 0, 0, new Block[,,] { { { } } });
+			b.transform.localScale = Vector3.one;
 
 			//Add verticies to meshdata for scaling
 			MeshFilter[] meshs = b.GetPrefab().GetComponentsInChildren<MeshFilter>();
-			foreach(MeshFilter m in meshs) {
+			foreach (MeshFilter m in meshs) {
 				data.AddVertices(m.sharedMesh.vertices, m.sharedMesh.normals, m.transform.localPosition, m.transform.rotation);
 			}
 
@@ -61,6 +55,8 @@ public class BlockIconManager : MonoBehaviour {
 				child.gameObject.layer = 8;
 			}
 		}
+
+		data.Rotate(Quaternion.Euler(0, -90, 0));
 
 		//Scale
 		ScaleBlock(block, data);
@@ -116,6 +112,7 @@ public class BlockIconManager : MonoBehaviour {
 			}
 		}
 
+		//Center position
 		transform.position = new Vector3((minX + maxX) / -2f, (minY + maxY) / -2f, (minZ + maxZ) / -2f);
 
 		//Find scale
@@ -134,6 +131,9 @@ public class BlockIconManager : MonoBehaviour {
 
 		//Scale the parent so the position isn't affected
 		parent.localScale = new Vector3(scale, scale, scale);
+
+		//Adjust position for scale
+		transform.position *= scale;
 	}
 
 	void RenderIcon(Block block) {
@@ -146,7 +146,7 @@ public class BlockIconManager : MonoBehaviour {
 		icon.Apply();
 
 		File.WriteAllBytes(Application.dataPath + "/Resources/Block Icons/" + block.GetName() + ".png", icon.EncodeToPNG());
-		
+
 		block.DestroyBlock();
 	}
 #endif
