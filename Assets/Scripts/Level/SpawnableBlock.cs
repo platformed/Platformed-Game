@@ -25,7 +25,7 @@ public class SpawnableBlock : Block {
 
 	public override Collider GetCollider(GameObject parent, Vector3 pos) {
 		//Get mesh filters
-		MeshFilter[] meshFilters = transform.GetComponentsInChildren<MeshFilter>();
+		MeshFilter[] meshFilters = GetPrefab().GetComponentsInChildren<MeshFilter>();
 		CombineInstance[] meshes = new CombineInstance[meshFilters.Length];
 
 		//Add meshes to array
