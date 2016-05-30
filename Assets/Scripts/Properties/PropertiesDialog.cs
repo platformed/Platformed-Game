@@ -135,5 +135,7 @@ public class PropertiesDialog : MonoBehaviour {
 		controller.Options = attribute.Options;
 		controller.Object = block;
 		controller.Property = info;
+
+		controller.Create(controller.Property.GetValue(controller.Object, null));
 	}
 }

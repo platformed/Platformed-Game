@@ -25,4 +25,8 @@ public class PropertyController : MonoBehaviour {
 	public object Object { get; set; }
 	[HideInInspector]
 	public PropertyInfo Property { get; set; }
+
+	public virtual void Create(object value) {
+
+	}
 }

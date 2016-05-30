@@ -5,6 +5,11 @@ public class SpawnableBlock : Block {
 	public GameObject gameObject;
 	public Transform transform;
 	protected Vector3 blockPosition;
+	protected bool Spawned {
+		get {
+			return transform != null;
+		}
+	}
 
 	public override MeshData BlockData(int x, int y, int z, MeshData data, int submesh, Block[,,] blocks) {
 		return data;
@@ -72,6 +77,8 @@ public class SpawnableBlock : Block {
 		//Create spawnable controller
 		SpawnableController controller = gameObject.AddComponent<SpawnableController>();
 		controller.SetBlock(this);
+
+		Spawn();
     }
 
 	/// <summary>
@@ -82,8 +89,15 @@ public class SpawnableBlock : Block {
 	}
 
 	/// <summary>
-	/// Called when the block is placed or the gamemode switches
-	/// Use to reset the blocks position
+	/// Called when the block is placed for the first time
+	/// </summary>
+	public virtual void Spawn() {
+
+	}
+
+	/// <summary>
+	/// <para>Called when the block is placed or the gamemode switches</para>
+	/// <para>Use to reset the blocks position</para>
 	/// </summary>
 	public virtual void Reset() {
 
