@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class CollectableBlock : SpawnableBlock {
-	[Property("Points", "Amount of points rewarded when collected")]
+	[Property("Points", "Amount of points rewarded when collected", "0:1000:10")]
 	public int Points { get; set; }
 
 	public override void Reset() {
