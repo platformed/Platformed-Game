@@ -15,7 +15,34 @@ public class SpawnableBlock : Block {
 	}
 
 	public override Collider GetCollider(GameObject parent, Vector3 pos) {
-		return null;
+		//Get mesh filters
+		MeshFilter[] meshFilters = transform.GetComponentsInChildren<MeshFilter>();
+		CombineInstance[] meshes = new CombineInstance[meshFilters.Length];
+
+		//Add meshes to array
+		for (int i = 0; i < meshes.Length; i++) {
+			meshes[i].mesh = meshFilters[i].sharedMesh;
+			meshes[i].transform = meshFilters[i].transform.localToWorldMatrix;
+		}
+
+		//Combine meshes
+		Mesh mesh = new Mesh();
+		mesh.CombineMeshes(meshes);
+
+		//Add position
+		Vector3[] verticies = mesh.vertices;
+		for (int i = 0; i < verticies.Length; i++) {
+			verticies[i] += -blockPosition + new Vector3(0f, -0.5f, 0f) + pos;
+		}
+		mesh.vertices = verticies;
+
+		//Create mesh collider
+		MeshCollider coll = parent.AddComponent<MeshCollider>();
+		coll.sharedMesh = mesh;
+		coll.convex = true;
+		coll.isTrigger = true;
+
+		return coll;
 	}
 
 	/// <summary>
@@ -34,12 +61,15 @@ public class SpawnableBlock : Block {
 	public override void InstantiateBlock(Transform parent, Vector3 pos, int x, int y, int z, Block[,,] blocks) {
 		blockPosition = pos;
 
+		//Instantiate block
 		gameObject = Object.Instantiate(GetPrefab(), blockPosition, Quaternion.Euler(-90, 0, 0)) as GameObject;
 		transform = gameObject.transform;
 
+		//Set parent and position
 		transform.SetParent(parent);
 		transform.localPosition = blockPosition;
 
+		//Create spawnable controller
 		SpawnableController controller = gameObject.AddComponent<SpawnableController>();
 		controller.SetBlock(this);
     }

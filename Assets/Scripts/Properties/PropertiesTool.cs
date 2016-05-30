@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class PropertiesTool : MonoBehaviour {
+	public LayerMask raycastLayerMask;
+
 	public Transform windowCanvas;
 	public Camera designCam;
 
@@ -32,11 +34,14 @@ public class PropertiesTool : MonoBehaviour {
 					go.transform.SetAsLastSibling();
 					go.transform.name = block.GetDisplayName() + " Properties Dialog";
 
+					//Get properties dialog
 					PropertiesDialog propertiesDialog = go.GetComponentInChildren<PropertiesDialog>();
 
+					//Animate dialog
 					Vector2 endPos = new Vector2(Screen.width * 0.75f, Screen.height * 0.5f);
                     propertiesDialog.StartAnimation(Input.mousePosition, endPos, speedCurve, circleCurve, animationDuration, circleDuration);
 
+					//Set title of dialog
 					propertiesDialog.SetTitle(block.GetDisplayName());
 					
 					//Get properties
@@ -46,7 +51,7 @@ public class PropertiesTool : MonoBehaviour {
 						//Get attribute
 						PropertyAttribute attribute = p.GetCustomAttributes(typeof(PropertyAttribute), false)[0] as PropertyAttribute;
 
-						//Add to list
+						//Add attribute to dialog
 						propertiesDialog.AddProperty(block, p, attribute);
 					}
 				}
@@ -60,7 +65,7 @@ public class PropertiesTool : MonoBehaviour {
 
 		//Raycast
 		RaycastHit hit;
-		if (Physics.Raycast(ray, out hit)) {
+		if (Physics.Raycast(ray, out hit, Mathf.Infinity, raycastLayerMask)) {
 			if (hit.transform.GetComponent<Chunk>() != null) {
 				return hit.transform.GetComponent<Chunk>().GetBlockFromCollider(hit.collider);
 			}
