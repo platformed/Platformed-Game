@@ -185,27 +185,32 @@ public class BlockCursor : MonoBehaviour {
 	void CheckVisibility() {
 		float size = UIManager.worldSize;
 
-		meshRenderer.enabled = true;
+		bool visible = true;
 
 		if (UIManager.tool != Tool.Block) {
-			meshRenderer.enabled = false;
-		}
+			visible = false;
+        }
 
 		if (transform.position.x < 0) {
-			meshRenderer.enabled = false;
+			visible = false;
 		}
 		if (transform.position.x > size) {
-			meshRenderer.enabled = false;
+			visible = false;
 		}
-
 		if (transform.position.z < 0) {
-			meshRenderer.enabled = false;
+			visible = false;
 		}
 		if (transform.position.z > size) {
-			meshRenderer.enabled = false;
+			visible = false;
 		}
+
 		if (!UIManager.CanInteract()) {
-			meshRenderer.enabled = false;
+			visible = false;
+		}
+
+		meshRenderer.enabled = visible;
+		foreach (Transform child in transform) {
+			child.gameObject.SetActive(visible);
 		}
 	}
 }

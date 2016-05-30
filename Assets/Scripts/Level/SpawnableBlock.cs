@@ -5,6 +5,10 @@ public class SpawnableBlock : Block {
 	public GameObject gameObject;
 	public Transform transform;
 	protected Vector3 blockPosition;
+
+	/// <summary>
+	/// True if the block has been spawned
+	/// </summary>
 	protected bool Spawned {
 		get {
 			return transform != null;
