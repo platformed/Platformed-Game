@@ -7470,6 +7470,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectBox: {fileID: 10135438}
   world: {fileID: 29766814}
+  windowCanvas: {fileID: 1757988642}
 --- !u!114 &1086438915
 MonoBehaviour:
   m_ObjectHideFlags: 0
