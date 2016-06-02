@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Collections;
 using System.IO;
 
-public class BlockEditor : EditorWindow {
+public class BlockEditorWindow : EditorWindow {
 	string blockName = "";
 	string displayName = "";
 

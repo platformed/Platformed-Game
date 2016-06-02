@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class PropertiesTool : MonoBehaviour {
+	public LayerMask raycastLayerMask;
+
 	public Transform windowCanvas;
 	public Camera designCam;
 
@@ -18,7 +20,7 @@ public class PropertiesTool : MonoBehaviour {
 	const float circleDuration = 0.3f;
 
 	void Start() {
-		propertiesDialogPrefab = Resources.Load("UI/Dialog/Properties Dialog") as GameObject;
+		propertiesDialogPrefab = Resources.Load("UI/Properties/Properties Dialog") as GameObject;
 	}
 
 	void Update() {
@@ -26,40 +28,32 @@ public class PropertiesTool : MonoBehaviour {
 			if (Input.GetMouseButtonDown(0)) {
 				Block block = Raycast();
 				if (block != null) {
-					//Get properties
-					var props = block.GetType().GetProperties().Where(prop => Attribute.IsDefined(prop, typeof(PropertyAttribute)));
-
-					List<BlockProperty> blockProperties = new List<BlockProperty>();
-
-					foreach (PropertyInfo p in props) {
-						//Get attribute
-						PropertyAttribute attribute = p.GetCustomAttributes(typeof(PropertyAttribute), false)[0] as PropertyAttribute;
-
-						//Create block property
-						BlockProperty property = new BlockProperty();
-
-						//Set values
-						property.Title = attribute.Title;
-						property.Description = attribute.Description;
-						property.Value = p.GetValue(block, null);
-
-						//Add to list
-						blockProperties.Add(property);
-					}
-
 					//Create dialog
 					GameObject go = Instantiate(propertiesDialogPrefab, Input.mousePosition, Quaternion.identity) as GameObject;
 					go.transform.SetParent(windowCanvas);
 					go.transform.SetAsLastSibling();
 					go.transform.name = block.GetDisplayName() + " Properties Dialog";
 
+					//Get properties dialog
 					PropertiesDialog propertiesDialog = go.GetComponentInChildren<PropertiesDialog>();
 
+					//Animate dialog
 					Vector2 endPos = new Vector2(Screen.width * 0.75f, Screen.height * 0.5f);
                     propertiesDialog.StartAnimation(Input.mousePosition, endPos, speedCurve, circleCurve, animationDuration, circleDuration);
 
+					//Set title of dialog
 					propertiesDialog.SetTitle(block.GetDisplayName());
-					propertiesDialog.SetProperties(blockProperties);
+					
+					//Get properties
+					var props = block.GetType().GetProperties().Where(prop => Attribute.IsDefined(prop, typeof(PropertyAttribute)));
+
+					foreach (PropertyInfo p in props) {
+						//Get attribute
+						PropertyAttribute attribute = p.GetCustomAttributes(typeof(PropertyAttribute), false)[0] as PropertyAttribute;
+
+						//Add attribute to dialog
+						propertiesDialog.AddProperty(block, p, attribute);
+					}
 				}
 			}
 		}
@@ -71,7 +65,7 @@ public class PropertiesTool : MonoBehaviour {
 
 		//Raycast
 		RaycastHit hit;
-		if (Physics.Raycast(ray, out hit)) {
+		if (Physics.Raycast(ray, out hit, Mathf.Infinity, raycastLayerMask)) {
 			if (hit.transform.GetComponent<Chunk>() != null) {
 				return hit.transform.GetComponent<Chunk>().GetBlockFromCollider(hit.collider);
 			}

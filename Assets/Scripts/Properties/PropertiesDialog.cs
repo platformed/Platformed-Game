@@ -2,9 +2,11 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 
 [RequireComponent(typeof(RectTransform))]
 public class PropertiesDialog : MonoBehaviour {
+	public Transform propertiesList;
 	public Text title;
 	public RectTransform circleTransform;
 
@@ -100,9 +102,40 @@ public class PropertiesDialog : MonoBehaviour {
 		this.title.text = title + " Properties";
 	}
 
-	public void SetProperties(List<BlockProperty> properties) {
-		/*foreach(BlockProperty p in properties){
+	public void AddProperty(Block block, PropertyInfo info, PropertyAttribute attribute) {
+		if(info.PropertyType == typeof(float)) {
+			InstantiateProperty("Float Property", block, info, attribute);
+            return;
+		}
+		if (info.PropertyType == typeof(int)) {
+			InstantiateProperty("Int Property", block, info, attribute);
+			return;
+		}
+	}
 
-		}*/
+	/// <summary>
+	/// Instantiates the gameobject for the property
+	/// </summary>
+	/// <param name="prefabName">Name of the prefab</param>
+	/// <param name="block">Block</param>
+	/// <param name="info">PropertyInfo</param>
+	/// <param name="attribute">PropertyAttribute</param>
+	void InstantiateProperty(string prefabName, Block block, PropertyInfo info, PropertyAttribute attribute) {
+		GameObject prefab = Resources.Load("UI/Properties/" + prefabName) as GameObject;
+		GameObject instance = Instantiate(prefab);
+
+		//Set parent
+		instance.transform.SetParent(propertiesList);
+
+		//Get property controller
+		PropertyController controller = instance.GetComponent<PropertyController>();
+		
+		controller.Title = attribute.Title;
+		controller.Description = attribute.Description;
+		controller.Options = attribute.Options;
+		controller.Object = block;
+		controller.Property = info;
+
+		controller.Create(controller.Property.GetValue(controller.Object, null));
 	}
 }
