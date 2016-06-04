@@ -19,5 +19,6 @@ public class CollectableBlock : SpawnableBlock {
 
 	public override void OnPlayerEnter() {
 		gameObject.GetComponent<MeshRenderer>().enabled = false;
+		PlayManager.instance.Score += Points;
 	}
 }

@@ -4,6 +4,18 @@ using System.Collections;
 public class ToolbarManager : MonoBehaviour {
 	public SelectTool selectBox;
 	public World world;
+	public Transform windowCanvas;
+
+	GameObject saveDialog;
+	GameObject saveDialogPrefab;
+
+	GameObject openDialog;
+	GameObject openDialogPrefab;
+
+	void Start() {
+		saveDialogPrefab = Resources.Load("UI/Dialog/Save Dialog") as GameObject;
+		openDialogPrefab = Resources.Load("UI/Dialog/Open Dialog") as GameObject;
+	}
 
 	public void setTool(int t) {
 		switch (t) {
@@ -41,13 +53,19 @@ public class ToolbarManager : MonoBehaviour {
 	}
 
 	public void openLevel() {
-		//load("save1");
+		if (openDialog == null) {
+			openDialog = Instantiate(openDialogPrefab, new Vector3(Screen.width / 2f, Screen.height / 2f), Quaternion.identity) as GameObject;
+			openDialog.transform.SetParent(windowCanvas);
+			openDialog.transform.SetAsLastSibling();
+		}
 	}
 
 	public void saveLevel() {
-		/*GameObject g = Instantiate(saveWindow, new Vector3(Screen.width / 2, Screen.height / 2, 0), Quaternion.Euler(0, 0, 0)) as GameObject;
-		g.transform.name = "SaveWindow";
-		g.transform.SetParent(windowCanvas.transform);*/
+		if (saveDialog == null) {
+			saveDialog = Instantiate(saveDialogPrefab, new Vector3(Screen.width / 2f, Screen.height / 2f), Quaternion.identity) as GameObject;
+			saveDialog.transform.SetParent(windowCanvas);
+			saveDialog.transform.SetAsLastSibling();
+		}
 	}
 
 	public void levelSettings() {
