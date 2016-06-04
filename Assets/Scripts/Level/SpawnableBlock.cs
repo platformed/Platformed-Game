@@ -41,7 +41,7 @@ public class SpawnableBlock : Block {
 		//Add position
 		Vector3[] verticies = mesh.vertices;
 		for (int i = 0; i < verticies.Length; i++) {
-			verticies[i] += -blockPosition + new Vector3(0f, -0.5f, 0f) + pos;
+			verticies[i] += new Vector3(0f, -0.5f, 0f) + pos;
 		}
 		mesh.vertices = verticies;
 

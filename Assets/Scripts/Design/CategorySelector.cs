@@ -26,7 +26,7 @@ public class CategorySelector : MonoBehaviour {
 		menu.localPosition = new Vector2(menu.localPosition.x, Mathf.Lerp(menu.localPosition.y, menuY, Time.deltaTime * 10f));
 		icon.color = Color.Lerp(icon.color, iconColor, Time.deltaTime * 30f);
 
-		//shadow.anchoredPosition = new Vector2(shadow.anchoredPosition.x, -64f - mask.sizeDelta.y);
+		shadow.anchoredPosition = new Vector2(shadow.anchoredPosition.x, -64f - mask.sizeDelta.y);
 	}
 
 	public void ShowMenu() {
