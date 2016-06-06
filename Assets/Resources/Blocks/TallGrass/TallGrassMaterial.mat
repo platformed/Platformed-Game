@@ -6,13 +6,12 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: GrassUp
+  m_Name: TallGrassMaterial
   m_Shader: {fileID: 4800000, guid: 101b1e2cb68260247ad600efa617298e, type: 3}
-  m_ShaderKeywords: _ALPHATEST_ON
+  m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_CustomRenderQueue: 2450
-  stringTagMap:
-    RenderType: TransparentCutout
+  stringTagMap: {}
   m_SavedProperties:
     serializedVersion: 2
     m_TexEnvs:
@@ -79,34 +78,6 @@ Material:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _SpecGlossMap
-        second:
-          m_Texture: {fileID: 0}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _GlossMap
-        second:
-          m_Texture: {fileID: 0}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _TranslucencyMap
-        second:
-          m_Texture: {fileID: 0}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _ShadowOffset
-        second:
-          m_Texture: {fileID: 0}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
     m_Floats:
       data:
         first:
@@ -122,16 +93,12 @@ Material:
         second: 0.3
       data:
         first:
-          name: _Shininess
-        second: 0.01
-      data:
-        first:
           name: _ZWrite
         second: 1
       data:
         first:
           name: _Glossiness
-        second: 0
+        second: 0.5
       data:
         first:
           name: _Metallic
@@ -159,27 +126,7 @@ Material:
       data:
         first:
           name: _Mode
-        second: 1
-      data:
-        first:
-          name: _Occlusion
-        second: 1.83
-      data:
-        first:
-          name: _CutOff
-        second: 0.3
-      data:
-        first:
-          name: _BaseLight
-        second: 1
-      data:
-        first:
-          name: _AO
-        second: 4.92
-      data:
-        first:
-          name: _SquashAmount
-        second: 1
+        second: 0
     m_Colors:
       data:
         first:
@@ -188,16 +135,4 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 0.9705882, g: 0.9705882, b: 0.9705882, a: 1}
-      data:
-        first:
-          name: _SpecColor
-        second: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-      data:
-        first:
-          name: _TreeInstanceColor
-        second: {r: 1, g: 1, b: 1, a: 1}
-      data:
-        first:
-          name: _TreeInstanceScale
         second: {r: 1, g: 1, b: 1, a: 1}

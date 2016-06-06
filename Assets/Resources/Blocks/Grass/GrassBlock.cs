@@ -2,15 +2,15 @@
 using System.Collections;
 
 public class GrassBlock : SpawnableBlock {
-	GameObject grass;
-	const float renderDistance = 20f;
+	//GameObject grass;
+	//const float renderDistance = 20f;
 
 	public GrassBlock() {
 		Name = "Grass";
 		DisplayName = "Grass Floor";
 	}
 
-	public override void Spawn() {
+	/*public override void Spawn() {
 		grass = transform.FindChild("Grass").gameObject;
 	}
 
@@ -20,5 +20,5 @@ public class GrassBlock : SpawnableBlock {
 		} else {
 			grass.SetActive(true);
 		}
-	}
+	}*/
 }

@@ -43,6 +43,7 @@ public class BlockManager : MonoBehaviour {
 
 		//Props
 		AddBlock(new TorchBlock(), BlockCategory.Prop);
+		AddBlock(new TallGrassBlock(), BlockCategory.Prop);
 
 		//Collectables
 		AddBlock(new GemBlock(), BlockCategory.Collectable);

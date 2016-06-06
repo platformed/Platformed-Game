@@ -9,7 +9,7 @@ public class World : MonoBehaviour {
 	/// <summary>
 	/// If the game should use chunks
 	/// </summary>
-	public static bool useChunks = true;
+	public static bool useChunks = false;
 
 	//Used only if useChunks is false
 	Block[,,] blocks = new Block[worldBlockSize, worldBlockSize, worldBlockSize];

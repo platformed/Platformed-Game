@@ -19,6 +19,8 @@ public class SpawnableBlock : Block {
 		return data;
 	}
 
+	public override void UpdateBlock(int x, int y, int z, Block[,,] blocks) { }
+
 	public override BlockSolidity GetSolidity(Direction direction) {
 		return BlockSolidity.None;
 	}
@@ -68,7 +70,7 @@ public class SpawnableBlock : Block {
 	/// <param name="parent">Parent of GameObject</param>
 	/// <param name="pos">Local position to spawn at</param>
 	public override void InstantiateBlock(Transform parent, Vector3 pos, int x, int y, int z, Block[,,] blocks) {
-		blockPosition = pos;
+		blockPosition = pos + new Vector3(0f, -0.5f, 0f);
 
 		//Instantiate block
 		gameObject = Object.Instantiate(GetPrefab(), blockPosition, Quaternion.Euler(-90, 0, 0)) as GameObject;
@@ -83,7 +85,7 @@ public class SpawnableBlock : Block {
 		controller.SetBlock(this);
 
 		Spawn();
-    }
+	}
 
 	/// <summary>
 	/// Destroys the GameObject for the block
@@ -118,7 +120,7 @@ public class SpawnableBlock : Block {
 	/// Called every frame during play mode
 	/// </summary>
 	public virtual void Update() {
-		
+
 	}
 
 	/// <summary>
