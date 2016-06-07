@@ -10,6 +10,7 @@ using System.Linq;
 public class MeshData {
 	public List<Vector3> vertices = new List<Vector3>();
 	public List<Vector3> normals = new List<Vector3>();
+	public List<Color> colors = new List<Color>();
 	public List<List<int>> triangles = new List<List<int>>();
 	public List<Vector2> uvs = new List<Vector2>();
 
@@ -23,9 +24,28 @@ public class MeshData {
 	/// <summary>
 	/// Add a vertex to the meshdata
 	/// </summary>
+	/// <param name="vertex">Position of vertex</param>
+	/// <param name="normal">Normal of vertex</param>
 	public void AddVertex(Vector3 vertex, Vector3 normal) {
 		vertices.Add(vertex);
 		normals.Add(normal);
+		colors.Add(Color.white);
+
+		if (useRenderDataForCol) {
+			colVerticies.Add(vertex);
+		}
+	}
+
+	/// <summary>
+	/// Add a vertex to the meshdata
+	/// </summary>
+	/// <param name="vertex">Position of vertex</param>
+	/// <param name="normal">Normal of vertex</param>
+	/// <param name="color">Color of vertex</param>
+	public void AddVertex(Vector3 vertex, Vector3 normal, Color color) {
+		vertices.Add(vertex);
+		normals.Add(normal);
+		colors.Add(color);
 
 		if (useRenderDataForCol) {
 			colVerticies.Add(vertex);
@@ -39,7 +59,7 @@ public class MeshData {
 		for (int i = 0; i < vertices.Length; i++) {
 			AddVertex((rotOffset * vertices[i]) + posOffset, rotOffset * normals[i]);
 		}
-		
+
 	}
 
 	/// <summary>
@@ -50,7 +70,7 @@ public class MeshData {
 			triangles.Add(new List<int>());
 		}
 
-        triangles[submesh].Add(tri);
+		triangles[submesh].Add(tri);
 
 		if (useRenderDataForCol) {
 			colTriangles.Add(tri);
@@ -71,14 +91,24 @@ public class MeshData {
 	/// <summary>
 	/// Finishes a quad by adding the triangles
 	/// </summary>
-	public void AddQuadTriangles(int sub) {
-		AddTriangle(vertices.Count - 4, sub);
-		AddTriangle(vertices.Count - 3, sub);
-		AddTriangle(vertices.Count - 2, sub);
+	public void AddQuadTriangles(int sub, bool flip) {
+		if (flip) {
+			AddTriangle(vertices.Count - 4, sub);
+			AddTriangle(vertices.Count - 3, sub);
+			AddTriangle(vertices.Count - 2, sub);
 
-		AddTriangle(vertices.Count - 4, sub);
-		AddTriangle(vertices.Count - 2, sub);
-		AddTriangle(vertices.Count - 1, sub);
+			AddTriangle(vertices.Count - 4, sub);
+			AddTriangle(vertices.Count - 2, sub);
+			AddTriangle(vertices.Count - 1, sub);
+		} else {
+			AddTriangle(vertices.Count - 1, sub);
+			AddTriangle(vertices.Count - 4, sub);
+			AddTriangle(vertices.Count - 3, sub);
+
+			AddTriangle(vertices.Count - 1, sub);
+			AddTriangle(vertices.Count - 3, sub);
+			AddTriangle(vertices.Count - 2, sub);
+		}
 	}
 
 	/// <summary>
@@ -131,22 +161,22 @@ public class MeshData {
 			if (!expanded[i]) {
 				//Find duplicate vertices and store their indicies
 				List<int> indices = new List<int>();
-                for (int j = 0; j < vertices.Count; j++) {
-					if(vertices[i] == vertices[j]) {
+				for (int j = 0; j < vertices.Count; j++) {
+					if (vertices[i] == vertices[j]) {
 						indices.Add(j);
 					}
 				}
 
 				//Get the average normal of the duplicate verticies
 				Vector3 averageNormal = Vector3.zero;
-				foreach(int k in indices) {
+				foreach (int k in indices) {
 					averageNormal += normals[k];
 				}
 				averageNormal /= indices.Count;
 				averageNormal.Normalize();
 
 				//Expand by amount
-				foreach(int k in indices) {
+				foreach (int k in indices) {
 					vertices[k] += averageNormal * amount;
 					expanded[k] = true;
 				}

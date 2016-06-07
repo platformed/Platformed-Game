@@ -14,11 +14,12 @@ Shader "Platformed/Block" {
 
 		struct Input {
 			float2 uv_MainTex;
+			float4 color : COLOR;
 		};
 
 		void surf(Input IN, inout SurfaceOutput o) {
 			fixed4 c = tex2D(_MainTex, IN.uv_MainTex);
-			o.Albedo = c.rgb;
+			o.Albedo = c.rgb * IN.color;
 			o.Alpha = c.a;
 		}
 		ENDCG

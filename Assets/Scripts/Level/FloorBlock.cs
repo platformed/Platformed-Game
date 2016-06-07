@@ -25,7 +25,7 @@ public class FloorBlock : Block {
 			data.AddVertex(v[7] + new Vector3(x, y, z), Vector3.up);
 			data.AddVertex(v[6] + new Vector3(x, y, z), Vector3.up);
 			data.AddVertex(v[2] + new Vector3(x, y, z), Vector3.up);
-			data.AddQuadTriangles(submesh);
+			data.AddQuadTriangles(submesh, false);
 			data.AddUVs(FaceUVs(Direction.Up));
 		}
 
@@ -34,7 +34,7 @@ public class FloorBlock : Block {
 			data.AddVertex(v[4] + new Vector3(x, y, z), Vector3.down);
 			data.AddVertex(v[5] + new Vector3(x, y, z), Vector3.down);
 			data.AddVertex(v[1] + new Vector3(x, y, z), Vector3.down);
-			data.AddQuadTriangles(submesh);
+			data.AddQuadTriangles(submesh, false);
 			data.AddUVs(FaceUVs(Direction.Down));
 		}
 
@@ -43,7 +43,7 @@ public class FloorBlock : Block {
 			data.AddVertex(v[7] + new Vector3(x, y, z), Vector3.forward);
 			data.AddVertex(v[3] + new Vector3(x, y, z), Vector3.forward);
 			data.AddVertex(v[1] + new Vector3(x, y, z), Vector3.forward);
-			data.AddQuadTriangles(submesh);
+			data.AddQuadTriangles(submesh, false);
 			data.AddUVs(FaceUVs(Direction.North));
 		}
 
@@ -52,7 +52,7 @@ public class FloorBlock : Block {
 			data.AddVertex(v[2] + new Vector3(x, y, z), Vector3.back);
 			data.AddVertex(v[6] + new Vector3(x, y, z), Vector3.back);
 			data.AddVertex(v[4] + new Vector3(x, y, z), Vector3.back);
-			data.AddQuadTriangles(submesh);
+			data.AddQuadTriangles(submesh, false);
 			data.AddUVs(FaceUVs(Direction.South));
 		}
 
@@ -61,7 +61,7 @@ public class FloorBlock : Block {
 			data.AddVertex(v[6] + new Vector3(x, y, z), Vector3.right);
 			data.AddVertex(v[7] + new Vector3(x, y, z), Vector3.right);
 			data.AddVertex(v[5] + new Vector3(x, y, z), Vector3.right);
-			data.AddQuadTriangles(submesh);
+			data.AddQuadTriangles(submesh, false);
 			data.AddUVs(FaceUVs(Direction.East));
 		}
 
@@ -70,7 +70,7 @@ public class FloorBlock : Block {
 			data.AddVertex(v[3] + new Vector3(x, y, z), Vector3.left);
 			data.AddVertex(v[2] + new Vector3(x, y, z), Vector3.left);
 			data.AddVertex(v[0] + new Vector3(x, y, z), Vector3.left);
-			data.AddQuadTriangles(submesh);
+			data.AddQuadTriangles(submesh, false);
 			data.AddUVs(FaceUVs(Direction.West));
 		}
 
