@@ -9,7 +9,7 @@ public class World : MonoBehaviour {
 	/// <summary>
 	/// If the game should use chunks
 	/// </summary>
-	public static bool useChunks = true;
+	public static bool useChunks = false;
 
 	//Used only if useChunks is false
 	Block[,,] blocks = new Block[worldBlockSize, worldBlockSize, worldBlockSize];
@@ -76,7 +76,7 @@ public class World : MonoBehaviour {
 
 		//Add to the chunks dictionary
 		chunks.Add(worldPos, chunk);
-		
+
 		chunk.ClearChunk();
 	}
 
@@ -160,12 +160,15 @@ public class World : MonoBehaviour {
 
 				blocks[x, y, z] = block;
 
-				blocks[x + 1, y, z].UpdateBlock(x + 1, y, z, blocks);
-				blocks[x - 1, y, z].UpdateBlock(x - 1, y, z, blocks);
-				blocks[x, y + 1, z].UpdateBlock(x, y + 1, z, blocks);
-				blocks[x, y - 1, z].UpdateBlock(x, y - 1, z, blocks);
-				blocks[x, y, z + 1].UpdateBlock(x, y, z + 1, blocks);
-				blocks[x, y, z - 1].UpdateBlock(x, y, z - 1, blocks);
+				for (int xx = -1; xx <= 1; xx++) {
+					for (int yy = -1; yy <= 1; yy++) {
+						for (int zz = -1; zz <= 1; zz++) {
+							if (x != 0 && y != 0 && z != 0) {
+								blocks[x + xx, y + yy, z + zz].UpdateBlock(x + xx, y + yy, z + zz, blocks);
+							}
+						}
+					}
+				}
 			}
 		}
 	}

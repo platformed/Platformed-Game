@@ -16,10 +16,6 @@ public class UIManager : MonoBehaviour {
 
 	public static int worldSize = 100;
 
-	public static int lives = 3;
-	public static float time = 600000;
-	public static int score = 0;
-
 	//GameObjects that need to be enabled/disabled for play/design mode
 	public Camera designCam;
 	public Camera playCam;

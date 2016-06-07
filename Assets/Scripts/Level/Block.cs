@@ -67,61 +67,153 @@ public class Block {
 		v[7] = new Vector3(0.5f, 0.5f, 0.5f);
 
 		//Add cube verticies
-		if (CheckSolid(blocks, x, y + 1, z, Direction.Down)) {
-			data.AddVertex(v[3] + new Vector3(x, y, z), Vector3.up);
-			data.AddVertex(v[7] + new Vector3(x, y, z), Vector3.up);
-			data.AddVertex(v[6] + new Vector3(x, y, z), Vector3.up);
-			data.AddVertex(v[2] + new Vector3(x, y, z), Vector3.up);
-			data.AddQuadTriangles(submesh);
+
+		//Top
+		if (!CheckSolid(blocks, x, y + 1, z, Direction.Down)) {
+			byte[] ao = CalculateFaceAO(new bool[] {
+				CheckSolid(blocks, x - 1, y + 1, z    , Direction.East),
+				CheckSolid(blocks, x - 1, y + 1, z + 1, Direction.East),
+				CheckSolid(blocks, x    , y + 1, z + 1, Direction.South),
+				CheckSolid(blocks, x + 1, y + 1, z + 1, Direction.South),
+				CheckSolid(blocks, x + 1, y + 1, z    , Direction.West),
+				CheckSolid(blocks, x + 1, y + 1, z - 1, Direction.West),
+				CheckSolid(blocks, x    , y + 1, z - 1, Direction.North),
+				CheckSolid(blocks, x - 1, y + 1, z - 1, Direction.North)
+			});
+			data.AddVertex(v[3] + new Vector3(x, y, z), Vector3.up, CalculateVertexColor(ao[0]));
+			data.AddVertex(v[7] + new Vector3(x, y, z), Vector3.up, CalculateVertexColor(ao[1]));
+			data.AddVertex(v[6] + new Vector3(x, y, z), Vector3.up, CalculateVertexColor(ao[2]));
+			data.AddVertex(v[2] + new Vector3(x, y, z), Vector3.up, CalculateVertexColor(ao[3]));
+			data.AddQuadTriangles(submesh, FlipQuad(ao));
 			data.AddUVs(FaceUVs(Direction.Up));
 		}
 
-		if (CheckSolid(blocks, x, y - 1, z, Direction.Up)) {
-			data.AddVertex(v[0] + new Vector3(x, y, z), Vector3.down);
-			data.AddVertex(v[4] + new Vector3(x, y, z), Vector3.down);
-			data.AddVertex(v[5] + new Vector3(x, y, z), Vector3.down);
-			data.AddVertex(v[1] + new Vector3(x, y, z), Vector3.down);
-			data.AddQuadTriangles(submesh);
+		//Bottom
+		if (!CheckSolid(blocks, x, y - 1, z, Direction.Up)) {
+			byte[] ao = CalculateFaceAO(new bool[] {
+				CheckSolid(blocks, x - 1, y - 1, z    , Direction.East),
+				CheckSolid(blocks, x - 1, y - 1, z - 1, Direction.East),
+				CheckSolid(blocks, x    , y - 1, z - 1, Direction.North),
+				CheckSolid(blocks, x + 1, y - 1, z - 1, Direction.North),
+				CheckSolid(blocks, x + 1, y - 1, z    , Direction.West),
+				CheckSolid(blocks, x + 1, y - 1, z + 1, Direction.West),
+				CheckSolid(blocks, x    , y - 1, z + 1, Direction.South),
+				CheckSolid(blocks, x - 1, y - 1, z + 1, Direction.South)
+			});
+			data.AddVertex(v[0] + new Vector3(x, y, z), Vector3.down, CalculateVertexColor(ao[0]));
+			data.AddVertex(v[4] + new Vector3(x, y, z), Vector3.down, CalculateVertexColor(ao[1]));
+			data.AddVertex(v[5] + new Vector3(x, y, z), Vector3.down, CalculateVertexColor(ao[2]));
+			data.AddVertex(v[1] + new Vector3(x, y, z), Vector3.down, CalculateVertexColor(ao[3]));
+			data.AddQuadTriangles(submesh, FlipQuad(ao));
 			data.AddUVs(FaceUVs(Direction.Down));
 		}
 
-		if (CheckSolid(blocks, x, y, z + 1, Direction.South)) {
-			data.AddVertex(v[5] + new Vector3(x, y, z), Vector3.forward);
-			data.AddVertex(v[7] + new Vector3(x, y, z), Vector3.forward);
-			data.AddVertex(v[3] + new Vector3(x, y, z), Vector3.forward);
-			data.AddVertex(v[1] + new Vector3(x, y, z), Vector3.forward);
-			data.AddQuadTriangles(submesh);
+		//North
+		if (!CheckSolid(blocks, x, y, z + 1, Direction.South)) {
+			byte[] ao = CalculateFaceAO(new bool[] {
+				CheckSolid(blocks, x    , y - 1, z + 1, Direction.Up),
+				CheckSolid(blocks, x + 1, y - 1, z + 1, Direction.Up),
+				CheckSolid(blocks, x + 1, y    , z + 1, Direction.East),
+				CheckSolid(blocks, x + 1, y + 1, z + 1, Direction.East),
+				CheckSolid(blocks, x    , y + 1, z + 1, Direction.Down),
+				CheckSolid(blocks, x - 1, y + 1, z + 1, Direction.Down),
+				CheckSolid(blocks, x - 1, y    , z + 1, Direction.West),
+				CheckSolid(blocks, x - 1, y - 1, z + 1, Direction.West)
+			});
+			data.AddVertex(v[5] + new Vector3(x, y, z), Vector3.forward, CalculateVertexColor(ao[0]));
+			data.AddVertex(v[7] + new Vector3(x, y, z), Vector3.forward, CalculateVertexColor(ao[1]));
+			data.AddVertex(v[3] + new Vector3(x, y, z), Vector3.forward, CalculateVertexColor(ao[2]));
+			data.AddVertex(v[1] + new Vector3(x, y, z), Vector3.forward, CalculateVertexColor(ao[3]));
+			data.AddQuadTriangles(submesh, FlipQuad(ao));
 			data.AddUVs(FaceUVs(Direction.North));
 		}
 
-		if (CheckSolid(blocks, x, y, z - 1, Direction.North)) {
-			data.AddVertex(v[0] + new Vector3(x, y, z), Vector3.back);
-			data.AddVertex(v[2] + new Vector3(x, y, z), Vector3.back);
-			data.AddVertex(v[6] + new Vector3(x, y, z), Vector3.back);
-			data.AddVertex(v[4] + new Vector3(x, y, z), Vector3.back);
-			data.AddQuadTriangles(submesh);
+		//South
+		if (!CheckSolid(blocks, x, y, z - 1, Direction.North)) {
+			byte[] ao = CalculateFaceAO(new bool[] {
+				CheckSolid(blocks, x    , y - 1, z - 1, Direction.Up),
+				CheckSolid(blocks, x - 1, y - 1, z - 1, Direction.Up),
+				CheckSolid(blocks, x - 1, y    , z - 1, Direction.East),
+				CheckSolid(blocks, x - 1, y + 1, z - 1, Direction.East),
+				CheckSolid(blocks, x    , y + 1, z - 1, Direction.Down),
+				CheckSolid(blocks, x + 1, y + 1, z - 1, Direction.Down),
+				CheckSolid(blocks, x + 1, y    , z - 1, Direction.West),
+				CheckSolid(blocks, x + 1, y - 1, z - 1, Direction.West)
+			});
+			data.AddVertex(v[0] + new Vector3(x, y, z), Vector3.back, CalculateVertexColor(ao[0]));
+			data.AddVertex(v[2] + new Vector3(x, y, z), Vector3.back, CalculateVertexColor(ao[1]));
+			data.AddVertex(v[6] + new Vector3(x, y, z), Vector3.back, CalculateVertexColor(ao[2]));
+			data.AddVertex(v[4] + new Vector3(x, y, z), Vector3.back, CalculateVertexColor(ao[3]));
+			data.AddQuadTriangles(submesh, FlipQuad(ao));
 			data.AddUVs(FaceUVs(Direction.South));
 		}
 
-		if (CheckSolid(blocks, x + 1, y, z, Direction.West)) {
-			data.AddVertex(v[4] + new Vector3(x, y, z), Vector3.right);
-			data.AddVertex(v[6] + new Vector3(x, y, z), Vector3.right);
-			data.AddVertex(v[7] + new Vector3(x, y, z), Vector3.right);
-			data.AddVertex(v[5] + new Vector3(x, y, z), Vector3.right);
-			data.AddQuadTriangles(submesh);
+		//East
+		if (!CheckSolid(blocks, x + 1, y, z, Direction.West)) {
+			byte[] ao = CalculateFaceAO(new bool[] {
+				CheckSolid(blocks, x + 1, y - 1, z    , Direction.Up),
+				CheckSolid(blocks, x + 1, y - 1, z - 1, Direction.Up),
+				CheckSolid(blocks, x + 1, y    , z - 1, Direction.North),
+				CheckSolid(blocks, x + 1, y + 1, z - 1, Direction.North),
+				CheckSolid(blocks, x + 1, y + 1, z    , Direction.Down),
+				CheckSolid(blocks, x + 1, y + 1, z + 1, Direction.Down),
+				CheckSolid(blocks, x + 1, y    , z + 1, Direction.South),
+				CheckSolid(blocks, x + 1, y - 1, z + 1, Direction.South)
+			});
+			data.AddVertex(v[4] + new Vector3(x, y, z), Vector3.right, CalculateVertexColor(ao[0]));
+			data.AddVertex(v[6] + new Vector3(x, y, z), Vector3.right, CalculateVertexColor(ao[1]));
+			data.AddVertex(v[7] + new Vector3(x, y, z), Vector3.right, CalculateVertexColor(ao[2]));
+			data.AddVertex(v[5] + new Vector3(x, y, z), Vector3.right, CalculateVertexColor(ao[3]));
+			data.AddQuadTriangles(submesh, FlipQuad(ao));
 			data.AddUVs(FaceUVs(Direction.East));
 		}
 
-		if (CheckSolid(blocks, x - 1, y, z, Direction.East)) {
-			data.AddVertex(v[1] + new Vector3(x, y, z), Vector3.left);
-			data.AddVertex(v[3] + new Vector3(x, y, z), Vector3.left);
-			data.AddVertex(v[2] + new Vector3(x, y, z), Vector3.left);
-			data.AddVertex(v[0] + new Vector3(x, y, z), Vector3.left);
-			data.AddQuadTriangles(submesh);
+		//West
+		if (!CheckSolid(blocks, x - 1, y, z, Direction.East)) {
+			byte[] ao = CalculateFaceAO(new bool[] {
+				CheckSolid(blocks, x - 1, y - 1, z    , Direction.Up),
+				CheckSolid(blocks, x - 1, y - 1, z + 1, Direction.Up),
+				CheckSolid(blocks, x - 1, y    , z + 1, Direction.North),
+				CheckSolid(blocks, x - 1, y + 1, z + 1, Direction.North),
+				CheckSolid(blocks, x - 1, y + 1, z    , Direction.Down),
+				CheckSolid(blocks, x - 1, y + 1, z - 1, Direction.Down),
+				CheckSolid(blocks, x - 1, y    , z - 1, Direction.South),
+				CheckSolid(blocks, x - 1, y - 1, z - 1, Direction.South)
+			});
+			data.AddVertex(v[1] + new Vector3(x, y, z), Vector3.left, CalculateVertexColor(ao[0]));
+			data.AddVertex(v[3] + new Vector3(x, y, z), Vector3.left, CalculateVertexColor(ao[1]));
+			data.AddVertex(v[2] + new Vector3(x, y, z), Vector3.left, CalculateVertexColor(ao[2]));
+			data.AddVertex(v[0] + new Vector3(x, y, z), Vector3.left, CalculateVertexColor(ao[3]));
+			data.AddQuadTriangles(submesh, FlipQuad(ao));
 			data.AddUVs(FaceUVs(Direction.West));
 		}
 
 		return data;
+	}
+
+	byte[] CalculateFaceAO(bool[] surroundingBlocks) {
+		return new byte[] {
+			CalculateVertexAO(surroundingBlocks[0], surroundingBlocks[1], surroundingBlocks[2]),
+			CalculateVertexAO(surroundingBlocks[2], surroundingBlocks[3], surroundingBlocks[4]),
+			CalculateVertexAO(surroundingBlocks[4], surroundingBlocks[5], surroundingBlocks[6]),
+			CalculateVertexAO(surroundingBlocks[6], surroundingBlocks[7], surroundingBlocks[0])
+		};
+	}
+
+	byte CalculateVertexAO(bool side1, bool corner, bool side2) {
+		if (side1 && side2) {
+			return 0;
+		}
+		return (byte)(3 - ((side1 ? 1 : 0) + (side2 ? 1 : 0) + (corner ? 1 : 0)));
+	}
+
+	Color CalculateVertexColor(byte ao) {
+		//Range from 0.5 to 1
+		return Color.white * (((float)ao / 6f) + 0.5f);
+	}
+
+	bool FlipQuad(byte[] ao) {
+		return ao[0] + ao[2] > ao[1] + ao[3];
 	}
 
 	/// <summary>
@@ -135,16 +227,16 @@ public class Block {
 	/// <returns>True if the block is not solid</returns>
 	protected virtual bool CheckSolid(Block[,,] blocks, int x, int y, int z, Direction direction) {
 		if (x < 0 || x > blocks.GetLength(0) - 1) {
-			return true;
+			return false;
 		}
 		if (y < 0 || y > blocks.GetLength(1) - 1) {
-			return true;
+			return false;
 		}
 		if (z < 0 || z > blocks.GetLength(2) - 1) {
-			return true;
+			return false;
 		}
 
-		return blocks[x, y, z].GetSolidity(direction) != BlockSolidity.Block;
+		return blocks[x, y, z].GetSolidity(direction) == BlockSolidity.Block;
 	}
 
 	public virtual Vector2[] FaceUVs(Direction direction) {
@@ -187,7 +279,7 @@ public class Block {
 		uvs[1] = new Vector2(rect.x + rect.width, rect.y + rect.height);	//1, 1
 		uvs[2] = new Vector2(rect.x, rect.y + rect.height);					//0, 1
 		uvs[3] = new Vector2(rect.x, rect.y);								//0, 0
-		
+
 		return uvs;*/
 	}
 
@@ -197,7 +289,7 @@ public class Block {
 	public virtual BlockSolidity GetSolidity(Direction direction) {
 		return BlockSolidity.Block;
 	}
-	
+
 	/// <summary>
 	/// Add a collider to the chunk
 	/// </summary>
@@ -241,6 +333,7 @@ public class Block {
 			filter.mesh.triangles = data.triangles[0].ToArray();
 			filter.mesh.uv = data.uvs.ToArray();
 			filter.mesh.normals = data.normals.ToArray();
+			filter.mesh.colors = data.colors.ToArray();
 		} else {
 			gameObject.GetComponent<MeshRenderer>().enabled = false;
 		}

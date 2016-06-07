@@ -1,4 +1,4 @@
-﻿Shader ".Platformed/Block" {
+﻿Shader "" {
 	Properties {
 		_MainTex("Texture", 2D) = "white" {}
 	}
