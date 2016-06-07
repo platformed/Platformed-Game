@@ -66,8 +66,12 @@ public class PropertiesTool : MonoBehaviour {
 		//Raycast
 		RaycastHit hit;
 		if (Physics.Raycast(ray, out hit, Mathf.Infinity, raycastLayerMask)) {
-			if (hit.transform.GetComponent<Chunk>() != null) {
-				return hit.transform.GetComponent<Chunk>().GetBlockFromCollider(hit.collider);
+			if (World.useChunks) {
+				if (hit.transform.GetComponent<Chunk>() != null) {
+					return hit.transform.GetComponent<Chunk>().GetBlockFromCollider(hit.collider);
+				}
+			} else {
+				return World.instance.GetBlockFromCollider(hit.collider);
 			}
 		}
 

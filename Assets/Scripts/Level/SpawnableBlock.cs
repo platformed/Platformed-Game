@@ -2,7 +2,6 @@
 using System.Collections;
 
 public class SpawnableBlock : Block {
-	public GameObject gameObject;
 	public Transform transform;
 	protected Vector3 blockPosition;
 
@@ -43,7 +42,7 @@ public class SpawnableBlock : Block {
 		//Add position
 		Vector3[] verticies = mesh.vertices;
 		for (int i = 0; i < verticies.Length; i++) {
-			verticies[i] += new Vector3(0f, -0.5f, 0f) + pos;
+			verticies[i] += pos;
 		}
 		mesh.vertices = verticies;
 

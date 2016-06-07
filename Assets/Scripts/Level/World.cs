@@ -6,6 +6,8 @@ using System.Collections.Generic;
 /// The current level that is open in the game
 /// </summary>
 public class World : MonoBehaviour {
+	public static World instance;
+
 	/// <summary>
 	/// If the game should use chunks
 	/// </summary>
@@ -13,6 +15,7 @@ public class World : MonoBehaviour {
 
 	//Used only if useChunks is false
 	Block[,,] blocks = new Block[worldBlockSize, worldBlockSize, worldBlockSize];
+	Dictionary<Collider, Block> colliders = new Dictionary<Collider, Block>();
 
 	public Dictionary<WorldPos, Chunk> chunks = new Dictionary<WorldPos, Chunk>();
 	public GameObject chunkPrefab;
@@ -20,6 +23,8 @@ public class World : MonoBehaviour {
 	const int worldBlockSize = 100;
 
 	void Start() {
+		instance = this;
+
 		if (useChunks) {
 			for (int x = 0; x < worldSize; x++) {
 				for (int y = 0; y < worldSize; y++) {
@@ -160,6 +165,21 @@ public class World : MonoBehaviour {
 
 				blocks[x, y, z] = block;
 
+				//Create sibling gameobject for collider
+				if (!(block is AirBlock)) {
+					GameObject colliderGameObject = new GameObject("Selection Collider");
+					colliderGameObject.transform.rotation = Quaternion.Euler(90, 0, 0);
+					colliderGameObject.transform.SetParent(block.gameObject.transform, false);
+					colliderGameObject.layer = 9;
+
+					//Create collider
+					Collider collider = blocks[x, y, z].GetCollider(colliderGameObject, Vector3.zero);
+					if (collider != null) {
+						colliders.Add(collider, blocks[x, y, z]);
+					}
+				}
+
+				//Update surrounding blocks
 				for (int xx = -1; xx <= 1; xx++) {
 					for (int yy = -1; yy <= 1; yy++) {
 						for (int zz = -1; zz <= 1; zz++) {
@@ -178,5 +198,9 @@ public class World : MonoBehaviour {
 			return false;
 
 		return true;
+	}
+
+	public Block GetBlockFromCollider(Collider coll) {
+		return colliders[coll];
 	}
 }

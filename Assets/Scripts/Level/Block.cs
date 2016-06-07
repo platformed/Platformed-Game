@@ -6,7 +6,7 @@ using System;
 /// Represents a block in the game
 /// </summary>
 public class Block {
-	GameObject gameObject;
+	public GameObject gameObject { get; protected set; }
 
 	protected string Name { get; set; }
 	protected string DisplayName { get; set; }
@@ -209,7 +209,7 @@ public class Block {
 
 	Color CalculateVertexColor(byte ao) {
 		//Range from 0.5 to 1
-		return Color.white * (((float)ao / 6f) + 0.5f);
+		return Color.white * ((ao / 6f) + 0.5f);
 	}
 
 	bool FlipQuad(byte[] ao) {
@@ -304,7 +304,7 @@ public class Block {
 	}
 
 	public virtual void InstantiateBlock(Transform parent, Vector3 pos, int x, int y, int z, Block[,,] blocks) {
-		gameObject = new GameObject();
+		gameObject = new GameObject(Name);
 		gameObject.transform.SetParent(parent);
 		gameObject.transform.position = pos;
 
