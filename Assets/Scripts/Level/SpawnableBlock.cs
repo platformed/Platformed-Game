@@ -39,18 +39,17 @@ public class SpawnableBlock : Block {
 		Mesh mesh = new Mesh();
 		mesh.CombineMeshes(meshes);
 
-		//Add position
+		//Add position and rotate
 		Vector3[] verticies = mesh.vertices;
 		for (int i = 0; i < verticies.Length; i++) {
 			verticies[i] += pos;
+			verticies[i] = Quaternion.Euler(90, 0, 0) * verticies[i];
 		}
 		mesh.vertices = verticies;
 
 		//Create mesh collider
 		MeshCollider coll = parent.AddComponent<MeshCollider>();
 		coll.sharedMesh = mesh;
-		coll.convex = true;
-		coll.isTrigger = true;
 
 		return coll;
 	}

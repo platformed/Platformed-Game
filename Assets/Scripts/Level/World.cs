@@ -168,7 +168,6 @@ public class World : MonoBehaviour {
 				//Create sibling gameobject for collider
 				if (!(block is AirBlock)) {
 					GameObject colliderGameObject = new GameObject("Selection Collider");
-					colliderGameObject.transform.rotation = Quaternion.Euler(90, 0, 0);
 					colliderGameObject.transform.SetParent(block.gameObject.transform, false);
 					colliderGameObject.layer = 9;
 

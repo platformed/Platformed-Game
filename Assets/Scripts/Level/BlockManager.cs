@@ -31,11 +31,8 @@ public class BlockManager : MonoBehaviour {
 		AddBlock(new CarvedStoneBlock(), BlockCategory.Block);
 		AddBlock(new CrateBlock(), BlockCategory.Block);
 		AddBlock(new DirtBlock(), BlockCategory.Block);
-
 		AddBlock(new SticksBoxBlock(), BlockCategory.Block);
 		AddBlock(new SticksOpenBoxBlock(), BlockCategory.Block);
-		//AddBlock(new ColorWhiteBlock(), BlockCategory.Block);
-		//AddBlock(new ColorBlackBlock(), BlockCategory.Block);
 
 		//Floors
 		AddBlock(new GrassBlock(), BlockCategory.Floor);
@@ -44,22 +41,26 @@ public class BlockManager : MonoBehaviour {
 		//Props
 		AddBlock(new TorchBlock(), BlockCategory.Prop);
 		AddBlock(new TallGrassBlock(), BlockCategory.Prop);
+		AddBlock(new BoulderBlock(), BlockCategory.Prop);
+		AddBlock(new WoodenBridgeBlock(), BlockCategory.Prop);
 
 		//Collectables
 		AddBlock(new GemBlock(), BlockCategory.Collectable);
 
+		//Flags
+		AddBlock(new StartFlagBlock(), BlockCategory.Flag);
+
 		//Unused
 		/*
-		AddBlock(new BoulderBlock(), BlockCategory.Prop);
 		AddBlock(new GrayBricksBlock(), BlockCategory.Block);
 		AddBlock(new PillarBlock(), BlockCategory.Block);
-		AddBlock(new BarkBlock());
-		AddBlock(new WoodBlock());
 		AddBlock(new LeavesBlock());
 		AddBlock(new StoneFloorBlock(), BlockCategory.Floor);
 		AddBlock(new TileFloorBlock(), BlockCategory.Floor);
 		AddBlock(new BrickStairsBlock(), BlockCategory.Prop);
 		AddBlock(new DirtWallBlock(), BlockCategory.Block);
+		AddBlock(new BarkBlock(), BlockCategory.Block);
+		AddBlock(new WoodBlock(), BlockCategory.Block);
 		*/
 	}
 

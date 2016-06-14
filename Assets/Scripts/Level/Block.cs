@@ -303,23 +303,46 @@ public class Block {
 		return box;
 	}
 
+	/// <summary>
+	/// Instantiates block gameobject
+	/// </summary>
+	/// <param name="parent">Parent of the gameobject</param>
+	/// <param name="pos">Position of the gameobject</param>
+	/// <param name="x">X position of the block in the block array</param>
+	/// <param name="y">Y position of the block in the block array</param>
+	/// <param name="z">Z position of the block in the block array</param>
+	/// <param name="blocks">Block array to calculate visibility</param>
 	public virtual void InstantiateBlock(Transform parent, Vector3 pos, int x, int y, int z, Block[,,] blocks) {
 		gameObject = new GameObject(Name);
 		gameObject.transform.SetParent(parent);
 		gameObject.transform.position = pos;
 
 		gameObject.AddComponent<MeshFilter>();
-		gameObject.AddComponent<MeshRenderer>().sharedMaterial = Resources.Load("Blocks/" + Name + "/" + Name + "Material") as Material;
+
+		MeshRenderer meshRenderer = gameObject.AddComponent<MeshRenderer>();
+		meshRenderer.sharedMaterial = Resources.Load("Blocks/" + Name + "/" + Name + "Material") as Material;
+		meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.TwoSided;
 
 		UpdateBlock(x, y, z, blocks);
 
 		GetCollider(gameObject, Vector3.zero);
 	}
 
+
+	/// <summary>
+	/// Destroys block gameobject
+	/// </summary>
 	public virtual void DestroyBlock() {
 		UnityEngine.Object.Destroy(gameObject);
 	}
 
+	/// <summary>
+	/// Updates the mesh of the block
+	/// </summary>
+	/// <param name="x">X position of the block in the block array</param>
+	/// <param name="y">Y position of the block in the block array</param>
+	/// <param name="z">Z position of the block in the block array</param>
+	/// <param name="blocks">Block array to calculate visibility</param>
 	public virtual void UpdateBlock(int x, int y, int z, Block[,,] blocks) {
 		gameObject.GetComponent<MeshRenderer>().enabled = true;
 
