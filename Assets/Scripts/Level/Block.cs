@@ -42,6 +42,10 @@ public class Block {
 		return (Mesh)Resources.Load("Blocks/" + GetName() + "/" + GetName() + "Model", typeof(Mesh));
 	}
 
+	public virtual Material GetMaterial() {
+		return Resources.Load("Blocks/" + Name + "/" + Name + "Material") as Material;
+	}
+
 	/// <summary>
 	/// Adds the blocks to a meshdata 
 	/// </summary>
@@ -320,7 +324,7 @@ public class Block {
 		gameObject.AddComponent<MeshFilter>();
 
 		MeshRenderer meshRenderer = gameObject.AddComponent<MeshRenderer>();
-		meshRenderer.sharedMaterial = Resources.Load("Blocks/" + Name + "/" + Name + "Material") as Material;
+		meshRenderer.sharedMaterial = GetMaterial();
 		meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.TwoSided;
 
 		UpdateBlock(x, y, z, blocks);

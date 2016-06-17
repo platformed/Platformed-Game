@@ -146,7 +146,7 @@ public class VRCursor : MonoBehaviour {
 		//Materials
 		Material[] materials = new Material[filter.mesh.subMeshCount];
 		for (int i = 0; i < materials.Length; i++) {
-			materials[i] = Resources.Load("Blocks/" + blockTypes[i] + "/" + blockTypes[i] + "Material") as Material;
+			materials[i] = BlockManager.GetBlock(blockTypes[i]).GetMaterial();
 		}
 		meshRenderer.materials = materials;
 	}

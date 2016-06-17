@@ -78,7 +78,7 @@ public class BlockIconManager : MonoBehaviour {
 		filter.mesh.normals = data.normals.ToArray();
 
 		//Material
-		meshRenderer.material = Resources.Load("Blocks/" + block.GetName() + "/" + block.GetName() + "Material") as Material;
+		meshRenderer.material = block.GetMaterial();
 	}
 
 	void ScaleBlock(Block block, MeshData data) {
