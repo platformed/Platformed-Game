@@ -34,6 +34,24 @@ public class BlockManager : MonoBehaviour {
 		AddBlock(new SticksBoxBlock(), BlockCategory.Block);
 		AddBlock(new SticksOpenBoxBlock(), BlockCategory.Block);
 
+		//Colors
+		AddBlock(new ColorBlackBlock(), BlockCategory.Block);
+		AddBlock(new ColorGrayBlock(), BlockCategory.Block);
+		AddBlock(new ColorWhiteBlock(), BlockCategory.Block);
+		AddBlock(new ColorTanBlock(), BlockCategory.Block);
+		AddBlock(new ColorLightBrownBlock(), BlockCategory.Block);
+		AddBlock(new ColorBrownBlock(), BlockCategory.Block);
+		AddBlock(new ColorRedBlock(), BlockCategory.Block);
+		AddBlock(new ColorOrangeBlock(), BlockCategory.Block);
+		AddBlock(new ColorYellowBlock(), BlockCategory.Block);
+		AddBlock(new ColorLightGreenBlock(), BlockCategory.Block);
+		AddBlock(new ColorGreenBlock(), BlockCategory.Block);
+		AddBlock(new ColorLightBlueBlock(), BlockCategory.Block);
+		AddBlock(new ColorBlueBlock(), BlockCategory.Block);
+		AddBlock(new ColorTealBlock(), BlockCategory.Block);
+		AddBlock(new ColorPurpleBlock(), BlockCategory.Block);
+		AddBlock(new ColorPinkBlock(), BlockCategory.Block);
+
 		//Floors
 		AddBlock(new GrassBlock(), BlockCategory.Floor);
 		AddBlock(new SticksBlock(), BlockCategory.Floor);
@@ -83,6 +101,9 @@ public class BlockManager : MonoBehaviour {
 			//Set icon
 			Image icon = button.transform.GetChild(0).GetComponent<Image>();
 			Texture2D texture = Resources.Load("Block Icons/" + block.GetName()) as Texture2D;
+			if(texture == null) {
+				texture = Resources.Load("Block Icons/Error") as Texture2D;
+			}
             icon.overrideSprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
 
 			//Add to list
@@ -107,6 +128,9 @@ public class BlockManager : MonoBehaviour {
 			//Set icon
 			Image icon = button.transform.GetChild(0).GetComponent<Image>();
 			Texture2D texture = Resources.Load("Block Icons/" + block.GetName()) as Texture2D;
+			if (texture == null) {
+				texture = Resources.Load("Block Icons/Error") as Texture2D;
+			}
 			icon.overrideSprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
 
 			//Add to list

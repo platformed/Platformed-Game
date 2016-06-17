@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(ScrollRect))]
 public class ScrollRectController : MonoBehaviour {
@@ -20,7 +21,9 @@ public class ScrollRectController : MonoBehaviour {
 
 	void Update() {
 		//Add scrollwheel to velocity
-		velocity += (Input.GetAxis("Mouse ScrollWheel") * scrollSpeed);
+		if (EventSystem.current.IsPointerOverGameObject()) {
+			velocity += (Input.GetAxis("Mouse ScrollWheel") * scrollSpeed);
+		}
 
 		//Slow velocity over time
 		velocity *= decelerationRate;
