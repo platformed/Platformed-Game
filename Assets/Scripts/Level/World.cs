@@ -54,7 +54,7 @@ public class World : MonoBehaviour {
 			for (int x = 0; x < worldBlockSize; x++) {
 				for (int y = 0; y < worldBlockSize; y++) {
 					for (int z = 0; z < worldBlockSize; z++) {
-						blocks[x, y, z] = new AirBlock();
+						SetBlock(x, y, z, new AirBlock());
 					}
 				}
 			}
@@ -159,7 +159,9 @@ public class World : MonoBehaviour {
 			}
 		} else {
 			if (InRange(x) && InRange(y) && InRange(z)) {
-				blocks[x, y, z].DestroyBlock();
+				if (blocks[x, y, z] != null) {
+					blocks[x, y, z].DestroyBlock();
+				}
 
 				block.InstantiateBlock(transform, new Vector3(x, y, z) + new Vector3(0.5f, 0.5f, 0.5f), x, y, z, blocks);
 
@@ -183,7 +185,11 @@ public class World : MonoBehaviour {
 					for (int yy = -1; yy <= 1; yy++) {
 						for (int zz = -1; zz <= 1; zz++) {
 							if (x != 0 && y != 0 && z != 0) {
-								blocks[x + xx, y + yy, z + zz].UpdateBlock(x + xx, y + yy, z + zz, blocks);
+								if (InRange(x + xx) && InRange(y + yy) && InRange(z + zz)) {
+									if (blocks[x + xx, y + yy, z + zz] != null) {
+										blocks[x + xx, y + yy, z + zz].UpdateBlock(x + xx, y + yy, z + zz, blocks);
+									}
+								}
 							}
 						}
 					}

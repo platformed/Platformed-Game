@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(ScrollRect))]
-public class ScrollRectController : MonoBehaviour {
+public class ScrollRectController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
 	ScrollRect scrollRect;
 	RectTransform scrollRectTransform;
 	RectTransform scrollRectContent;
@@ -12,6 +12,8 @@ public class ScrollRectController : MonoBehaviour {
 	float velocity = 0f;
 	const float decelerationRate = 1f - 0.135f;
 	const float scrollSpeed = 100f;
+
+	bool hover = false;
 
 	void Start () {
 		scrollRect = GetComponent<ScrollRect>();
@@ -21,7 +23,7 @@ public class ScrollRectController : MonoBehaviour {
 
 	void Update() {
 		//Add scrollwheel to velocity
-		if (EventSystem.current.IsPointerOverGameObject()) {
+		if (hover) {
 			velocity += (Input.GetAxis("Mouse ScrollWheel") * scrollSpeed);
 		}
 
@@ -36,5 +38,13 @@ public class ScrollRectController : MonoBehaviour {
 
 		//Clamp the scroll height
 		scrollRect.verticalNormalizedPosition = Mathf.Clamp01(scrollRect.verticalNormalizedPosition);
+	}
+
+	public void OnPointerEnter(PointerEventData eventData) {
+		hover = true;
+	}
+
+	public void OnPointerExit(PointerEventData eventData) {
+		hover = false;
 	}
 }
