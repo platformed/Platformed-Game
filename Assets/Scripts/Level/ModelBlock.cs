@@ -22,7 +22,7 @@ public class ModelBlock : Block {
 		Object.Destroy(gameObject.GetComponent<Collider>());
 
 		//Add mesh collider
-		MeshCollider collider = gameObject.AddComponent<MeshCollider>();
+		gameObject.AddComponent<MeshCollider>();
 	}
 
 	public override Collider GetCollider(GameObject parent, Vector3 pos) {
