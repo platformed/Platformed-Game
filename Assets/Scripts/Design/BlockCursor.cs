@@ -6,6 +6,9 @@ using UnityEngine;
 /// A cursor that shows where you are placing blocks
 /// </summary>
 public class BlockCursor : MonoBehaviour {
+	public Transform spawnableBlockRotation;
+	byte rotation;
+
 	float smoothPos = 18f;
 	float smoothRot = 20f;
 	public World world;
@@ -16,7 +19,7 @@ public class BlockCursor : MonoBehaviour {
 	MeshRenderer meshRenderer;
 	MeshFilter filter;
 
-	static Transform parent;
+	static Transform spawnableBlockParent;
 
 	List<string> blockTypes = new List<string>();
 
@@ -29,7 +32,7 @@ public class BlockCursor : MonoBehaviour {
 		meshRenderer = GetComponent<MeshRenderer>();
 		filter = GetComponent<MeshFilter>();
 
-		parent = transform;
+		spawnableBlockParent = spawnableBlockRotation;
 	}
 
 	void Update() {
@@ -63,6 +66,7 @@ public class BlockCursor : MonoBehaviour {
 
 		transform.position = Vector3.Lerp(transform.position, pos, Time.deltaTime * smoothPos);
 		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, 0), Time.deltaTime * smoothRot);
+		spawnableBlockRotation.rotation = Quaternion.Lerp(spawnableBlockRotation.rotation, Quaternion.Euler(0, 90f * rotation, 0), Time.deltaTime * smoothRot);
 
 		if (update) {
 			RenderCursor();
@@ -97,7 +101,7 @@ public class BlockCursor : MonoBehaviour {
 					//Instantiate new block if it is spawnable
 					if (newBlock[x, y, z] is SpawnableBlock) {
 						SpawnableBlock b = (SpawnableBlock)newBlock[x, y, z];
-						b.InstantiateBlock(parent, new Vector3(x, y, z), x, y, z, block);
+						b.InstantiateBlock(spawnableBlockParent, new Vector3(x, y, z) - offset, x, y, z, block);
 					}
 				}
 			}
@@ -125,12 +129,15 @@ public class BlockCursor : MonoBehaviour {
 
 		block = rotatedBlocks;
 
+		rotation++;
+		rotation %= 4;
+
 		update = true;
 	}
 
 	public void Copy(Block[,,] blocks, Vector3 offset) {
-		block = blocks;
 		BlockCursor.offset = offset;
+		SetBlock(blocks);
 
 		update = true;
 	}
@@ -142,7 +149,7 @@ public class BlockCursor : MonoBehaviour {
 		for (int x = 0; x < block.GetLength(0); x++) {
 			for (int y = 0; y < block.GetLength(1); y++) {
 				for (int z = 0; z < block.GetLength(2); z++) {
-					if (block[x, y, z].GetName() != "Air") {
+					if (block[x, y, z].GetName() != "Air" && !(block[x, y, z] is SpawnableBlock)) {
 						//Try to find if the block type already exists in chunk
 						int submesh = blockTypes.IndexOf(block[x, y, z].GetName());
 

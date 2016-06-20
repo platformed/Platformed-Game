@@ -377,6 +377,14 @@ public class Block {
 		//Loop the rotation around 4
 		rotation %= 4;
 	}
+
+	/// <summary>
+	/// Gets the rotation of the block
+	/// </summary>
+	/// <returns>Rotation of the block</returns>
+	public byte GetRotation() {
+		return rotation;
+	}
 }
 
 public enum Direction {

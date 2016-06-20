@@ -27,6 +27,9 @@ public class SpawnableController : MonoBehaviour {
 			} else {
 				block.Update();
 			}
+
+			//Set rotation
+			transform.parent.rotation = Quaternion.Euler(0, 90 * block.GetRotation(), 0);
 		}
 	}
 

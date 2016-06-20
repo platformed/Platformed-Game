@@ -19,6 +19,8 @@ public class ScrollRectController : MonoBehaviour, IPointerEnterHandler, IPointe
 		scrollRect = GetComponent<ScrollRect>();
 		scrollRectTransform = scrollRect.GetComponent<RectTransform>();
 		scrollRectContent = scrollRect.content;
+
+		scrollRect.verticalNormalizedPosition = 1f;
     }
 
 	void Update() {
