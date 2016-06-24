@@ -61,6 +61,10 @@ public class BlockManager : MonoBehaviour {
 		AddBlock(new TallGrassBlock(), BlockCategory.Prop);
 		AddBlock(new BoulderBlock(), BlockCategory.Prop);
 		AddBlock(new WoodenBridgeBlock(), BlockCategory.Prop);
+		AddBlock(new FenceBlock(), BlockCategory.Prop);
+		//AddBlock(new FenceCornerBlock(), BlockCategory.Prop);
+		//AddBlock(new FenceThreeWayBlock(), BlockCategory.Prop);
+		//AddBlock(new FenceFourWayBlock(), BlockCategory.Prop);
 
 		//Collectables
 		AddBlock(new GemBlock(), BlockCategory.Collectable);
