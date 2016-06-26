@@ -12,7 +12,7 @@ public class Block {
 	protected string DisplayName { get; set; }
 	public int textureID;
 
-	protected byte rotation = 0;
+	public byte rotation = 0;
 
 	public Block Copy() {
 		return (Block)MemberwiseClone();
