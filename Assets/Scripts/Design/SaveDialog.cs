@@ -29,6 +29,19 @@ public class SaveDialog : MonoBehaviour {
 
 			levelButton.GetComponentInChildren<Text>().text = name;
 			levelButton.GetComponent<Button>().onClick.AddListener(() => Select(name));
+
+			//Load thumbnail
+			FileStream file = File.Open(Application.persistentDataPath + "/" + name + ".level", FileMode.Open);
+			BinaryReader reader = new BinaryReader(file);
+			Texture2D thumbnail = new Texture2D(World.thumbnailWidth, World.thumbnailHeight);
+			try {
+				thumbnail = LevelSerializer.LoadThumbnail(reader);
+			} catch (System.Exception ex) {
+				Debug.LogException(ex);
+			}
+
+			//Set thumbnail
+			levelButton.GetComponentInChildren<RawImage>().texture = thumbnail;
 		}
 	}
 
@@ -62,6 +75,7 @@ public class SaveDialog : MonoBehaviour {
 	/// </summary>
 	public void Save() {
 		World.instance.Save(fileName);
+		GetComponent<Dialog>().CloseDialog();
 	}
 
 	/// <summary>
@@ -69,5 +83,6 @@ public class SaveDialog : MonoBehaviour {
 	/// </summary>
 	public void Open() {
 		World.instance.Load(fileName);
+		GetComponent<Dialog>().CloseDialog();
 	}
 }

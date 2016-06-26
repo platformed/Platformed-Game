@@ -3,6 +3,8 @@ using System.Collections;
 using System.Linq;
 
 public class CameraOrbit : MonoBehaviour {
+	public static CameraOrbit instance;
+
 	public Transform target;
 
 	const float animationDuration = 0.3f;
@@ -27,17 +29,19 @@ public class CameraOrbit : MonoBehaviour {
 	const float zoomSpeed = 5f;
 	const float zoomToolSpeed = 0.1f;
 
-	float x = 0.0f;
-	float y = 0.0f;
-	float distance = 8f;
+	public float x = 0.0f;
+	public float y = 0.0f;
+	public float distance = 8f;
 
-	float smoothX;
-	float smoothY;
-	float smoothDistance;
+	public float smoothX;
+	public float smoothY;
+	public float smoothDistance;
 
 	float lastPos;
 
 	void Start() {
+		instance = this;
+
 		x = transform.eulerAngles.y;
 		y = transform.eulerAngles.x;
 
