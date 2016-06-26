@@ -10,6 +10,9 @@ using System.IO;
 public class World : MonoBehaviour {
 	public static World instance;
 
+	public const int thumbnailWidth = 196;
+	public const int thumbnailHeight = 110;
+
 	/// <summary>
 	/// If the game should use chunks
 	/// </summary>
@@ -49,11 +52,39 @@ public class World : MonoBehaviour {
 	/// </summary>
 	/// <param name="fileName">File name of the level</param>
 	public void Save(string fileName) {
+		//Instantiate camera to take screenshot
+		GameObject thumbnailCameraPrefab = Resources.Load("Thumbnail Camera") as GameObject;
+		GameObject instance = Instantiate(thumbnailCameraPrefab, UIManager.instance.designCam.transform.position, UIManager.instance.designCam.transform.rotation) as GameObject;
+		Camera thumbnailCamera = instance.GetComponent<Camera>();
+
+		//Create a rendertexture
+		RenderTexture thumbnailRenderTexture = new RenderTexture(thumbnailWidth, thumbnailHeight, 24);
+		thumbnailRenderTexture.antiAliasing = 8;
+
+		//Set it to the target texture of the camera
+		thumbnailCamera.targetTexture = thumbnailRenderTexture;
+
+		//Render the camera
+		thumbnailCamera.Render();
+		
+		//Apply it to a new texture 2D
+		RenderTexture.active = thumbnailRenderTexture;
+		Texture2D thumbnail = new Texture2D(thumbnailWidth, thumbnailHeight);
+		thumbnail.ReadPixels(new Rect(0, 0, thumbnailWidth, thumbnailHeight), 0, 0);
+
+		//Clear target texture of the camera
+		thumbnailCamera.targetTexture = null;
+		RenderTexture.active = null;
+
+		//Destroy the rendertexture and the camera
+		Destroy(thumbnailRenderTexture);
+		Destroy(thumbnailCamera.gameObject);
+
 		FileStream file = File.Create(Application.persistentDataPath + "/" + fileName + ".level");
 		BinaryWriter writer = new BinaryWriter(file);
 
 		try {
-			LevelSerializer.SaveLevel(blocks, writer);
+			LevelSerializer.SaveLevel(blocks, thumbnail, writer);
 		} catch (System.Exception ex) {
 			Debug.LogException(ex);
 		}

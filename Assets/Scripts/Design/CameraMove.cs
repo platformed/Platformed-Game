@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class CameraMove : MonoBehaviour {
+	public static CameraMove instance;
+
 	public World world;
 	public static float smooth = 16f;
 	float speed;
@@ -17,7 +19,7 @@ public class CameraMove : MonoBehaviour {
 	Vector3 lastPos;
 
 	void Start() {
-
+		instance = this;
 	}
 
 	void LateUpdate() {
