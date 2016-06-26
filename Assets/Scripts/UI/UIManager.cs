@@ -34,6 +34,8 @@ public class UIManager : MonoBehaviour {
 	static bool mouseOverWindow = false;
 	static bool navDrawerEnabled = false;
 
+	public bool inputFieldSelected = false;
+
 	Animator anim;
 
 	public GameObject windowCanvas;
@@ -189,6 +191,9 @@ public class UIManager : MonoBehaviour {
 			return false;
 		}
 		if (navDrawerEnabled) {
+			return false;
+		}
+		if (instance.inputFieldSelected) {
 			return false;
 		}
 		if (CategorySelector.isVisible) {

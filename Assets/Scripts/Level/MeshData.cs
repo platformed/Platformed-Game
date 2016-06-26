@@ -153,7 +153,7 @@ public class MeshData {
 	/// </summary>
 	/// <param name="amount">Amount to expand</param>
 	public void Expand(float amount) {
-		//Keep track of what verticies have been expanded
+		//Keep track of which verticies have been expanded
 		bool[] expanded = new bool[vertices.Count];
 
 		for (int i = 0; i < vertices.Count; i++) {

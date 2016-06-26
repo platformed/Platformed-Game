@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 /// <summary>
 /// The current level that is open in the game
@@ -20,7 +22,7 @@ public class World : MonoBehaviour {
 	public Dictionary<WorldPos, Chunk> chunks = new Dictionary<WorldPos, Chunk>();
 	public GameObject chunkPrefab;
 	const int worldSize = 10;
-	const int worldBlockSize = 100;
+	public const int worldBlockSize = 100;
 
 	void Start() {
 		instance = this;
@@ -40,6 +42,44 @@ public class World : MonoBehaviour {
 
 	void Update() {
 
+	}
+
+	/// <summary>
+	/// Saves the level
+	/// </summary>
+	/// <param name="fileName">File name of the level</param>
+	public void Save(string fileName) {
+		FileStream file = File.Create(Application.persistentDataPath + "/" + fileName + ".level");
+		BinaryWriter writer = new BinaryWriter(file);
+
+		try {
+			LevelSerializer.SaveLevel(blocks, writer);
+		} catch (System.Exception ex) {
+			Debug.LogException(ex);
+		}
+	}
+
+	/// <summary>
+	/// Loads a level
+	/// </summary>
+	/// <param name="fileName">File name of the level</param>
+	public void Load(string fileName) {
+		FileStream file = File.Open(Application.persistentDataPath + "/" + fileName + ".level", FileMode.Open);
+		BinaryReader reader = new BinaryReader(file);
+
+		try {
+			Block[,,] loadedBlocks = LevelSerializer.LoadLevel(reader);
+
+			for (int x = 0; x < worldBlockSize; x++) {
+				for (int y = 0; y < worldBlockSize; y++) {
+					for (int z = 0; z < worldBlockSize; z++) {
+						SetBlock(x, y, z, loadedBlocks[x, y, z]);
+					}
+				}
+			}
+		} catch (System.Exception ex) {
+			Debug.LogException(ex);
+		}
 	}
 
 	/// <summary>
