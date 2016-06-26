@@ -70,4 +70,37 @@ public class SaveDialog : MonoBehaviour {
 	public void Open() {
 		World.instance.Load(fileName);
 	}
+
+	/// <summary>
+	/// Opens the folder where the levels are located
+	/// </summary>
+	public void OpenLevelFolder() {
+		string path = Application.persistentDataPath;
+
+        if (Application.platform == RuntimePlatform.WindowsPlayer) {
+			OpenWindows(path);
+		} else {
+			OpenMac(path);
+		}
+    }
+
+	/// <summary>
+	/// Opens file explorer in windows
+	/// </summary>
+	/// <param name="path">Directory to open to</param>
+	void OpenWindows(string path) {
+		try {
+			System.Diagnostics.Process.Start("explorer.exe", "/root," + path);
+		} catch { }
+	}
+
+	/// <summary>
+	/// Opens finder in mac
+	/// </summary>
+	/// <param name="path">Directory to open to</param>
+	void OpenMac(string path) {
+		try {
+			System.Diagnostics.Process.Start("open", path);
+		} catch { }
+	}
 }
