@@ -66,6 +66,9 @@ public class BlockManager : MonoBehaviour {
 		//AddBlock(new FenceThreeWayBlock(), BlockCategory.Prop);
 		//AddBlock(new FenceFourWayBlock(), BlockCategory.Prop);
 
+		//Hazards
+		AddBlock(new FallingSticksBlock(), BlockCategory.Hazard);
+
 		//Collectables
 		AddBlock(new GemBlock(), BlockCategory.Collectable);
 

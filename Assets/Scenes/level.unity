@@ -7549,6 +7549,7 @@ MonoBehaviour:
   grid: {fileID: 329731317}
   cursor: {fileID: 1308866127}
   selectBox: {fileID: 10135435}
+  inputFieldSelected: 0
   windowCanvas: {fileID: 0}
 --- !u!4 &1086438913
 Transform:
