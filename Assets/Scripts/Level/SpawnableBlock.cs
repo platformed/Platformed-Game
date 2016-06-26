@@ -3,7 +3,6 @@ using System.Collections;
 
 public class SpawnableBlock : Block {
 	public Transform transform;
-	protected Vector3 blockPosition;
 
 	/// <summary>
 	/// True if the block has been spawned
@@ -50,7 +49,7 @@ public class SpawnableBlock : Block {
 		//Create mesh collider
 		MeshCollider coll = parent.AddComponent<MeshCollider>();
 		coll.sharedMesh = mesh;
-
+		
 		return coll;
 	}
 
@@ -68,15 +67,18 @@ public class SpawnableBlock : Block {
 	/// <param name="parent">Parent of GameObject</param>
 	/// <param name="pos">Local position to spawn at</param>
 	public override void InstantiateBlock(Transform parent, Vector3 pos, int x, int y, int z, Block[,,] blocks) {
-		blockPosition = pos + new Vector3(0f, -0.5f, 0f);
+		//Create parent gameobject to store position of block
+		Transform posOffset = new GameObject(GetName()).transform;
+		posOffset.SetParent(parent);
+		posOffset.localPosition = pos + new Vector3(0f, -0.5f, 0f);
 
 		//Instantiate block
-		gameObject = Object.Instantiate(GetPrefab(), blockPosition, Quaternion.Euler(-90, 0, 0)) as GameObject;
+		gameObject = Object.Instantiate(GetPrefab()) as GameObject;
 		transform = gameObject.transform;
 
-		//Set parent and position
-		transform.SetParent(parent);
-		transform.localPosition = blockPosition;
+		//Set parent
+		transform.SetParent(posOffset);
+		transform.localPosition = Vector3.zero;
 
 		//Create spawnable controller
 		SpawnableController controller = gameObject.AddComponent<SpawnableController>();
@@ -89,7 +91,7 @@ public class SpawnableBlock : Block {
 	/// Destroys the GameObject for the block
 	/// </summary>
 	public override void DestroyBlock() {
-		Object.Destroy(gameObject);
+		Object.Destroy(transform.parent.gameObject);
 	}
 
 	/// <summary>
