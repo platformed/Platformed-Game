@@ -14,8 +14,6 @@ public class UIManager : MonoBehaviour {
 	public static string scene;
 	public static GameObject tooltip;
 
-	public static int worldSize = 100;
-
 	//GameObjects that need to be enabled/disabled for play/design mode
 	public Camera designCam;
 	public Camera playCam;

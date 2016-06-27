@@ -11,7 +11,7 @@ public class CameraMove : MonoBehaviour {
 	float shiftSpeed = 0.6f;
 	float panSpeed = 0.05f;
 
-	public static int floor = UIManager.worldSize / 2;
+	public static int floor = 127;
 	int floorSpeed = 1;
 	int normalFloorSpeed = 1;
 	int shiftFloorSpeed = 10;
@@ -71,7 +71,7 @@ public class CameraMove : MonoBehaviour {
 	}
 
 	void ClampPos() {
-		int size = UIManager.worldSize;
+		int size = World.worldBlockSize;
 
 		if (transform.position.x < 0) {
 			transform.position = new Vector3(0, transform.position.y, transform.position.z);
@@ -92,8 +92,8 @@ public class CameraMove : MonoBehaviour {
 		if (floor < 0) {
 			floor = 0;
 		}
-		if (floor > UIManager.worldSize - 1) {
-			floor = UIManager.worldSize - 1;
+		if (floor > World.worldBlockSize - 1) {
+			floor = World.worldBlockSize - 1;
 		}
 	}
 }
