@@ -194,7 +194,7 @@ public class BlockCursor : MonoBehaviour {
 	}
 
 	void CheckVisibility() {
-		float size = UIManager.worldSize;
+		float size = World.worldBlockSize;
 
 		bool visible = true;
 

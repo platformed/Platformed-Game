@@ -6,6 +6,6 @@ public class FloorText : MonoBehaviour {
 	public Text text;
 
 	void Update () {
-		text.text = CameraMove.floor.ToString();
+		text.text = (CameraMove.floor - 127).ToString();
 	}
 }

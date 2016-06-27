@@ -74,7 +74,7 @@ public class SaveDialog : MonoBehaviour {
 	/// Saves the level with the current file name
 	/// </summary>
 	public void Save() {
-		World.instance.Save(fileName);
+		StartCoroutine(World.instance.Save(fileName));
 		GetComponent<Dialog>().CloseDialog();
 	}
 
@@ -82,7 +82,7 @@ public class SaveDialog : MonoBehaviour {
 	/// Opens the level with the current file name
 	/// </summary>
 	public void Open() {
-		World.instance.Load(fileName);
+		StartCoroutine(World.instance.Load(fileName));
 		GetComponent<Dialog>().CloseDialog();
 	}
 
@@ -105,7 +105,7 @@ public class SaveDialog : MonoBehaviour {
 	/// <param name="path">Directory to open to</param>
 	void OpenWindows(string path) {
 		try {
-			System.Diagnostics.Process.Start("explorer.exe", "/root," + path);
+			System.Diagnostics.Process.Start("explorer.exe", "/root," + path.Replace("/", "\\"));
 		} catch { }
 	}
 

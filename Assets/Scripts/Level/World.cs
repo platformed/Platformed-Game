@@ -25,7 +25,7 @@ public class World : MonoBehaviour {
 	public Dictionary<WorldPos, Chunk> chunks = new Dictionary<WorldPos, Chunk>();
 	public GameObject chunkPrefab;
 	const int worldSize = 10;
-	public const int worldBlockSize = 100;
+	public const int worldBlockSize = 256;
 
 	void Start() {
 		instance = this;
@@ -39,7 +39,13 @@ public class World : MonoBehaviour {
 				}
 			}
 		} else {
-			ClearWorld();
+			for (int x = 0; x < worldBlockSize; x++) {
+				for (int y = 0; y < worldBlockSize; y++) {
+					for (int z = 0; z < worldBlockSize; z++) {
+						blocks[x, y, z] = new AirBlock();
+					}
+				}
+			}
 		}
 	}
 
@@ -51,7 +57,7 @@ public class World : MonoBehaviour {
 	/// Saves the level
 	/// </summary>
 	/// <param name="fileName">File name of the level</param>
-	public void Save(string fileName) {
+	public IEnumerator Save(string fileName) {
 		//Instantiate camera to take screenshot
 		GameObject thumbnailCameraPrefab = Resources.Load("Thumbnail Camera") as GameObject;
 		GameObject instance = Instantiate(thumbnailCameraPrefab, UIManager.instance.designCam.transform.position, UIManager.instance.designCam.transform.rotation) as GameObject;
@@ -88,29 +94,25 @@ public class World : MonoBehaviour {
 		} catch (System.Exception ex) {
 			Debug.LogException(ex);
 		}
+
+		yield return null;
 	}
 
 	/// <summary>
 	/// Loads a level
 	/// </summary>
 	/// <param name="fileName">File name of the level</param>
-	public void Load(string fileName) {
+	public IEnumerator Load(string fileName) {
 		FileStream file = File.Open(Application.persistentDataPath + "/" + fileName + ".level", FileMode.Open);
 		BinaryReader reader = new BinaryReader(file);
 
 		try {
-			Block[,,] loadedBlocks = LevelSerializer.LoadLevel(reader);
-
-			for (int x = 0; x < worldBlockSize; x++) {
-				for (int y = 0; y < worldBlockSize; y++) {
-					for (int z = 0; z < worldBlockSize; z++) {
-						SetBlock(x, y, z, loadedBlocks[x, y, z]);
-					}
-				}
-			}
+			SetAllBlocks(LevelSerializer.LoadLevel(reader));
 		} catch (System.Exception ex) {
 			Debug.LogException(ex);
 		}
+
+		yield return null;
 	}
 
 	/// <summary>
@@ -122,13 +124,17 @@ public class World : MonoBehaviour {
 				c.ClearChunk();
 			}
 		} else {
+			Block[,,] air = new Block[worldBlockSize, worldBlockSize, worldBlockSize];
+
 			for (int x = 0; x < worldBlockSize; x++) {
 				for (int y = 0; y < worldBlockSize; y++) {
 					for (int z = 0; z < worldBlockSize; z++) {
-						SetBlock(x, y, z, new AirBlock());
+						air[x, y, z] = new AirBlock();
 					}
 				}
 			}
+
+			SetAllBlocks(air);
 		}
 	}
 
@@ -220,7 +226,8 @@ public class World : MonoBehaviour {
 	/// <param name="y">Y position of the block</param>
 	/// <param name="z">Z position of the block</param>
 	/// <param name="block">The block to set</param>
-	public void SetBlock(int x, int y, int z, Block block) {
+	/// <param name="update">If it should update the surrounding blocks</param>
+	public void SetBlock(int x, int y, int z, Block block, bool update = true) {
 		if (useChunks) {
 			Chunk chunk = GetChunk(x, y, z);
 
@@ -252,18 +259,44 @@ public class World : MonoBehaviour {
 				}
 
 				//Update surrounding blocks
-				for (int xx = -1; xx <= 1; xx++) {
-					for (int yy = -1; yy <= 1; yy++) {
-						for (int zz = -1; zz <= 1; zz++) {
-							if (x != 0 && y != 0 && z != 0) {
-								if (InRange(x + xx) && InRange(y + yy) && InRange(z + zz)) {
-									if (blocks[x + xx, y + yy, z + zz] != null) {
-										blocks[x + xx, y + yy, z + zz].UpdateBlock(x + xx, y + yy, z + zz, blocks);
+				if (update) {
+					for (int xx = -1; xx <= 1; xx++) {
+						for (int yy = -1; yy <= 1; yy++) {
+							for (int zz = -1; zz <= 1; zz++) {
+								if (x != 0 && y != 0 && z != 0) {
+									if (InRange(x + xx) && InRange(y + yy) && InRange(z + zz)) {
+										if (blocks[x + xx, y + yy, z + zz] != null) {
+											blocks[x + xx, y + yy, z + zz].UpdateBlock(x + xx, y + yy, z + zz, blocks);
+										}
 									}
 								}
 							}
 						}
 					}
+				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Sets all the blocks at once
+	/// </summary>
+	/// <param name="blocks">Block array to set to</param>
+	public void SetAllBlocks(Block[,,] blocks) {
+		//Set all blocks without updating
+		for (int x = 0; x < worldBlockSize; x++) {
+			for (int y = 0; y < worldBlockSize; y++) {
+				for (int z = 0; z < worldBlockSize; z++) {
+					SetBlock(x, y, z, blocks[x, y, z], false);
+				}
+			}
+		}
+
+		//Update all blocks
+		for (int x = 0; x < worldBlockSize; x++) {
+			for (int y = 0; y < worldBlockSize; y++) {
+				for (int z = 0; z < worldBlockSize; z++) {
+					this.blocks[x, y, z].UpdateBlock(x, y, z, this.blocks);
 				}
 			}
 		}

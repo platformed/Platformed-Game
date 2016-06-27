@@ -10,7 +10,7 @@ public class GridRenderer : MonoBehaviour {
 
 	void Start () {
 		//Set position to the center of the world
-		transform.position = new Vector3 (UIManager.worldSize / 2, CameraMove.floor + offset, UIManager.worldSize / 2);
+		transform.position = new Vector3 (World.worldBlockSize / 2, CameraMove.floor + offset, World.worldBlockSize / 2);
 	}
 
 	void Update () {
