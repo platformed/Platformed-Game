@@ -73,7 +73,9 @@ public class BlockManager : MonoBehaviour {
 		AddBlock(new GemBlock(), BlockCategory.Collectable);
 
 		//Flags
-		AddBlock(new StartFlagBlock(), BlockCategory.Flag);
+		AddBlock(new FlagStartBlock(), BlockCategory.Flag);
+		AddBlock(new FlagCheckpointBlock(), BlockCategory.Flag);
+		AddBlock(new FlagFinishBlock(), BlockCategory.Flag);
 
 		//Unused
 		/*
@@ -108,10 +110,10 @@ public class BlockManager : MonoBehaviour {
 			//Set icon
 			Image icon = button.transform.GetChild(0).GetComponent<Image>();
 			Texture2D texture = Resources.Load("Block Icons/" + block.GetName()) as Texture2D;
-			if(texture == null) {
+			if (texture == null) {
 				texture = Resources.Load("Block Icons/Error") as Texture2D;
 			}
-            icon.overrideSprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+			icon.overrideSprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
 
 			//Add to list
 			blockCategories.Add(category);
@@ -154,7 +156,7 @@ public class BlockManager : MonoBehaviour {
 
 	public static void UpdateCategory(BlockCategory category) {
 		for (int i = 0; i < blockButtons.Count; i++) {
-			if(blockCategories[i] == category) {
+			if (blockCategories[i] == category) {
 				blockButtons[i].SetActive(true);
 			} else {
 				blockButtons[i].SetActive(false);
@@ -167,6 +169,12 @@ public class BlockManager : MonoBehaviour {
 	}
 
 	public static Block GetBlock(string name) {
-		return blocks.Find(x => x.GetName() == name).Copy();
+		Block b = blocks.Find(x => x.GetName() == name);
+
+		if (b == null) {
+			return new AirBlock();
+		}
+
+		return b.Copy();
 	}
 }

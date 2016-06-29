@@ -166,16 +166,16 @@ Material:
         second: 1.83
       data:
         first:
+          name: _AO
+        second: 4.92
+      data:
+        first:
           name: _CutOff
         second: 0.3
       data:
         first:
           name: _BaseLight
         second: 1
-      data:
-        first:
-          name: _AO
-        second: 4.92
       data:
         first:
           name: _SquashAmount
@@ -188,7 +188,7 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 0.9632353, g: 0.9632353, b: 0.9632353, a: 1}
+        second: {r: 0.9558824, g: 0.9558824, b: 0.9558824, a: 1}
       data:
         first:
           name: _SpecColor

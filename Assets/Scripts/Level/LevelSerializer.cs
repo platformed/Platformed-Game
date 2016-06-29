@@ -101,7 +101,7 @@ public class LevelSerializer {
 		short blockListCount = reader.ReadInt16();
 
 		for (short i = 0; i < blockListCount; i++) {
-			blockList.Add(BlockManager.GetBlock(reader.ReadString()));
+            blockList.Add(BlockManager.GetBlock(reader.ReadString()));
 		}
 
 		//Read number of blocks
