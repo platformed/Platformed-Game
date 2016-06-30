@@ -17,42 +17,44 @@ public class ToolbarManager : MonoBehaviour {
 		openDialogPrefab = Resources.Load("UI/Dialog/Open Dialog") as GameObject;
 	}
 
-	public void setTool(int t) {
-		switch (t) {
+	/// <summary>
+	/// Sets the tool
+	/// </summary>
+	/// <param name="tool">The id of the tool to set</param>
+	public void SetTool(int tool) {
+		switch (tool) {
 			case 0:
-				UIManager.tool = Tool.Select;
+				DesignManager.instance.tool = Tool.Select;
 				break;
 			case 1:
-				UIManager.tool = Tool.Block;
+				DesignManager.instance.tool = Tool.Block;
 				break;
 			case 2:
-				UIManager.tool = Tool.Pan;
+				DesignManager.instance.tool = Tool.Pan;
 				break;
 			case 3:
-				UIManager.tool = Tool.Orbit;
+				DesignManager.instance.tool = Tool.Orbit;
 				break;
 			case 4:
-				UIManager.tool = Tool.Zoom;
+				DesignManager.instance.tool = Tool.Zoom;
 				break;
 			case 5:
-				UIManager.tool = Tool.Properties;
+				DesignManager.instance.tool = Tool.Properties;
 				break;
 		}
 	}
 
-	public static void save(string name) {
-		//UIManager.world.GetComponent<World>().saveWorld(name + ".level");
-	}
-
-	public static void load(string name) {
-		//UIManager.world.GetComponent<World>().loadWorld(name + ".level");
-	}
-
-	public void newLevel() {
+	/// <summary>
+	/// Clears the world
+	/// </summary>
+	public void NewLevel() {
 		world.ClearWorld();
 	}
 
-	public void openLevel() {
+	/// <summary>
+	/// Shows the open dialog
+	/// </summary>
+	public void OpenLevel() {
 		if (openDialog == null) {
 			openDialog = Instantiate(openDialogPrefab, new Vector3(Screen.width / 2f, Screen.height / 2f), Quaternion.identity) as GameObject;
 			openDialog.transform.SetParent(windowCanvas);
@@ -60,7 +62,10 @@ public class ToolbarManager : MonoBehaviour {
 		}
 	}
 
-	public void saveLevel() {
+	/// <summary>
+	/// Shows the save dialog
+	/// </summary>
+	public void SaveLevel() {
 		if (saveDialog == null) {
 			saveDialog = Instantiate(saveDialogPrefab, new Vector3(Screen.width / 2f, Screen.height / 2f), Quaternion.identity) as GameObject;
 			saveDialog.transform.SetParent(windowCanvas);
@@ -68,32 +73,53 @@ public class ToolbarManager : MonoBehaviour {
 		}
 	}
 
-	public void levelSettings() {
+	/// <summary>
+	/// Opens the level settings dialog
+	/// </summary>
+	public void LevelSettings() {
 
 	}
 
-	public void copy() {
+	/// <summary>
+	/// Copys the selected blocks onto the cursor
+	/// </summary>
+	public void Copy() {
 		selectBox.GetComponent<SelectTool>().Copy();
 		BlockCursor.offset = Vector3.zero;
 	}
 
-	public void toggleGrid() {
+	/// <summary>
+	/// Toggles the visibility of the grid
+	/// </summary>
+	public void ToggleGrid() {
 		GridRenderer.ToggleGrid();
 	}
 
-	public void playLevel() {
-		UIManager.instance.SetGamemode(Gamemode.Play);
+	/// <summary>
+	/// Sets the gamemode to play
+	/// </summary>
+	public void PlayLevel() {
+		GamemodeManager.instance.SetGamemode(Gamemode.Play);
 	}
 
-	public void uploadLevel() {
+	/// <summary>
+	/// Uploads a level to the level browser
+	/// </summary>
+	public void UploadLevel() {
 
 	}
 
-	public void upFloor() {
-		CameraMove.floor++;
+	/// <summary>
+	/// Moves the floor up by 1
+	/// </summary>
+	public void UpFloor() {
+		CameraMove.instance.floor++;
 	}
 
-	public void downFloor() {
-		CameraMove.floor--;
+	/// <summary>
+	/// Moves the floor down by 1
+	/// </summary>
+	public void DownFloor() {
+		CameraMove.instance.floor--;
 	}
 }

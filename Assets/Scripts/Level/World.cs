@@ -27,9 +27,11 @@ public class World : MonoBehaviour {
 	const int worldSize = 10;
 	public const int worldBlockSize = 256;
 
-	void Start() {
+	void Awake() {
 		instance = this;
+	}
 
+	void Start() {
 		if (useChunks) {
 			for (int x = 0; x < worldSize; x++) {
 				for (int y = 0; y < worldSize; y++) {
@@ -58,9 +60,9 @@ public class World : MonoBehaviour {
 	/// </summary>
 	/// <param name="fileName">File name of the level</param>
 	public IEnumerator Save(string fileName) {
-		//Instantiate camera to take screenshot
+		//Instantiate thumbnail camera to take screenshot
 		GameObject thumbnailCameraPrefab = Resources.Load("Thumbnail Camera") as GameObject;
-		GameObject instance = Instantiate(thumbnailCameraPrefab, UIManager.instance.designCam.transform.position, UIManager.instance.designCam.transform.rotation) as GameObject;
+		GameObject instance = Instantiate(thumbnailCameraPrefab, CameraOrbit.instance.designCam.transform.position, CameraOrbit.instance.designCam.transform.rotation) as GameObject;
 		Camera thumbnailCamera = instance.GetComponent<Camera>();
 
 		//Create a rendertexture

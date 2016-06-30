@@ -8,7 +8,7 @@ public class PlayManager : MonoBehaviour {
 
 	public Text scoreText;
 	
-	void Start () {
+	void Awake () {
 		instance = this;
 	}
 	

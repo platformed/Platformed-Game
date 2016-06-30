@@ -15,12 +15,12 @@ public class SelectTool : MonoBehaviour {
 	}
 
 	void Update() {
-		if (UIManager.tool == Tool.Select && UIManager.CanInteract()) {
+		if (DesignManager.instance.tool == Tool.Select && DesignManager.instance.CanInteractLevel()) {
 			if (Input.GetMouseButtonDown(0)) {
-				pos1 = Round(UIManager.Raycast());
+				pos1 = Round(CameraOrbit.instance.Raycast());
 			}
 			if (Input.GetMouseButton(0)) {
-				pos2 = Round(UIManager.Raycast());
+				pos2 = Round(CameraOrbit.instance.Raycast());
 			}
 
 			if (Input.GetKeyDown(KeyCode.C)) {
@@ -68,7 +68,7 @@ public class SelectTool : MonoBehaviour {
 
 		transform.localScale = new Vector3(x, y, z);
 
-		if(UIManager.tool == Tool.Select) {
+		if(DesignManager.instance.tool == Tool.Select) {
 			meshRenderer.enabled = true;
 		} else {
 			meshRenderer.enabled = false;
@@ -124,10 +124,10 @@ public class SelectTool : MonoBehaviour {
 			}
 		}
 		
-		Vector3 offset = UIManager.Raycast();
+		Vector3 offset = CameraOrbit.instance.Raycast();
 		cursor.Copy(blocks, new Vector3(Mathf.Floor(offset.x) - p1.x, Mathf.Floor(offset.y) - p1.y, Mathf.Floor(offset.z) - p1.z));
 
-		UIManager.tool = Tool.Block;
+		DesignManager.instance.tool = Tool.Block;
 	}
 
 	/// <summary>

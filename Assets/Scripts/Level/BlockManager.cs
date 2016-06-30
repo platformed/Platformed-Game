@@ -105,7 +105,7 @@ public class BlockManager : MonoBehaviour {
 			//Set button onClick
 			Button b = button.GetComponent<Button>();
 			string n = block.GetName();
-			b.onClick.AddListener(() => UIManager.SetToolBlock(n));
+			b.onClick.AddListener(() => DesignManager.instance.SetToolBlock(n));
 
 			//Set icon
 			Image icon = button.transform.GetChild(0).GetComponent<Image>();

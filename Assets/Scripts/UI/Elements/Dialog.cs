@@ -59,7 +59,7 @@ public class Dialog : MonoBehaviour {
 	public void CloseDialog() {
 		closing = true;
 
-		UIManager.instance.PointerExit();
+		UIManager.instance.mouseOverWindow = false;
 
 		FadeOut(fadeDuration);
 
@@ -78,7 +78,7 @@ public class Dialog : MonoBehaviour {
 
 		mouseOffset = transform.position - Input.mousePosition;
 		if (!closing) {
-			UIManager.isDragging = true;
+			UIManager.instance.isDragging = true;
 		}
 
 		shadow.CrossFadeAlpha(0f, shadowFadeDuration, false);
@@ -87,7 +87,7 @@ public class Dialog : MonoBehaviour {
 
 	public void StopDrag() {
 		if (!closing) {
-			UIManager.isDragging = false;
+			UIManager.instance.isDragging = false;
 		}
 
 		shadow.CrossFadeAlpha(1f, shadowFadeDuration, false);
@@ -101,13 +101,13 @@ public class Dialog : MonoBehaviour {
 
 	public void PointerEnter() {
 		if (!closing) {
-			UIManager.instance.PointerEnter();
+			UIManager.instance.mouseOverWindow = true;
 		}
 	}
 
 	public void PointerExit() {
 		if (!closing) {
-			UIManager.instance.PointerExit();
+			UIManager.instance.mouseOverWindow = false;
 		}
 	}
 

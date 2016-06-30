@@ -26,7 +26,7 @@ public class LevelSerializer {
 		writer.Write(CameraOrbit.instance.smoothDistance);
 		writer.Write(CameraMove.instance.transform.position.x);
 		writer.Write(CameraMove.instance.transform.position.z);
-		writer.Write(CameraMove.floor);
+		writer.Write(CameraMove.instance.floor);
 
 		//Write block ids
 		List<Block> blockList = BlockManager.GetBlocks();
@@ -92,8 +92,8 @@ public class LevelSerializer {
 
 		float cameraX = reader.ReadSingle();
 		float cameraZ = reader.ReadSingle();
-		CameraMove.floor = reader.ReadInt32();
-		CameraMove.instance.transform.position = new Vector3(cameraX, CameraMove.floor, cameraZ);
+		CameraMove.instance.floor = reader.ReadInt32();
+		CameraMove.instance.transform.position = new Vector3(cameraX, CameraMove.instance.floor, cameraZ);
 
 		//Read block ids
 		List<Block> blockList = new List<Block>();
