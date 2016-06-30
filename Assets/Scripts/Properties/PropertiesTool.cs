@@ -24,18 +24,18 @@ public class PropertiesTool : MonoBehaviour {
 	}
 
 	void Update() {
-		if (UIManager.CanInteract() && UIManager.tool == Tool.Properties && UIManager.Gamemode == Gamemode.Design) {
+		if (DesignManager.instance.CanInteractLevel() && DesignManager.instance.tool == Tool.Properties && GamemodeManager.instance.Gamemode == Gamemode.Design) {
 			if (Input.GetMouseButtonDown(0)) {
 				Block block = Raycast();
 				if (block != null) {
 					//Create dialog
-					GameObject go = Instantiate(propertiesDialogPrefab, Input.mousePosition, Quaternion.identity) as GameObject;
-					go.transform.SetParent(windowCanvas);
-					go.transform.SetAsLastSibling();
-					go.transform.name = block.GetDisplayName() + " Properties Dialog";
+					GameObject instance = Instantiate(propertiesDialogPrefab, Input.mousePosition, Quaternion.identity) as GameObject;
+					instance.transform.SetParent(windowCanvas);
+					instance.transform.SetAsLastSibling();
+					instance.transform.name = block.GetDisplayName() + " Properties Dialog";
 
 					//Get properties dialog
-					PropertiesDialog propertiesDialog = go.GetComponentInChildren<PropertiesDialog>();
+					PropertiesDialog propertiesDialog = instance.GetComponentInChildren<PropertiesDialog>();
 
 					//Animate dialog
 					Vector2 endPos = new Vector2(Screen.width * 0.75f, Screen.height * 0.5f);

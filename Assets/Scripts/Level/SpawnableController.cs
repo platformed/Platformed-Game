@@ -16,13 +16,13 @@ public class SpawnableController : MonoBehaviour {
 	void Update () {
 		if (block != null) {
 			//Call Reset
-			if(previousGamemode != UIManager.Gamemode) {
+			if(previousGamemode != GamemodeManager.instance.Gamemode) {
 				block.Reset();
 			}
-			previousGamemode = UIManager.Gamemode;
+			previousGamemode = GamemodeManager.instance.Gamemode;
 			
 			//Call Update and InactiveUpdate
-			if (UIManager.Gamemode == Gamemode.Design) {
+			if (GamemodeManager.instance.Gamemode == Gamemode.Design) {
 				block.InactiveUpdate();
 			} else {
 				block.Update();
@@ -35,7 +35,7 @@ public class SpawnableController : MonoBehaviour {
 
 	//Call OnPlayerEnter
 	void OnTriggerEnter(Collider coll) {
-		if (UIManager.Gamemode == Gamemode.Play) {
+		if (GamemodeManager.instance.Gamemode == Gamemode.Play) {
 			if (coll.CompareTag("Player")) {
 				block.OnPlayerEnter();
 			}

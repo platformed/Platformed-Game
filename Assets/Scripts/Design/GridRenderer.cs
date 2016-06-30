@@ -10,12 +10,12 @@ public class GridRenderer : MonoBehaviour {
 
 	void Start () {
 		//Set position to the center of the world
-		transform.position = new Vector3 (World.worldBlockSize / 2, CameraMove.floor + offset, World.worldBlockSize / 2);
+		transform.position = new Vector3 (World.worldBlockSize / 2, CameraMove.instance.floor + offset, World.worldBlockSize / 2);
 	}
 
 	void Update () {
 		//Smooth transition with lerp
-		transform.position = new Vector3 (transform.position.x, Mathf.Lerp(transform.position.y, CameraMove.floor + offset, Time.deltaTime * CameraMove.smooth), transform.position.z);
+		transform.position = new Vector3 (transform.position.x, Mathf.Lerp(transform.position.y, CameraMove.instance.floor + offset, Time.deltaTime * CameraMove.instance.smooth), transform.position.z);
 
 		gridMaterial.color = Color.Lerp(gridMaterial.color, isVisible ? Color.black : Color.clear, Time.deltaTime * 15);
 		overlayMaterial.color = Color.Lerp(overlayMaterial.color, isVisible ? Color.black : Color.clear, Time.deltaTime * 15);

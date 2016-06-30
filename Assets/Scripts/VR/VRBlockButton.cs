@@ -5,6 +5,6 @@ public class VRBlockButton : MonoBehaviour {
 	public Block block;
 
 	public void Click() {
-		UIManager.SetToolBlock(block.GetName());
+		DesignManager.instance.SetToolBlock(block.GetName());
 	}
 }

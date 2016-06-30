@@ -42,8 +42,8 @@ public class BlockCursor : MonoBehaviour {
 
 		Vector3 pos = transform.position;
 
-		if (UIManager.tool == Tool.Block && UIManager.CanInteract()) {
-			Vector3 hit = UIManager.Raycast();
+		if (DesignManager.instance.tool == Tool.Block && DesignManager.instance.CanInteractLevel()) {
+			Vector3 hit = CameraOrbit.instance.Raycast();
 			pos = new Vector3(Mathf.Floor(hit.x), Mathf.Floor(hit.y), Mathf.Floor(hit.z)) + new Vector3(0.5f, 0.5f, 0.5f);
 
 			bool singleBlock = block.GetLength(0) == 1 && block.GetLength(1) == 1 && block.GetLength(2) == 1;
@@ -198,7 +198,7 @@ public class BlockCursor : MonoBehaviour {
 
 		bool visible = true;
 
-		if (UIManager.tool != Tool.Block) {
+		if (DesignManager.instance.tool != Tool.Block) {
 			visible = false;
         }
 
@@ -215,7 +215,7 @@ public class BlockCursor : MonoBehaviour {
 			visible = false;
 		}
 
-		if (!UIManager.CanInteract()) {
+		if (!DesignManager.instance.CanInteractLevel()) {
 			visible = false;
 		}
 

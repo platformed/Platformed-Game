@@ -5,69 +5,96 @@ public class CameraMove : MonoBehaviour {
 	public static CameraMove instance;
 
 	public World world;
-	public static float smooth = 16f;
-	float speed;
-	float normalSpeed = 0.2f;
-	float shiftSpeed = 0.6f;
-	float panSpeed = 0.05f;
+	public Transform designCam;
 
-	public static int floor = 127;
+	public float smooth = 16f;
+
+	/// <summary>
+	/// Speed that the camera should move at
+	/// </summary>
+	float speed;
+
+	const float normalSpeed = 0.2f;
+	const float shiftSpeed = 0.6f;
+	const float panSpeed = 0.05f;
+
+	/// <summary>
+	/// Floor height of the camera
+	/// </summary>
+	public int floor = 127;
+
 	int floorSpeed = 1;
-	int normalFloorSpeed = 1;
-	int shiftFloorSpeed = 10;
+	const int normalFloorSpeed = 1;
+	const int shiftFloorSpeed = 10;
 
 	Vector3 lastPos;
 
-	void Start() {
+	void Awake() {
 		instance = this;
 	}
 
 	void LateUpdate() {
-		//Adjust floor level
-		if (UIManager.CanInteract()) {
-			if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) {
-				speed = shiftSpeed;
-				floorSpeed = shiftFloorSpeed;
-			} else {
-				speed = normalSpeed;
-				floorSpeed = normalFloorSpeed;
-			}
-
-			if (Input.GetKeyDown(KeyCode.Q)) {
-				floor -= floorSpeed;
-			}
-			if (Input.GetKeyDown(KeyCode.E)) {
-				floor += floorSpeed;
-			}
-
-			ClampFloor();
-
-			//Adjust for pan tool
-			if (UIManager.tool == Tool.Pan && !(Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) && UIManager.CanInteract()) {
-				if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) {
-					lastPos = Input.mousePosition;
-				}
-
-				if (Input.GetMouseButton(0) || Input.GetMouseButton(1)) {
-					Vector3 delta = Input.mousePosition - lastPos;
-					transform.Translate(delta.x * panSpeed, 0f, delta.y * panSpeed);
-					lastPos = Input.mousePosition;
-				}
-			}
-
-			//Adjust for wasd
-			Vector3 point = UIManager.instance.designCam.transform.position;
-			point.y = transform.position.y;
-			transform.LookAt(point);
-			float h = Input.GetAxis("Horizontal") * -speed;
-			float v = Input.GetAxis("Vertical") * -speed;
-			transform.Translate(new Vector3(h, 0f, v));
+		if (UIManager.instance.CanInteractUI()) {
+			UpdateFloor();
+			UpdatePan();
+			UpdateMove();
 		}
 
 		//Smooth transition using lerp
 		transform.position = new Vector3(transform.position.x, Mathf.Lerp(transform.position.y, floor, Time.deltaTime * smooth), transform.position.z);
 
 		ClampPos();
+	}
+
+	/// <summary>
+	/// Adjusts the floor level
+	/// </summary>
+	void UpdateFloor() {
+		if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) {
+			speed = shiftSpeed;
+			floorSpeed = shiftFloorSpeed;
+		} else {
+			speed = normalSpeed;
+			floorSpeed = normalFloorSpeed;
+		}
+
+		if (Input.GetKeyDown(KeyCode.Q)) {
+			floor -= floorSpeed;
+		}
+		if (Input.GetKeyDown(KeyCode.E)) {
+			floor += floorSpeed;
+		}
+
+		ClampFloor();
+	}
+
+	/// <summary>
+	/// Adjusts for the pan tool
+	/// </summary>
+	void UpdatePan() {
+		if (DesignManager.instance.tool == Tool.Pan && !(Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) && DesignManager.instance.CanInteractLevel()) {
+			if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) {
+				lastPos = Input.mousePosition;
+			}
+
+			if (Input.GetMouseButton(0) || Input.GetMouseButton(1)) {
+				Vector3 delta = Input.mousePosition - lastPos;
+				transform.Translate(delta.x * panSpeed, 0f, delta.y * panSpeed);
+				lastPos = Input.mousePosition;
+			}
+		}
+	}
+
+	/// <summary>
+	/// Adjusts for keyboard controls
+	/// </summary>
+	void UpdateMove() {
+		Vector3 cameraPosition = designCam.position;
+		cameraPosition.y = transform.position.y;
+		transform.LookAt(cameraPosition);
+		float h = Input.GetAxis("Horizontal") * -speed;
+		float v = Input.GetAxis("Vertical") * -speed;
+		transform.Translate(new Vector3(h, 0f, v));
 	}
 
 	void ClampPos() {
