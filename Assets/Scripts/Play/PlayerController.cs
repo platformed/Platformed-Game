@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Player : MonoBehaviour {
+public class PlayerController : MonoBehaviour {
     //This is the code for player movement
     public float speed = 5.0f;
     public float JumpingS = 7.0f;
