@@ -243,7 +243,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Health: 0
-  Lives: 0
+  lives: 0
+  livesText: {fileID: 1986482085}
 --- !u!224 &74192217 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 22498738, guid: 813a0f88315e8d04586c9ceb1dd99a0f,
@@ -1370,11 +1371,17 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22411454, guid: 3dcc7a6ccad6430418d6d58e7a8db726, type: 2}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 18
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3dcc7a6ccad6430418d6d58e7a8db726, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &1986482085 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11482976, guid: 3dcc7a6ccad6430418d6d58e7a8db726,
+    type: 2}
+  m_PrefabInternal: {fileID: 1986482084}
+  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1001 &2041826866
 Prefab:
   m_ObjectHideFlags: 0

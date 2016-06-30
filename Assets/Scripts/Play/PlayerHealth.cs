@@ -1,18 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnitySystems.UI;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour {
     public static PlayerHealth instance;
     public float Health;
-    public int Lives;
-    public int Lives { get; set; }
+    public int lives;
 
     public Text livesText;
 
 	// Use this for initialization
 	void Start () {
-        Lives = 3;
+        lives = 3;
         Health = 100;
 	}
     void Awake()
@@ -22,8 +21,8 @@ public class PlayerHealth : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        livesText.text = lives.tostring
-        if (Health <= 0)
+        livesText.text = lives.ToString();
+        if(Health <= 0)
         {
             Respawn();
         }
@@ -37,10 +36,10 @@ public class PlayerHealth : MonoBehaviour {
 	}
     void Respawn ()
     {
-        transform.position = new Vector3(128, 138, 128);
-        if(Lives > 0)
+        transform.position = World.instance.startFlagPosition;
+        if(lives > 0)
         {
-            Lives -= 1;
+            lives -= 1;
         }
     }
 }
