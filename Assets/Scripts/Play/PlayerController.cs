@@ -1,19 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Player : MonoBehaviour {
+public class PlayerController : MonoBehaviour {
     //This is the code for player movement
     public float speed = 5.0f;
     public float JumpingS = 7.0f;
     public float Gravity = 20.0f;
     private Vector3 moveDirection = Vector3.zero;
-    public float horizontalspeed = 2.0f;
-    public float verticalspeed = 2.0f;
-    private float recoil = 10.0f;
-    bool recoilUse = false;
-    public float timeforrecoil = 0.10f;
-    RaycastHit hit;
-
+    public Transform playCamera;
 
 
 
@@ -40,8 +34,10 @@ public class Player : MonoBehaviour {
             if (controller.isGrounded)
             {
                 moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+                Quaternion cameraRotation = Quaternion.Euler(0, playCamera.eulerAngles.y, playCamera.eulerAngles.z);
                 moveDirection = transform.TransformDirection(moveDirection);
                 moveDirection *= speed;
+                moveDirection = cameraRotation * moveDirection;
                 if (Input.GetButton("Jump"))
                     moveDirection.y = JumpingS;
             }
