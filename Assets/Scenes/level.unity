@@ -224,13 +224,26 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2
-  m_Radius: 0.5
+  m_Height: 1
+  m_Radius: 0.25
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &47980967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 47980965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 585a94a6864c66a40a45b3d2e6864302, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: 0
+  Lives: 0
 --- !u!224 &74192217 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 22498738, guid: 813a0f88315e8d04586c9ceb1dd99a0f,
@@ -2106,8 +2119,17 @@ Prefab:
       propertyPath: playCam
       value: 
       objectReference: {fileID: 946119273}
+    - target: {fileID: 13642498, guid: e70b14860be31e84583708adb5c7b612, type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11414290, guid: e70b14860be31e84583708adb5c7b612, type: 2}
+      propertyPath: playCamera
+      value: 
+      objectReference: {fileID: 946119273}
     m_RemovedComponents:
     - {fileID: 5426094, guid: e70b14860be31e84583708adb5c7b612, type: 2}
+    - {fileID: 13642498, guid: e70b14860be31e84583708adb5c7b612, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: e70b14860be31e84583708adb5c7b612, type: 2}
   m_IsPrefabParent: 0
 --- !u!224 &2091094699 stripped
