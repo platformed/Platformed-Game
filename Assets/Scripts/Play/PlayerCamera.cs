@@ -38,7 +38,7 @@ public class PlayerCamera : MonoBehaviour {
 		if (UIManager.instance.CanInteractUI()) {
 			if (GamemodeManager.instance.Gamemode == Gamemode.Play) {
 				Zoom();
-				Collisions();
+				//Collisions();
 				Rotation();
 			}
 		}
