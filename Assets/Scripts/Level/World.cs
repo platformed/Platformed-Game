@@ -27,6 +27,8 @@ public class World : MonoBehaviour {
 	const int worldSize = 10;
 	public const int worldBlockSize = 256;
 
+	public Vector3 startFlagPosition;
+
 	void Awake() {
 		instance = this;
 	}
