@@ -6,8 +6,8 @@ public class PlayerController : MonoBehaviour {
 	public Transform playCamera;
 	CharacterController controller;
 
-	float speed = 3.5f;
-	float jumpHeight = 3.5f;
+	float speed = 2.5f;
+	float jumpHeight = 3.2f;
 	
 	float verticalVelocity;
 

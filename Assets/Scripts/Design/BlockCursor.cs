@@ -43,11 +43,14 @@ public class BlockCursor : MonoBehaviour {
 		Vector3 pos = transform.position;
 
 		if (DesignManager.instance.tool == Tool.Block && DesignManager.instance.CanInteractLevel()) {
+			//Raycast the position of the mouse
 			Vector3 hit = CameraOrbit.instance.Raycast();
 			pos = new Vector3(Mathf.Floor(hit.x), Mathf.Floor(hit.y), Mathf.Floor(hit.z)) + new Vector3(0.5f, 0.5f, 0.5f);
 
+			//Allow mouse to be held down if it is only a single block
 			bool singleBlock = block.GetLength(0) == 1 && block.GetLength(1) == 1 && block.GetLength(2) == 1;
             if (singleBlock ? Input.GetMouseButton(0) : Input.GetMouseButtonDown(0)) {
+				//Set blocks
 				for (int x = 0; x < block.GetLength(0); x++) {
 					for (int y = 0; y < block.GetLength(1); y++) {
 						for (int z = 0; z < block.GetLength(2); z++) {
@@ -59,11 +62,13 @@ public class BlockCursor : MonoBehaviour {
 				}
 			}
 
+			//Erase with right mouse button
 			if (Input.GetMouseButton(1)) {
 				world.SetBlock((int)hit.x, (int)hit.y, (int)hit.z, new AirBlock());
 			}
 		}
 
+		//Set position and rotation of cursor
 		transform.position = Vector3.Lerp(transform.position, pos, Time.deltaTime * smoothPos);
 		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, 0), Time.deltaTime * smoothRot);
 		spawnableBlockRotation.rotation = Quaternion.Lerp(spawnableBlockRotation.rotation, Quaternion.Euler(0, 90f * rotation, 0), Time.deltaTime * smoothRot);
